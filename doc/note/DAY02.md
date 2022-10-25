@@ -13,7 +13,7 @@ Lombok的常用注解有：
 - `@ToString`：添加在类上，用于生成全属性对应的`toString()`方法
 - `@Slf4j`：添加在类上，？？？
 
-# 10. 关于自动装配Mapper对象时报错
+# 7. 关于自动装配Mapper对象时报错
 
 当自动装配Mapper接口的对象时，IntelliJ IDEA可能会报错，提示无法装配此对象，但是，并不影响运行！
 
@@ -27,7 +27,7 @@ Lombok的常用注解有：
   - 推荐
   - 与添加`@Mapper`注解的本质不同，添加`@Mapper`注解是为了标识此接口是Mybatis框架应该处理的接口，添加`@Repository`注解是为了引导IntelliJ IDEA作出正确的判断
 
-# 11. 关于Slf4j日志
+# 8. 关于Slf4j日志
 
 在Spring Boot项目中，基础依赖项（`spring-boot-starter`）中已经包含了日志的相关依赖项。
 
@@ -64,7 +64,7 @@ log.info("{}+{}={}", x, y, x + y);
 
 另外，SLF4j是一个日志标准，并不是具体的实现，通常，是通过`logback`或`log4j`等日志框架实现的，当前主流的Spring Boot版本中，都是使用`logback`来实现的。
 
-# 12. 关于Profile配置
+# 9. 关于Profile配置
 
 同一个项目，在不同的环境中（例如开发环境、测试环境、生产环境），需要的配置值可能是不同的，例如日志的显示级别、连接数据库的配置参数等，如果把同一个配置文件的多个属性的值反复修改是不现实的！
 
@@ -98,7 +98,7 @@ spring.profiles.active=dev
 
 如果`application.properties`与被激活的Profile配置中存在同名的属性，配置值却不相同，在执行时，将以Profile配置为准！
 
-# 13. 关于YAML配置
+# 10. 关于YAML配置
 
 YAML是一种编写配置文件的语法，表现为使用`.yml`作为扩展名的配置文件，Spring框架默认并不支持此类配置文件，而Spring Boot的基础依赖项中已经包含解析此类文件的依赖项，所以，在Spring Boot项目可以直接使用此类配置文件。
 
@@ -131,9 +131,368 @@ spring:
 
 **注意：YAML的解析相对更加严格，如果在此类配置文件中出现了错误的语法，甚至只是一些不应该出现的字符，都会导致解析失败！并且，如果直接复制粘贴整个文件，还可能出现乱码问题！**
 
+# 11. 插入数据时获取自动编号的id
 
+如果表中的id是自动编号的，在`<insert>`标签上，可以配置`useGeneratedKeys="true"`和`keyProperty="属性名"`，将可以获取自动编号的id值，并由Mybatis自动赋值到参数对象的属性（`keyProperty`配置的值）上，例如：
 
+```xml
+<!-- int insert(Album album); -->
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO pms_album (
+        name, description, sort
+    ) VALUES (
+        #{name}, #{description}, #{sort}
+    )
+</insert>
+```
 
+> 提示：如果表的id不是自动编号的，则插入数据时必须由方法的调用者给出id值，所以，对于方法的调用者而言，id值是已知的，则不需要配置这2个属性。
+
+# 12. 关于BindingException
+
+当调用的方法找不到绑定的SQL语句时，将出现错误，例如：
+
+```
+org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): cn.tedu.csmall.product.mapper.AlbumMapper.insert
+```
+
+出现此错误的原因可能是：
+
+- 在XML文件中，`<mapper>`标签的`namespace`值有误
+- 在XML文件中，`<insert>`或类似标签的`id`值有误
+- 在配置文件（`application.properties` / `application.yml`）中，配置的`mybatis.mapper-locations`属性有误，可能属性名写错，或属性值写错
+
+注意：以上异常信息中已经明确表示了哪个接口的哪个方法缺少对应的SQL语句，可以以此为线索来排查错误。
+
+# 13. 批量插入相册数据
+
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+int insertBatch(List<Album> albums);
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int insertBatch(List<Album> albums); -->
+<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO pms_album (
+    	name, description, sort
+    ) VALUES
+    <foreach collection="list" item="album" separator=",">
+        (#{album.name}, #{album.description}, #{album.sort})
+    </foreach>
+</insert>
+```
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void insertBatch() {
+    List<Album> albums = new ArrayList<>();
+    for (int i = 1; i <= 5; i++) {
+        Album album = new Album();
+        album.setName("批量插入测试相册" + i);
+        album.setDescription("批量插入测试相册的简介" + i);
+        album.setSort(200);
+        albums.add(album);
+    }
+    
+    int rows = mapper.insertBatch(albums);
+    log.debug("批量插入完成，受影响的行数：{}", rows);
+}
+```
+
+# 14. 根据id删除相册数据
+
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+int deleteById(Long id);
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int deleteById(Long id); -->
+<delete id="deleteById">
+    DELETE FROM pms_album WHERE id=#{id}
+</delete>
+```
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void deleteById() {
+    Long id = 1L;
+    int rows = mapper.deleteById(id);
+    log.debug("删除完成，受影响的行数：{}", rows);
+}
+```
+
+# 15. 根据若干个id批量删除相册数据
+
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+int deleteByIds(Long[] ids);
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int deleteByIds(Long ids); -->
+<delete id="deleteByIds">
+    DELETE FROM pms_album WHERE id IN (
+    	<foreach collection="array" item="id" separator=",">
+    		#{id}
+    	</foreach>
+    )
+</delete>
+```
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void deleteByIds() {
+    Long[] ids = {1L, 3L, 5L};
+    int rows = mapper.deleteByIds(ids);
+    log.debug("批量删除完成，受影响的行数：{}", rows);
+}
+```
+
+# 16. 修改相册数据
+
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+int update(Album album);
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int update(Album album); -->
+<update id="update">
+    UPDATE pms_album
+    <set>
+    	<if test="name != null">
+    		name=#{name},
+        </if>
+    	<if test="description != null">
+            description=#{description},
+    	</if>
+    	<if test="sort != null">
+            sort=#{sort},
+    	</if>
+    </set>
+    WHERE id=#{id}
+</update>
+```
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void update() {
+    Album album = new Album();
+    album.setName("新-测试相册010");
+    album.setDescription("新-测试相册简介010");
+    album.setSort(166);
+    
+    int rows = mapper.update(album);
+    log.debug("更新完成，受影响的行数：{}", rows);
+}
+```
+
+# 17. 统计相册数据的数量
+
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+int count();
+```
+
+在设计“查询”的抽象方法时，关于返回值类型，只需要保证所设计的返回值类型足够“装得下”所需的查询结果即可。
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int count(); -->
+<select id="count" resultType="int">
+    SELECT count(*) FROM pms_album
+</select>
+```
+
+**注意：每个`<select>`标签必须配置`resultType`或`resultMap`这2个属性中的其中1个。**
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void count() {
+    int count = mapper.count();
+    log.debug("统计完成，表中的数据的数量：{}", count);
+}
+```
+
+# 18. 根据id查询相册数据的详情
+
+根据阿里巴巴的Java开发手册中的规约，查询数据时，不允许使用星号作为字段列表，且，每张表都有`gmt_create`和`gmt_modified`字段，但是，在实际查询时，这2个时间字段通常并不需要查询出来！所以，根据id查询相册数据的详情的SQL语句大致是：
+
+```mysql
+select id, name, description, sort from pms_album where id=?
+```
+
+由于并不是查询所有字段，则使用实体类作为查询结果是**不合适**的，因为存在获取数据时语义不清晰的问题！（例如获取某属性的值为`null`时，是因为没有查询对应的字段？还是确实查询了但表中的数据就是`null`？），在规范的项目开发中，通常建议创建专门的POJO类型，用于封装查询结果！
+
+首先，应该在项目的根包下创建`pojo.vo.AlbumStandardVO`类型，在此类型中设计与查询的字段列表匹配的属性：
+
+```java
+package cn.tedu.csmall.product.pojo.vo;
+
+import lombok.Data;
+
+import java.io.Serializable;
+
+/**
+ * 相册数据的标准VO类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+@Data
+public class AlbumStandardVO implements Serializable {
+
+    /**
+     * 记录id
+     */
+    private Long id;
+
+    /**
+     * 相册名称
+     */
+    private String name;
+
+    /**
+     * 相册简介
+     */
+    private String description;
+
+    /**
+     * 自定义排序序号
+     */
+    private Integer sort;
+
+}
+```
+
+应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+AlbumStandardVO getStandardById(Long id);
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- AlbumStandardVO getStandardById(Long id); -->
+<select id="getStandardById" resultType="cn.tedu.csmall.product.pojo.vo.AlbumStandardVO">
+    SELECT id, name, description, sort FROM pms_album WHERE id=#{id}
+</select>
+```
+
+**注意：每个`<select>`标签必须配置`resultType`或`resultMap`这2个属性中的其中1个。**
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void getStandardById() {
+    Long id = 1L;
+    AlbumStandardVO queryResult = mapper.getStandardById(id);
+    log.debug("根据id【{}】查询数据详情完成，查询结果：{}", id, queryResult);
+}
+```
+
+# 19. 查询相册列表
+
+首先，应该在项目的根包下创建`pojo.vo.AlbumListItemVO`类型，在此类型中设计与查询的字段列表匹配的属性：
+
+```java
+package cn.tedu.csmall.product.pojo.vo;
+
+import lombok.Data;
+
+import java.io.Serializable;
+
+/**
+ * 相册数据的列表项VO类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+@Data
+public class AlbumListItemVO implements Serializable {
+
+    /**
+     * 记录id
+     */
+    private Long id;
+
+    /**
+     * 相册名称
+     */
+    private String name;
+
+    /**
+     * 相册简介
+     */
+    private String description;
+
+    /**
+     * 自定义排序序号
+     */
+    private Integer sort;
+
+}
+```
+
+应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+List<AlbumListItemVO> list();
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- List<AlbumListItemVO> list(); -->
+<select id="list" resultType="cn.tedu.csmall.product.pojo.vo.AlbumListItemVO">
+    SELECT id, name, description, sort FROM pms_album ORDER BY sort DESC, id DESC
+</select>
+```
+
+**注意：每个`<select>`标签必须配置`resultType`或`resultMap`这2个属性中的其中1个。**
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void list() {
+    List<AlbumListItemVO> list = mapper.list();
+    log.debug("查询列表完成，列表中的数据的数量：{}", list.size());
+    for (AlbumListItemVO item : list) {
+        log.debug("{}", item);
+    }
+}
+```
+
+# 
 
 
 
