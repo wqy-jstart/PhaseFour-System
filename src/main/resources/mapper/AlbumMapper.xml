@@ -3,8 +3,57 @@
 <mapper namespace="cn.tedu.csmall.product.mapper.AlbumMapper">
 
     <!--int insert(Album album);-->
-    <insert id="insert">
+    <!--如果插入操作时使用到了自增主键,则需要添加这两个属性,指明自增字段为id-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO pms_album(name, description, sort)
         VALUES (#{name}, #{description}, #{sort})
     </insert>
+
+    <!--int insertBatch(List<Album> albums);-->
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_album(
+        name ,description,sort
+        ) VALUES
+        <foreach collection="list" item="album" separator=",">
+            (#{album.name},#{album.description},#{album.sort})
+        </foreach>
+    </insert>
+
+    <!--int deleteById(Long id);-->
+    <delete id="deleteById">
+        DELETE
+        FROM pms_album
+        WHERE id = #{id}
+    </delete>
+
+    <!--int deleteByIds(Long[] ids);-->
+    <delete id="deleteByIds">
+        DELETE FROM pms_album WHERE id IN
+        (
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--int update(Album album);-->
+    <update id="update">
+        UPDATE pms_album
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="description!=null">description=#{description},</if>
+            <if test="sort!=null">sort=#{sort},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--int count();-->
+    <select id="count" resultType="int">
+        SELECT count(*) FROM pms_album
+    </select>
+
+    <!--AlbumStandardVO getStandardById(Long id);-->
+    <select id="getStandardById" resultType="cn.tedu.csmall.product.pojo.vo.AlbumStandardVO">
+        SELECT id,name,description,sort FROM pms_album WHERE id=#{id}
+    </select>
 </mapper>

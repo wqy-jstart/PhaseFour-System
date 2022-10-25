@@ -3,6 +3,8 @@ package cn.tedu.csmall.product.mapper;
 import cn.tedu.csmall.product.pojo.entity.Category;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 处理类别数据的Mapper接口
  *
@@ -18,5 +20,26 @@ public interface CategoryMapper {
      * @return 返回影响的条数
      */
     int insert(Category category);
+
+    /**
+     * 批量插入类别数据
+     * @param categories
+     * @return
+     */
+    int insertBatch(List<Category> categories);
+
+    /**
+     * 删除类别数据
+     * @param id
+     * @return
+     */
+    int deleteById(Long id);
+
+    /**
+     * 批量删除类别数量
+     * @param ids
+     * @return
+     */
+    int deleteByIds(Long[] ids);
 
 }

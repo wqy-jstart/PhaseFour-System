@@ -1,12 +1,11 @@
-package cn.tedu.csmall.product.pojo.entity;
+package cn.tedu.csmall.product.pojo.vo;
 
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
-public class Brand implements Serializable {
+public class BrandStandardVO implements Serializable {
     private Long id;
     private String name;
     private String pinyin;
@@ -19,6 +18,4 @@ public class Brand implements Serializable {
     private Integer commentCount;
     private Integer positiveCommentCount;
     private Integer enable;
-    private LocalDateTime gmtCreate;
-    private LocalDateTime gmtModified;
 }

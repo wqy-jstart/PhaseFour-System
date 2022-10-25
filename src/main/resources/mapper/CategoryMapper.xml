@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.tedu.csmall.product.mapper.CategoryMapper">
-    <insert id="insert">
-        INSERT INTO pms_category(name,parent_id,depth,keywords,sort,icon,enable,is_parent,is_display)
-        VALUES (#{name},#{parentId},#{depth},#{keywords},#{sort},
-                #{icon},#{enable},#{isParent},#{isDisplay})
+
+    <!--int insert(Category category);-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_category(name, parent_id, depth, keywords, sort, icon, enable, is_parent, is_display)
+        VALUES (#{name}, #{parentId}, #{depth}, #{keywords}, #{sort},
+                #{icon}, #{enable}, #{isParent}, #{isDisplay})
     </insert>
+
+    <!--int insertBatch(List<Category> categories);-->
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_category(
+        name,parent_id,depth,keywords,sort,icon,enable,is_parent,is_display
+        )VALUES
+        <foreach collection="list" item="category" separator=",">
+            (#{category.name},#{category.parentId},#{category.depth},#{category.keywords},
+            #{category.sort},#{category.icon},#{category.enable},#{category.isParent},#{category.isDisplay})
+        </foreach>
+    </insert>
+
+    <!--int deleteById(Long id);-->
+    <delete id="deleteById">
+        DELETE
+        FROM pms_category
+        WHERE id = #{id}
+    </delete>
+
+    <!--int deleteByIds(Long[] ids);-->
+    <delete id="deleteByIds">
+        DELETE FROM pms_category WHERE id IN
+        (
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
 </mapper>
