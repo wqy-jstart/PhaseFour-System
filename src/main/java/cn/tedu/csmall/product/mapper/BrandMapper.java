@@ -1,6 +1,8 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Brand;
+import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -54,6 +56,17 @@ public interface BrandMapper {
      */
     int count();
 
+    /**
+     * 查询一条品牌数据
+     * @param id
+     * @return
+     */
+    BrandStandardVO getStandardById(Long id);
 
+    /**
+     * 查询所有品牌数据
+     * @return
+     */
+    List<BrandListItemVO> list();
 
 }

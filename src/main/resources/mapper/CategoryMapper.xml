@@ -36,4 +36,83 @@
         </foreach>
         )
     </delete>
+
+    <!--int update(Category category);-->
+    <update id="update">
+        UPDATE pms_category
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="parentId!=null">parent_id=#{parentId},</if>
+            <if test="depth!=null">depth=#{depth},</if>
+            <if test="keywords!=null">keywords=#{keywords},</if>
+            <if test="sort!=null">sort=#{sort},</if>
+            <if test="icon!=null">icon=#{icon},</if>
+            <if test="enable!=null">enable=#{enable},</if>
+            <if test="isParent!=null">is_parent=#{isParent},</if>
+            <if test="isDisplay!=null">is_display=#{isDisplay},</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <!--int count();-->
+    <select id="count" resultType="int">
+        SELECT count(*)
+        FROM pms_category
+    </select>
+
+    <!--CategoryStandardVO getStandardById(Long id);-->
+    <select id="getStandardById" resultMap="standarById">
+        SELECT id,
+               name,
+               parent_id,
+               depth,
+               keywords,
+               sort,
+               icon,
+               enable,
+               is_parent,
+               is_display
+        FROM pms_category
+        WHERE id = #{id}
+    </select>
+    <resultMap id="standarById" type="cn.tedu.csmall.product.pojo.vo.CategoryStandardVO">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="parent_id" property="parentId"></result>
+        <result column="depth" property="depth"></result>
+        <result column="keywords" property="keywords"></result>
+        <result column="sort" property="sort"></result>
+        <result column="icon" property="icon"></result>
+        <result column="enable" property="enable"></result>
+        <result column="is_parent" property="isParent"></result>
+        <result column="is_display" property="isDisplay"></result>
+    </resultMap>
+
+    <!--List<CategoryListItemVO> list();-->
+    <select id="list" resultMap="listItemRM">
+        SELECT id,
+               name,
+               parent_id,
+               depth,
+               keywords,
+               sort,
+               icon,
+               enable,
+               is_parent,
+               is_display
+        FROM pms_category
+        ORDER BY sort DESC, id DESC
+    </select>
+    <resultMap id="listItemRM" type="cn.tedu.csmall.product.pojo.vo.CategoryListItemVO">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="parent_id" property="parentId"></result>
+        <result column="depth" property="depth"></result>
+        <result column="keywords" property="keywords"></result>
+        <result column="sort" property="sort"></result>
+        <result column="icon" property="icon"></result>
+        <result column="enable" property="enable"></result>
+        <result column="is_parent" property="isParent"></result>
+        <result column="is_display" property="isDisplay"></result>
+    </resultMap>
 </mapper>

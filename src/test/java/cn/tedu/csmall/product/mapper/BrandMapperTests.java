@@ -1,6 +1,8 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Brand;
+import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +100,23 @@ public class BrandMapperTests {
     void count(){
         int count = mapper.count();
         log.debug("统计完成,共有品牌数量:{}",count);
+    }
+
+    //查询一条品牌数据
+    @Test
+    void standardById(){
+        Long id = 1L;
+        BrandStandardVO standardById = mapper.getStandardById(id);
+        log.debug("根据id[{}]查询数据详情完成,查询结果:{}",id,standardById);
+    }
+
+    //查询所有数据
+    @Test
+    void list(){
+        List<BrandListItemVO> list = mapper.list();
+        log.debug("查询列表完成,列表中数据的数量:{}",list.size());
+        for (BrandListItemVO item : list) {
+            log.debug("{}",item);
+        }
     }
 }

@@ -49,11 +49,21 @@
 
     <!--int count();-->
     <select id="count" resultType="int">
-        SELECT count(*) FROM pms_album
+        SELECT count(*)
+        FROM pms_album
     </select>
 
     <!--AlbumStandardVO getStandardById(Long id);-->
     <select id="getStandardById" resultType="cn.tedu.csmall.product.pojo.vo.AlbumStandardVO">
-        SELECT id,name,description,sort FROM pms_album WHERE id=#{id}
+        SELECT id, name, description, sort
+        FROM pms_album
+        WHERE id = #{id}
+    </select>
+
+    <!--List<AlbumListItemVO> list();-->
+    <select id="list" resultType="cn.tedu.csmall.product.pojo.vo.AlbumListItemVO">
+        SELECT id, name, description, sort
+        FROM pms_album
+        ORDER BY sort DESC, id DESC
     </select>
 </mapper>

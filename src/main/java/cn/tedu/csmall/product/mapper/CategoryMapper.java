@@ -1,6 +1,8 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Category;
+import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
+import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,5 +43,31 @@ public interface CategoryMapper {
      * @return
      */
     int deleteByIds(Long[] ids);
+
+    /**
+     * 修改类别数据
+     * @param category
+     * @return
+     */
+    int update(Category category);
+
+    /**
+     * 查询类别数量
+     * @return
+     */
+    int count();
+
+    /**
+     * 查询一条类别数据
+     * @param id
+     * @return
+     */
+    CategoryStandardVO getStandardById(Long id);
+
+    /**
+     * 查询所有类别数据
+     * @return
+     */
+    List<CategoryListItemVO> list();
 
 }

@@ -1,6 +1,8 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Category;
+import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
+import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +70,48 @@ public class CategoryMapperTests {
         Long[] ids = {76L,77L,78L};
         int rows = mapper.deleteByIds(ids);
         log.debug("批量删除完成,影响的数据条数为:{}",rows);
+    }
+
+    //修改
+    @Test
+    void update(){
+        Category category = new Category();
+        category.setId(74L);
+        category.setName("品牌女装");
+        category.setParentId(1L);
+        category.setDepth(3);
+        category.setKeywords("无");
+        category.setSort(3);
+        category.setIcon("无");
+        category.setEnable(1);
+        category.setIsParent(1);
+        category.setIsDisplay(1);
+        int rows = mapper.update(category);
+        log.debug("修改完成,影响的数据条数为:{}",rows);
+    }
+
+    //查询类别数量
+    @Test
+    void count(){
+        int rows = mapper.count();
+        log.debug("统计完成,共有{}条数据",rows);
+    }
+
+    //查询一条类别数据
+    @Test
+    void getStandardById(){
+        Long id = 1L;
+        CategoryStandardVO standardById = mapper.getStandardById(id);
+        log.debug("根据id[{}]查询数据详情完成,查询结果:{}",id,standardById);
+    }
+
+    //查询所有数据
+    @Test
+    void list(){
+        List<CategoryListItemVO> list = mapper.list();
+        log.debug("查询列表完成,列表中数据的数量:{}",list.size());
+        for (CategoryListItemVO item : list) {
+            log.debug("{}",item);
+        }
     }
 }
