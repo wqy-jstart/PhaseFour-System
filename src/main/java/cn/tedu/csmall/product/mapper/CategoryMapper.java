@@ -58,6 +58,13 @@ public interface CategoryMapper {
     int count();
 
     /**
+     * 查询指定名称下类别的数量
+     * @param name 要查询的名称
+     * @return 返回查询后的数量
+     */
+    int countByName(String name);
+
+    /**
      * 查询一条类别数据
      * @param id
      * @return

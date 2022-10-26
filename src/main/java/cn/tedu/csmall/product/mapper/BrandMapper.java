@@ -57,6 +57,12 @@ public interface BrandMapper {
     int count();
 
     /**
+     * 根据传递的name查询数量
+     * @return 返回该name下的品牌数量
+     */
+    int countByName(String name);
+
+    /**
      * 查询一条品牌数据
      * @param id
      * @return
