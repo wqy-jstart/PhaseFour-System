@@ -51,6 +51,11 @@
         FROM pms_attribute_template
     </select>
 
+    <!--int countByName(String name);-->
+    <select id="countByName" resultType="int">
+        SELECT count(*) FROM pms_attribute_template WHERE name=#{name}
+    </select>
+
     <!--AttributeTemplateStandardVO getStandardById(Long id);-->
     <select id="getStandardById" resultType="cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO">
         SELECT id, name, pinyin, keywords, sort

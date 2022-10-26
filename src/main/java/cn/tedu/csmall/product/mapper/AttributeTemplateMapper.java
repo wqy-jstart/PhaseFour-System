@@ -22,6 +22,8 @@ public interface AttributeTemplateMapper {
 
     int count();
 
+    int countByName(String name);
+
     AttributeTemplateStandardVO getStandardById(Long id);
 
     List<AttributeTemplateListItemVO> list();

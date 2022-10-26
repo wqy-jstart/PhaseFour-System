@@ -32,7 +32,7 @@
         <!-- Spring Boot框架的基础依赖项 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- Mybatis整合Spring Boot的依赖项 -->

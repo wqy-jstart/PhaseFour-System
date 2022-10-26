@@ -65,6 +65,11 @@
         FROM pms_brand
     </select>
 
+    <!--int countByName(String name);-->
+    <select id="countByName" resultType="int">
+        SELECT count(*) FROM pms_brand WHERE name=#{name}
+    </select>
+
     <!--BrandStandardVO getStandardById(Long id);-->
     <select id="getStandardById" resultMap="standarByIdRM">
         SELECT id,

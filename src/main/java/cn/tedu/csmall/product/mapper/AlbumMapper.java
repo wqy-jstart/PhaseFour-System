@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 处理相册数据的Mapper接口,该类中的方法建议不用重载
+ * 处理相册数据的Mapper接口,该类中的方法不建议重载
  *
  * @Author wqy
  * @Vession 0.0.1
@@ -19,8 +19,8 @@ public interface AlbumMapper {
     /**
      * 插入相册数据
      *
-     * @param album
-     * @return int
+     * @param album 相册数据
+     * @return int 返回影响的条数
      */
     int insert(Album album);
 
@@ -33,15 +33,15 @@ public interface AlbumMapper {
 
     /**
      * 删除
-     * @param id
-     * @return
+     * @param id 要删除的相册id
+     * @return 返回影响的条数
      */
     int deleteById(Long id);
 
     /**
      * 批量删除
-     * @param ids
-     * @return
+     * @param ids 要删除的id数组
+     * @return 返回影响的条数
      */
     int deleteByIds(Long[] ids);
 
@@ -57,6 +57,14 @@ public interface AlbumMapper {
      * @return 返回数据表中的数量
      */
     int count();
+
+    /**
+     * 根据相册名称统计数据的数量
+     *
+     * @param name 相册的名称
+     * @return 返回匹配名称的相册数量
+     */
+    int countByName(String name);
 
     /**
      * 根据id查询相册详情
