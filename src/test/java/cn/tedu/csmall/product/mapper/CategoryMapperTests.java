@@ -1,8 +1,6 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Category;
-import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
-import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,16 +99,16 @@ public class CategoryMapperTests {
     @Test
     void getStandardById(){
         Long id = 1L;
-        CategoryStandardVO standardById = mapper.getStandardById(id);
+        Object standardById = mapper.getStandardById(id);
         log.debug("根据id[{}]查询数据详情完成,查询结果:{}",id,standardById);
     }
 
     //查询所有数据
     @Test
     void list(){
-        List<CategoryListItemVO> list = mapper.list();
+        List<?> list = mapper.list();
         log.debug("查询列表完成,列表中数据的数量:{}",list.size());
-        for (CategoryListItemVO item : list) {
+        for (Object item : list) {
             log.debug("{}",item);
         }
     }

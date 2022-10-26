@@ -11,7 +11,7 @@ import java.util.List;
  * 处理类别数据的Mapper接口
  *
  * @Author wqy
- * @Vession 0.0.1
+ * @Version 0.0.1
  */
 @Repository//该注解用于引导IDEA作出正确的判断
 public interface CategoryMapper {

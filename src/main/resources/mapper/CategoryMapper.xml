@@ -61,21 +61,13 @@
     </select>
 
     <!--CategoryStandardVO getStandardById(Long id);-->
-    <select id="getStandardById" resultMap="standarById">
-        SELECT id,
-               name,
-               parent_id,
-               depth,
-               keywords,
-               sort,
-               icon,
-               enable,
-               is_parent,
-               is_display
+    <select id="getStandardById" resultMap="StandardResultMapper">
+        SELECT 
+        <include refid="StandardQueryFields"></include>
         FROM pms_category
         WHERE id = #{id}
     </select>
-    <resultMap id="standarById" type="cn.tedu.csmall.product.pojo.vo.CategoryStandardVO">
+    <resultMap id="StandardResultMapper" type="cn.tedu.csmall.product.pojo.vo.CategoryStandardVO">
         <id column="id" property="id"></id>
         <result column="name" property="name"></result>
         <result column="parent_id" property="parentId"></result>
@@ -89,21 +81,13 @@
     </resultMap>
 
     <!--List<CategoryListItemVO> list();-->
-    <select id="list" resultMap="listItemRM">
-        SELECT id,
-               name,
-               parent_id,
-               depth,
-               keywords,
-               sort,
-               icon,
-               enable,
-               is_parent,
-               is_display
+    <select id="list" resultMap="ListResultMapper">
+        SELECT
+        <include refid="StandardQueryFields"></include>
         FROM pms_category
         ORDER BY sort DESC, id DESC
     </select>
-    <resultMap id="listItemRM" type="cn.tedu.csmall.product.pojo.vo.CategoryListItemVO">
+    <resultMap id="ListResultMapper" type="cn.tedu.csmall.product.pojo.vo.CategoryListItemVO">
         <id column="id" property="id"></id>
         <result column="name" property="name"></result>
         <result column="parent_id" property="parentId"></result>
@@ -115,4 +99,20 @@
         <result column="is_parent" property="isParent"></result>
         <result column="is_display" property="isDisplay"></result>
     </resultMap>
+
+    <sql id="StandardQueryFields">
+        <if test="true">
+            id,
+            name,
+            parent_id,
+            depth,
+            keywords,
+            sort,
+            icon,
+            enable,
+            is_parent,
+            is_display
+        </if>
+    </sql>
+
 </mapper>
