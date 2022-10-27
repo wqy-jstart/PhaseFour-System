@@ -16,17 +16,12 @@ public class AlbumServiceTests {
 
     //测试添加相册数据的操作
     @Test
-    void addNew(){
+    void addNew() {
         AlbumAddNewDTO albumAddNewDTO = new AlbumAddNewDTO();
         albumAddNewDTO.setName("测试数据10");
         albumAddNewDTO.setDescription("测试数据简介10");
         albumAddNewDTO.setSort(100);
-
-        try{
-            service.addNew(albumAddNewDTO);
-            log.debug("测试添加数据成功!");
-        }catch (RuntimeException e){
-            log.debug("测试添加数据失败!");//捕获异常时输出
-        }
+        service.addNew(albumAddNewDTO);
+        log.debug("测试添加数据成功!");
     }
 }
