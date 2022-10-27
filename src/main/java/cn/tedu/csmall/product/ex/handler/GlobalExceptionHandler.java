@@ -33,4 +33,15 @@ public class GlobalExceptionHandler {
         log.debug("这是请求的方法抛出了ServiceException,将统一处理");
         return e.getMessage();
     }
+
+    /**
+     * 全局异常处理
+     * @param e 全局的异常类
+     * @return
+     */
+//    @ExceptionHandler
+//    public String handlerServiceException(Throwable e){
+//        log.debug("这是一个Throwable异常,将统一处理");
+//        return e.getMessage();
+//    }
 }

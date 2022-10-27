@@ -46,8 +46,8 @@ public class AlbumController {
     @ApiOperation("根据名称删除相册")
     @ApiOperationSupport(order = 200)
     @PostMapping("/{name:[a-z]+}/delete")//在请求路径中先用占位符进行占位
-    public String delete1(@PathVariable String name){//接收路径中通过占位符传入的信息(类型要匹配否则报400)
-        String message = "尝试删除名称为["+name+"]的相册";
+    public String deleteAlbum1(@PathVariable String name) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
+        String message = "尝试删除名称为[" + name + "]的相册";
         log.debug(message);//输出日志
         return message;//向客户端返回结果
     }
@@ -56,8 +56,8 @@ public class AlbumController {
     @ApiOperation("根据id删除相册")
     @ApiOperationSupport(order = 901)
     @PostMapping("/{id:[0-9]+}/delete")//在请求路径中先用占位符进行占位
-    public String delete2(@PathVariable Long id){//接收路径中通过占位符传入的信息(类型要匹配否则报400)
-        String message = "尝试删除id为["+id+"]的相册";
+    public String deleteAlbum2(@PathVariable Long id) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
+        String message = "尝试删除id为[" + id + "]的相册";
         log.debug(message);//输出日志
         return message;//向客户端返回结果
     }
@@ -66,7 +66,7 @@ public class AlbumController {
     @ApiOperation("直接发出删除请求")
     @ApiOperationSupport(order = 902)
     @PostMapping("/test/delete")
-    public String delete3() {
+    public String deleteAlbum3() {
         String message = "尝试测试删除相册";
         log.debug(message);
         return message;
