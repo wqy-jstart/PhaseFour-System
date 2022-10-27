@@ -10,3 +10,7 @@ mybatis:
 # 如果application.properties与被激活的Profile配置中存在同名的属性(trace,debug,info,warn,error),
 # 配置值却不相同,在执行时,将以Profile配置为准!
 # logging.level.cn.tedu.csmall=info
+
+# Knife4j相关配置
+knife4j:
+  enable: true
