@@ -3,8 +3,7 @@ package cn.tedu.csmall.product.controller;
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.sevice.IAlbumService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,28 +41,33 @@ public class AlbumController {
         return "添加数据成功!";
     }
 
-    // http://localhost:8080/albums/abc/delete
-    @ApiOperation("根据名称删除相册")
-    @ApiOperationSupport(order = 200)
-    @PostMapping("/{name:[a-z]+}/delete")//在请求路径中先用占位符进行占位
-    public String deleteAlbum1(@PathVariable String name) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
-        String message = "尝试删除名称为[" + name + "]的相册";
-        log.debug(message);//输出日志
-        return message;//向客户端返回结果
-    }
-
     // http://localhost:8080/albums/233/delete
     @ApiOperation("根据id删除相册")
-    @ApiOperationSupport(order = 901)
-    @PostMapping("/{id:[0-9]+}/delete")//在请求路径中先用占位符进行占位
+    @ApiOperationSupport(order = 200)
+    @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
+    @PostMapping("/{id:[0-9]+}/delete")//在请求路径中先用占位符进行占位,使用正则来限制输入的内容
     public String deleteAlbum2(@PathVariable Long id) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
         String message = "尝试删除id为[" + id + "]的相册";
         log.debug(message);//输出日志
         return message;//向客户端返回结果
     }
 
+    // http://localhost:8080/albums/name/sort/delete
+    @ApiOperation("【已过期】根据名称删除相册")
+    @ApiOperationSupport(order = 901)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "相册名称", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "sort", value = "相册排序", required = true, dataType = "int")
+    })
+    @PostMapping("/{name:[a-z]+}/{sort:[a-z]+}/delete")//在请求路径中先用占位符进行占位
+    public String deleteAlbum1(@PathVariable String name,@PathVariable Integer sort) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
+        String message = "尝试删除名称为[" + name + "],排序为[" + sort + "]的相册";
+        log.debug(message);//输出日志
+        return message;//向客户端返回结果
+    }
+
     // http://localhost:8080/albums/test/delete
-    @ApiOperation("直接发出删除请求")
+    @ApiOperation("【已过期】直接发出删除请求")
     @ApiOperationSupport(order = 902)
     @PostMapping("/test/delete")
     public String deleteAlbum3() {
