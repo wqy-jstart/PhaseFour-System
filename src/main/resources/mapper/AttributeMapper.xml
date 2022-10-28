@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.csmall.product.mapper.AttributeMapper">
+
+    <!--int insert(Attribute attribute);-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_attribute(template_id, name, description, type, input_type, value_list, unit, sort,
+                                  is_allow_customize)
+        VALUES (#{templateId}, #{name}, #{description}, #{type}, #{inputType}, #{valueList}, #{unit}, #{sort},
+                #{isAllowCustomize})
+    </insert>
+
+    <!--int insertBatch(List<Attribute> attributes);-->
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_attribute(template_id, name, description, type, input_type, value_list, unit, sort,
+        is_allow_customize)
+        VALUES
+        <foreach collection="list" item="attribute" separator=",">
+            (#{attribute.templateId}, #{attribute.name}, #{attribute.description}, #{attribute.type},
+            #{attribute.inputType}, #{attribute.valueList}, #{attribute.unit}, #{attribute.sort},
+            #{attribute.isAllowCustomize})
+        </foreach>
+    </insert>
+
+    <!--int deleteById(Long id);-->
+    <delete id="deleteById">
+        DELETE
+        FROM pms_attribute
+        WHERE id = #{id}
+    </delete>
+
+    <!--int deleteByIds(Long[] ids);-->
+    <delete id="deleteByIds">
+        DELETE FROM pms_attribute WHERE id IN (
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--int update(Attribute attribute);-->
+    <update id="update">
+        UPDATE pms_attribute
+        <set>
+            <if test="templateId!=null">templateId=#{templateId},</if>
+            <if test="name!=null">name=#{name},</if>
+            <if test="description!=null">description=#{description},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="inputType!=null">inputType=#{inputType},</if>
+            <if test="valueList!=null">valueList=#{valueList},</if>
+            <if test="unit!=null">unit=#{unit},</if>
+            <if test="sort!=null">sort=#{sort},</if>
+            <if test="isAllowCustomize!=null">isAllowCustomize=#{isAllowCustomize}</if>
+        </set>
+    </update>
+
+    <!--int count();-->
+    <select id="count" resultType="int">
+        SELECT count(*)
+        FROM pms_attribute
+    </select>
+
+    <!--int countByName(String name);-->
+    <select id="countByName" resultType="int">
+        SELECT count(*)
+        FROM pms_attribute
+        WHERE name = #{name}
+    </select>
+
+    <!--AttributeStandardVO getStandardById(Long id);-->
+    <select id="getStandardById" resultMap="StandardByIdRM">
+        SELECT id,
+               template_id,
+               name,
+               description,
+               type,
+               input_type,
+               value_list,
+               unit,
+               sort,
+               is_allow_customize
+        FROM pms_attribute
+        WHERE id = #{id}
+    </select>
+    <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.AttributeStandardVO">
+        <id column="id" property="id"></id>
+        <result column="template_id" property="templateId"></result>
+        <result column="name" property="name"></result>
+        <result column="description" property="description"></result>
+        <result column="type" property="type"></result>
+        <result column="input_type" property="inputType"></result>
+        <result column="value_list" property="valueList"></result>
+        <result column="unit" property="unit"></result>
+        <result column="sort" property="sort"></result>
+        <result column="is_allow_customize" property="isAllowCustomize"></result>
+    </resultMap>
+
+    <!--List<AttributeListItemVO> list();-->
+    <select id="list" resultMap="StandardByIdRM">
+        SELECT id,
+               template_id,
+               name,
+               description,
+               type,
+               input_type,
+               value_list,
+               unit,
+               sort,
+               is_allow_customize
+        FROM pms_attribute
+    </select>
+</mapper>

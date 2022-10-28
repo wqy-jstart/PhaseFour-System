@@ -57,10 +57,10 @@ public class AlbumController {
     @ApiOperationSupport(order = 901)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "name", value = "相册名称", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "sort", value = "相册排序", required = true, dataType = "int")
+            @ApiImplicitParam(name = "sort", value = "相册排序", required = true, dataType = "String")
     })
     @PostMapping("/{name:[a-z]+}/{sort:[a-z]+}/delete")//在请求路径中先用占位符进行占位
-    public String deleteAlbum1(@PathVariable String name,@PathVariable Integer sort) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
+    public String deleteAlbum1(@PathVariable String name,@PathVariable String sort) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
         String message = "尝试删除名称为[" + name + "],排序为[" + sort + "]的相册";
         log.debug(message);//输出日志
         return message;//向客户端返回结果
