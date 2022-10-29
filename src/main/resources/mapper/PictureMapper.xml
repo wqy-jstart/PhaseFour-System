@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.csmall.product.mapper.PictureMapper">
+
+    <!--int insert(Picture picture);-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_picture(album_id, url, description, width, height, is_cover, sort)
+        VALUES (#{albumId}, #{url}, #{description}, #{width}, #{height}, #{isCover}, #{sort})
+    </insert>
+
+    <!--int insertBatch(List<Picture> pictures);-->
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_picture(album_id, url, description, width, height, is_cover, sort)
+        VALUES
+        <foreach collection="list" item="picture" separator=",">
+            (#{picture.albumId},#{picture.url},#{picture.description},#{picture.width},
+            #{picture.height},#{picture.isCover},#{picture.sort})
+        </foreach>
+    </insert>
+
+    <!--int deleteById(Long id);-->
+    <delete id="deleteById">
+        DELETE
+        FROM pms_picture
+        WHERE id = #{id}
+    </delete>
+
+    <!--int deleteByIds(Long[] ids);-->
+    <delete id="deleteByIds">
+        DELETE FROM pms_picture WHERE id IN(
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--int update(Picture picture);-->
+    <update id="update">
+        UPDATE pms_picture
+        <set>
+            <if test="albumId!=null">album_id=#{albumId}</if>
+            <if test="url!=null">url=#{url}</if>
+            <if test="description!=null">description=#{description}</if>
+            <if test="width!=null">width=#{width}</if>
+            <if test="isCover!=null">is_cover=#{isCover}</if>
+            <if test="sort!=null">sort=#{sort}</if>
+            <if test="height!=null">height=#{height}</if>
+        </set>
+    </update>
+
+    <!--int count();-->
+    <select id="count" resultType="int">
+        SELECT count(*)
+        FROM pms_picture
+    </select>
+
+    <!--int countByUrl(String url);-->
+    <select id="countByUrl" resultType="int">
+        SELECT count(*)
+        FROM pms_picture
+        WHERE url = #{url}
+    </select>
+
+    <!--PictureAddNewDTO getStandardById(Long id);-->
+    <select id="getStandardById" resultMap="StandardByIdRM">
+        SELECT id,
+               album_id,
+               url,
+               description,
+               width,
+               height,
+               is_cover,
+               sort
+        FROM pms_picture
+        WHERE id = #{id}
+    </select>
+
+    <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.PictureStandardVO">
+        <id column="id" property="id"></id>
+        <result column="album_id" property="albumId"></result>
+        <result column="url" property="url"></result>
+        <result column="description" property="description"></result>
+        <result column="width" property="width"></result>
+        <result column="height" property="height"></result>
+        <result column="is_cover" property="isCover"></result>
+        <result column="sort" property="sort"></result>
+    </resultMap>
+
+    <!--List<PictureListItemVO> list();-->
+    <select id="list" resultMap="StandardByIdRM">
+        SELECT  id,
+                album_id,
+                url,
+                description,
+                width,
+                height,
+                is_cover,
+                sort
+        FROM pms_picture
+    </select>
+</mapper>
