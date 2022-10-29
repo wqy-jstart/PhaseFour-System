@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.csmall.product.mapper.SpuMapper">
+
+    <!-- int insert(Spu spu);-->
+    <!--如果插入操作时使用到了自增主键,则需要添加这两个属性,指明自增字段为id-->
+    <insert id="insert" useGeneratedKeys="true">
+        INSERT INTO pms_spu(id, name, type_number, title, description, list_price, stock, stock_threshold,
+                            unit, brand_id, brand_name, category_id, category_name, attribute_template_id,
+                            album_id, pictures, keywords, tags, sales,comment_count, positive_comment_count,
+                            sort, is_deleted, is_published, is_new_arrival, is_recommend, is_checked, check_user,
+                            gmt_check, gmt_create, gmt_modified)
+        VALUES (#{id}, #{name}, #{typeNumber},#{title},#{description},#{listPrice},#{stock},#{stockThreshold},
+                #{unit},#{brandId},#{brandName},#{categoryId},#{categoryName},#{attributeTemplateId},#{albumId},
+                #{pictures},#{keywords},#{tags},#{sales},#{commentCount},#{positiveCommentCount},#{sort},#{isDeleted},
+                #{isPublished},#{isNewArrival},#{isRecommend},#{isChecked},#{checkUser},#{gmtCheck},#{gmtCreate},#{gmtModified})
+    </insert>
+
+    <!--int insertBatch(List<Spu> spus);-->
+    <insert id="insertBatch" useGeneratedKeys="true">
+        INSERT INTO pms_spu(id, name, type_number, title, description, list_price, stock, stock_threshold,
+        unit, brand_id, brand_name, category_id, category_name, attribute_template_id,
+        album_id, pictures, keywords, tags, sales,comment_count, positive_comment_count,
+        sort, is_deleted, is_published, is_new_arrival, is_recommend, is_checked, check_user,
+        gmt_check, gmt_create, gmt_modified)
+        VALUES
+        <foreach collection="list" item="spu" separator=",">
+            (#{spu.id}, #{spu.name}, #{spu.typeNumber},#{spu.title},#{spu.descrption},#{spu.listPrice},#{spu.stock},#{spu.stockThreshold},
+            #{spu.unit},#{spu.brandId},#{spu.brandName},#{spu.categoryId},#{spu.categoryName},#{spu.attributeTemplateId},#{spu.albumId},
+            #{spu.pictures},#{spu.keywords},#{spu.tags},#{spu.sales},#{spu.commentCount},#{spu.positiveCommentCount},#{spu.sort},#{spu.isDeleted},
+            #{spu.isPublished},#{spu.isNewArrival},#{spu.isRecommend},#{spu.isChecked},#{spu.checkUser},#{spu.gmtCheck},#{spu.gmtCreate},#{spu.gmtModified})
+        </foreach>
+    </insert>
+
+    <!--int deleteById(Long id);-->
+    <delete id="deleteById">
+        DELETE
+        FROM pms_spu
+        WHERE id = #{id}
+    </delete>
+
+    <!--int deleteByIds(Long[] ids);-->
+    <delete id="deleteByIds">
+        DELETE FROM pms_spu WHERE id IN
+        (
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--int update(Spu spu);-->
+    <update id="update">
+        UPDATE pms_spu
+        <set>
+            <if test="id!=null">id=#{id},</if>
+            <if test="name!=null">name=#{name},</if>
+            <if test="typeNumber!=null">type_number=#{typeNumber},</if>
+            <if test="title!=null">title=#{title},</if>
+            <if test="description!=null">description=#{description},</if>
+            <if test="listPrice!=null">list_price=#{listPrice},</if>
+            <if test="stock!=null">stock=#{stock},</if>
+            <if test="stockThreshold!=null">stock_threshold=#{stockThreshold},</if>
+            <if test="unit!=null">unit=#{unit},</if>
+            <if test="brandId!=null">brand_id=#{brandId},</if>
+            <if test="brandName!=null">brand_name=#{brandName},</if>
+            <if test="categoryId!=null">category_id=#{categoryId},</if>
+            <if test="categoryName!=null">category_name=#{categoryName},</if>
+            <if test="attributeTemplateId!=null">attribute_template_id=#{attributeTemplateId},</if>
+            <if test="albumId!=null">album_id=#{albumId},</if>
+            <if test="pictures!=null">pictures=#{pictures},</if>
+            <if test="keywords!=null">keywords=#{keywords},</if>
+            <if test="tags!=null">tags=#{tags},</if>
+            <if test="sales!=null">sales=#{sales},</if>
+            <if test="commentCount!=null">comment_count=#{commentCount},</if>
+            <if test="positiveCommentCount!=null">positive_comment_count=#{positiveCommentCount},</if>
+            <if test="sort!=null">sort=#{sort},</if>
+            <if test="isDeleted!=null">is_deleted=#{isDeleted},</if>
+            <if test="isPublished!=null">is_published=#{isPublished},</if>
+            <if test="isNewArrival!=null">is_new_arrival=#{isNewArrival},</if>
+            <if test="isRecommend!=null">is_recommend=#{isRecommend},</if>
+            <if test="isChecked!=null">is_checked=#{isChecked},</if>
+            <if test="checkUser!=null">check_user=#{checkUser},</if>
+            <if test="gmtCheck!=null">gmt_check=#{gmtCheck},</if>
+            <if test="gmtCreate!=null">gmt_create=#{gmtCreate},</if>
+            <if test="gmtModified!=null">gmt_modified=#{gmtModified},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--int count();-->
+    <select id="count" resultType="int">
+        SELECT count(*)
+        FROM pms_spu
+    </select>
+
+    <!--int countByName(String name);-->
+    <select id="countByName" resultType="int">
+        SELECT count(*) FROM pms_spu WHERE name=#{name}
+    </select>
+
+    <!--SpuStandardVO getStandardById(Long id);-->
+    <select id="getStandardById" resultMap="StandardByIdRM">
+        SELECT id, name, type_number, title, description, list_price, stock, stock_threshold,
+               unit, brand_id, brand_name, category_id, category_name, attribute_template_id,
+               album_id, pictures, keywords, tags, sales,comment_count, positive_comment_count,
+               sort, is_deleted, is_published, is_new_arrival, is_recommend, is_checked, check_user,
+               gmt_check, gmt_create, gmt_modified
+        FROM pms_spu
+        WHERE id = #{id}
+    </select>
+
+    <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.AlbumListItemVO">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="type_number" property="typeNumber"></result>
+        <result column="title" property="title"></result>
+        <result column="description" property="description"></result>
+        <result column="list_price" property="listPrice"></result>
+        <result column="stock" property="stock"></result>
+        <result column="stock_threshold" property="stockThreshold"></result>
+        <result column="unit" property="unit"></result>
+        <result column="brand_id" property="brandId"></result>
+        <result column="brand_name" property="brandName"></result>
+        <result column="category_id" property="categoryId"></result>
+        <result column="category_name" property="categoryName"></result>
+        <result column="attribute_template_id" property="attributeTemplateId"></result>
+        <result column="album_id" property="albumId"></result>
+        <result column="pictures" property="pictures"></result>
+        <result column="keywords" property="keywords"></result>
+        <result column="tags" property="tags"></result>
+        <result column="sales" property="sales"></result>
+        <result column="comment_count" property="commentCount"></result>
+        <result column="positive_comment_count" property="positiveCommentCount"></result>
+        <result column="sort" property="sort"></result>
+        <result column="is_deleted" property="is_deleted"></result>
+        <result column="is_published" property="isPublished"></result>
+        <result column="is_new_arrival" property="isNewArrival"></result>
+        <result column="is_recommend" property="isRecommend"></result>
+        <result column="is_checked" property="isChecked"></result>
+        <result column="check_user" property="checkUser"></result>
+        <result column="gmt_check" property="gmtCheck"></result>
+        <result column="gmt_create" property="gmtCreate"></result>
+        <result column="gmt_modified" property="gmtModified"></result>
+    </resultMap>
+
+    <!--List<SpuListItemVO> list();-->
+    <select id="list" resultMap="StandardByIdRM">
+        SELECT id, name, type_number, title, description, list_price, stock, stock_threshold,
+               unit, brand_id, brand_name, category_id, category_name, attribute_template_id,
+               album_id, pictures, keywords, tags, sales,comment_count, positive_comment_count,
+               sort, is_deleted, is_published, is_new_arrival, is_recommend, is_checked, check_user,
+               gmt_check, gmt_create, gmt_modified
+        FROM pms_spu
+        ORDER BY sort DESC, id DESC
+    </select>
+</mapper>

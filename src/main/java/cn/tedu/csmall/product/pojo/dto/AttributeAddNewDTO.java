@@ -2,8 +2,10 @@ package cn.tedu.csmall.product.pojo.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class AttributeAddNewDTO {
+public class AttributeAddNewDTO implements Serializable {
     /**
      * 所属属性模板id
      */

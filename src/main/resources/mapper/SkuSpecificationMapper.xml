@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.csmall.product.mapper.SkuSpecificationMapper">
+
+    <!--int insert(SkuSpecification skuSpecification);-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_sku_specification(sku_id, attribute_id, attribute_name, attribute_value, unit, sort)
+         VALUES (#{skuId},#{attributeId},#{attributeName},#{attributeValue},#{unit},#{sort})
+    </insert>
+
+    <!--int insertBatch(List<SkuSpecification> skuSpecifications);-->
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_sku_specification(sku_id, attribute_id, attribute_name, attribute_value, unit, sort)
+        VALUES
+        <foreach collection="list" item="skuSpecification" separator=",">
+            (#{skuSpecification.skuId},#{skuSpecification.attributeId},#{skuSpecification.attributeName},
+             #{skuSpecification.attributeValue},#{skuSpecification.unit},#{skuSpecification.sort})
+        </foreach>
+    </insert>
+
+    <!--int deleteById(Long id);-->
+    <delete id="deleteById">
+        DELETE FROM pms_sku_specification WHERE id=#{id}
+    </delete>
+
+    <!--int deleteByIds(Long[] ids);-->
+    <delete id="deleteByIds">
+        DELETE FROM pms_sku_specification WHERE id IN(
+            <foreach collection="array" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+    </delete>
+
+    <!--int update(SkuSpecification skuSpecification);-->
+    <update id="update">
+        UPDATE pms_sku_specification
+        <set>
+            <if test="skuId!=null">sku_id=#{skuId}</if>
+            <if test="attributeId!=null">attribute_id=#{attributeId}</if>
+            <if test="attributeName!=null">attribute_name=#{attributeName}</if>
+            <if test="attributeValue!=null">attribute_value=#{attributeValue}</if>
+            <if test="unit!=null">unit=#{unit}</if>
+            <if test="sort!=null">sort=#{sort}</if>
+        </set>
+    </update>
+
+    <!--int count();-->
+    <select id="count" resultType="int">
+        SELECT count(*) FROM pms_sku_specification
+    </select>
+
+    <!--int countBySkuId(Long skuId);-->
+    <select id="countBySkuId" resultType="int">
+        SELECT count(*) FROM pms_sku_specification WHERE sku_id=#{skuId}
+    </select>
+
+    <!--SkuSpecificationStandardVO getStandardById(Long id);-->
+    <select id="getStandardById" resultMap="StandardByIdRM">
+        SELECT id,sku_id, attribute_id, attribute_name, attribute_value, unit, sort
+        FROM pms_sku_specification
+        WHERE id=#{id}
+    </select>
+
+    <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.SkuSpecificationStandardVO">
+        <id column="id" property="id"></id>
+        <result column="sku_id" property="skuId"></result>
+        <result column="attribute_id" property="attributeId"></result>
+        <result column="attribute_name" property="attributeName"></result>
+        <result column="attribute_value" property="attributeValue"></result>
+        <result column="unit" property="unit"></result>
+        <result column="sort" property="sort"></result>
+    </resultMap>
+
+    <!--List<SkuSpecificationListItemVO> list();-->
+    <select id="list" resultMap="StandardByIdRM">
+        SELECT id,sku_id, attribute_id, attribute_name, attribute_value, unit, sort
+        FROM pms_sku_specification
+    </select>
+
+</mapper>

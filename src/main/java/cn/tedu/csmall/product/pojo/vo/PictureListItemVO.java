@@ -2,8 +2,10 @@ package cn.tedu.csmall.product.pojo.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class PictureListItemVO {
+public class PictureListItemVO implements Serializable {
 
     /**
      * 记录id

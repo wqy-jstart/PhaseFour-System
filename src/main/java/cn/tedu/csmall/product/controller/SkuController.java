@@ -20,7 +20,7 @@ public class SkuController {
     ISkuService skuservice;
 
     public SkuController(){
-        log.debug("创建控制器对象");
+        log.debug("创建控制器对象:SkuController");
     }
     @ApiOperation("添加SKU")
     @ApiOperationSupport(order = 100)

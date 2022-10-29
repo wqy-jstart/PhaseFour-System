@@ -2,10 +2,11 @@ package cn.tedu.csmall.product.pojo.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class SkuAddNewDTO {
+public class SkuAddNewDTO implements Serializable {
     /**
      * 记录id
      */

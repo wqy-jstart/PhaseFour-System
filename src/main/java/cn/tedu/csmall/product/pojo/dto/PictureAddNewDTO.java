@@ -2,11 +2,13 @@ package cn.tedu.csmall.product.pojo.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 这是客户端上传图片信息的DTO类
  */
 @Data
-public class PictureAddNewDTO {
+public class PictureAddNewDTO implements Serializable {
     /**
      * 相册id
      */
