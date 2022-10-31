@@ -58,13 +58,17 @@
     </select>
 
     <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.CategoryAttributeTemplateStandardVO">
-        <result column="category_id" property="categoryId"></result>
-        <result column="attribute_template_id" property="attributeTemplateId"></result>
+        <result column="category_id" property="categoryId"/>
+        <result column="attribute_template_id" property="attributeTemplateId"/>
     </resultMap>
 
     <!--List<CategoryAttributeTemplateListItemVO> list();-->
-    <select id="list" resultMap="StandardByIdRM">
+    <select id="list" resultMap="ListItemRM">
         SELECT id,category_id, attribute_template_id
         FROM pms_category_attribute_template
     </select>
+    <resultMap id="ListItemRM" type="cn.tedu.csmall.product.pojo.vo.CategoryAttributeTemplateListItemVO">
+        <result column="category_id" property="categoryId"/>
+        <result column="attribute_template_id" property="attributeTemplateId"/>
+    </resultMap>
 </mapper>

@@ -83,20 +83,20 @@
         WHERE id = #{id}
     </select>
     <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.AttributeStandardVO">
-        <id column="id" property="id"></id>
-        <result column="template_id" property="templateId"></result>
-        <result column="name" property="name"></result>
-        <result column="description" property="description"></result>
-        <result column="type" property="type"></result>
-        <result column="input_type" property="inputType"></result>
-        <result column="value_list" property="valueList"></result>
-        <result column="unit" property="unit"></result>
-        <result column="sort" property="sort"></result>
-        <result column="is_allow_customize" property="isAllowCustomize"></result>
+        <id column="id" property="id"/>
+        <result column="template_id" property="templateId"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="type" property="type"/>
+        <result column="input_type" property="inputType"/>
+        <result column="value_list" property="valueList"/>
+        <result column="unit" property="unit"/>
+        <result column="sort" property="sort"/>
+        <result column="is_allow_customize" property="isAllowCustomize"/>
     </resultMap>
 
     <!--List<AttributeListItemVO> list();-->
-    <select id="list" resultMap="StandardByIdRM">
+    <select id="list" resultMap="ListItemRM">
         SELECT id,
                template_id,
                name,
@@ -109,4 +109,16 @@
                is_allow_customize
         FROM pms_attribute
     </select>
+    <resultMap id="ListItemRM" type="cn.tedu.csmall.product.pojo.vo.AttributeListItemVO">
+        <id column="id" property="id"/>
+        <result column="template_id" property="templateId"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="type" property="type"/>
+        <result column="input_type" property="inputType"/>
+        <result column="value_list" property="valueList"/>
+        <result column="unit" property="unit"/>
+        <result column="sort" property="sort"/>
+        <result column="is_allow_customize" property="isAllowCustomize"/>
+    </resultMap>
 </mapper>

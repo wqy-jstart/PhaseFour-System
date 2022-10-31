@@ -11,7 +11,7 @@ import cn.tedu.csmall.product.pojo.dto.SpuAddNewDTO;
 public interface ISpuService {
 
     /**
-     *
+     * 添加SPU
      * @param spuAddNewDTO
      */
     void addNew(SpuAddNewDTO spuAddNewDTO);

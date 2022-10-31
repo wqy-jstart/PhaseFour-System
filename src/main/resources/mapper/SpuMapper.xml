@@ -110,42 +110,42 @@
         WHERE id = #{id}
     </select>
 
-    <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.AlbumListItemVO">
-        <id column="id" property="id"></id>
-        <result column="name" property="name"></result>
-        <result column="type_number" property="typeNumber"></result>
-        <result column="title" property="title"></result>
-        <result column="description" property="description"></result>
-        <result column="list_price" property="listPrice"></result>
-        <result column="stock" property="stock"></result>
-        <result column="stock_threshold" property="stockThreshold"></result>
-        <result column="unit" property="unit"></result>
-        <result column="brand_id" property="brandId"></result>
-        <result column="brand_name" property="brandName"></result>
-        <result column="category_id" property="categoryId"></result>
-        <result column="category_name" property="categoryName"></result>
-        <result column="attribute_template_id" property="attributeTemplateId"></result>
-        <result column="album_id" property="albumId"></result>
-        <result column="pictures" property="pictures"></result>
-        <result column="keywords" property="keywords"></result>
-        <result column="tags" property="tags"></result>
-        <result column="sales" property="sales"></result>
-        <result column="comment_count" property="commentCount"></result>
-        <result column="positive_comment_count" property="positiveCommentCount"></result>
-        <result column="sort" property="sort"></result>
-        <result column="is_deleted" property="is_deleted"></result>
-        <result column="is_published" property="isPublished"></result>
-        <result column="is_new_arrival" property="isNewArrival"></result>
-        <result column="is_recommend" property="isRecommend"></result>
-        <result column="is_checked" property="isChecked"></result>
-        <result column="check_user" property="checkUser"></result>
-        <result column="gmt_check" property="gmtCheck"></result>
-        <result column="gmt_create" property="gmtCreate"></result>
-        <result column="gmt_modified" property="gmtModified"></result>
+    <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.SpuDetailStandardVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type_number" property="typeNumber"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="list_price" property="listPrice"/>
+        <result column="stock" property="stock"/>
+        <result column="stock_threshold" property="stockThreshold"/>
+        <result column="unit" property="unit"/>
+        <result column="brand_id" property="brandId"/>
+        <result column="brand_name" property="brandName"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="attribute_template_id" property="attributeTemplateId"/>
+        <result column="album_id" property="albumId"/>
+        <result column="pictures" property="pictures"/>
+        <result column="keywords" property="keywords"/>
+        <result column="tags" property="tags"/>
+        <result column="sales" property="sales"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="positive_comment_count" property="positiveCommentCount"/>
+        <result column="sort" property="sort"/>
+        <result column="is_deleted" property="is_deleted"/>
+        <result column="is_published" property="isPublished"/>
+        <result column="is_new_arrival" property="isNewArrival"/>
+        <result column="is_recommend" property="isRecommend"/>
+        <result column="is_checked" property="isChecked"/>
+        <result column="check_user" property="checkUser"/>
+        <result column="gmt_check" property="gmtCheck"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
     </resultMap>
 
     <!--List<SpuListItemVO> list();-->
-    <select id="list" resultMap="StandardByIdRM">
+    <select id="list" resultMap="ListItemRM">
         SELECT id, name, type_number, title, description, list_price, stock, stock_threshold,
                unit, brand_id, brand_name, category_id, category_name, attribute_template_id,
                album_id, pictures, keywords, tags, sales,comment_count, positive_comment_count,
@@ -154,4 +154,37 @@
         FROM pms_spu
         ORDER BY sort DESC, id DESC
     </select>
+    <resultMap id="ListItemRM" type="cn.tedu.csmall.product.pojo.vo.SpuDetailListItemVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type_number" property="typeNumber"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+        <result column="list_price" property="listPrice"/>
+        <result column="stock" property="stock"/>
+        <result column="stock_threshold" property="stockThreshold"/>
+        <result column="unit" property="unit"/>
+        <result column="brand_id" property="brandId"/>
+        <result column="brand_name" property="brandName"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="attribute_template_id" property="attributeTemplateId"/>
+        <result column="album_id" property="albumId"/>
+        <result column="pictures" property="pictures"/>
+        <result column="keywords" property="keywords"/>
+        <result column="tags" property="tags"/>
+        <result column="sales" property="sales"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="positive_comment_count" property="positiveCommentCount"/>
+        <result column="sort" property="sort"/>
+        <result column="is_deleted" property="is_deleted"/>
+        <result column="is_published" property="isPublished"/>
+        <result column="is_new_arrival" property="isNewArrival"/>
+        <result column="is_recommend" property="isRecommend"/>
+        <result column="is_checked" property="isChecked"/>
+        <result column="check_user" property="checkUser"/>
+        <result column="gmt_check" property="gmtCheck"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
 </mapper>

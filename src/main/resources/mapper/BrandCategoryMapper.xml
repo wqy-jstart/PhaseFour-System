@@ -63,14 +63,19 @@
     </select>
 
     <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.BrandCategoryStandardVO">
-        <id column="id" property="id"></id>
-        <result column="brand_id" property="brandId"></result>
-        <result column="category_id" property="categoryId"></result>
+        <id column="id" property="id"/>
+        <result column="brand_id" property="brandId"/>
+        <result column="category_id" property="categoryId"/>
     </resultMap>
 
     <!--List<BrandCategoryListItemVO> list();-->
-    <select id="list" resultMap="StandardByIdRM">
+    <select id="list" resultMap="ListItemRM">
         SELECT id, brand_id, category_id
         FROM pms_brand_category
     </select>
+    <resultMap id="ListItemRM" type="cn.tedu.csmall.product.pojo.vo.BrandCategoryListItemVO">
+        <id column="id" property="id"/>
+        <result column="brand_id" property="brandId"/>
+        <result column="category_id" property="categoryId"/>
+    </resultMap>
 </mapper>

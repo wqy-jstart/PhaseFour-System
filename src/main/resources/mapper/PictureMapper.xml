@@ -76,18 +76,18 @@
     </select>
 
     <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.PictureStandardVO">
-        <id column="id" property="id"></id>
-        <result column="album_id" property="albumId"></result>
-        <result column="url" property="url"></result>
-        <result column="description" property="description"></result>
-        <result column="width" property="width"></result>
-        <result column="height" property="height"></result>
-        <result column="is_cover" property="isCover"></result>
-        <result column="sort" property="sort"></result>
+        <id column="id" property="id"/>
+        <result column="album_id" property="albumId"/>
+        <result column="url" property="url"/>
+        <result column="description" property="description"/>
+        <result column="width" property="width"/>
+        <result column="height" property="height"/>
+        <result column="is_cover" property="isCover"/>
+        <result column="sort" property="sort"/>
     </resultMap>
 
     <!--List<PictureListItemVO> list();-->
-    <select id="list" resultMap="StandardByIdRM">
+    <select id="list" resultMap="ListItemRM">
         SELECT  id,
                 album_id,
                 url,
@@ -98,4 +98,14 @@
                 sort
         FROM pms_picture
     </select>
+    <resultMap id="ListItemRM" type="cn.tedu.csmall.product.pojo.vo.PictureListItemVO">
+        <id column="id" property="id"/>
+        <result column="album_id" property="albumId"/>
+        <result column="url" property="url"/>
+        <result column="description" property="description"/>
+        <result column="width" property="width"/>
+        <result column="height" property="height"/>
+        <result column="is_cover" property="isCover"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
 </mapper>

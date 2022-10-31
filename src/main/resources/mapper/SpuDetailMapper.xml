@@ -56,14 +56,19 @@
         WHERE id=#{id}
     </select>
     <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.SpuDetailStandardVO">
-        <id column="id" property="id"></id>
-        <result column="spu_id" property="spuId"></result>
-        <result column="detail" property="detail"></result>
+        <id column="id" property="id"/>
+        <result column="spu_id" property="spuId"/>
+        <result column="detail" property="detail"/>
     </resultMap>
 
     <!--List<SpuDetailListItemVO> list();-->
-    <select id="list" resultMap="StandardByIdRM">
+    <select id="list" resultMap="ListItemRM">
         SELECT id,spu_id, detail
         FROM pms_spu_detail
     </select>
+    <resultMap id="ListItemRM" type="cn.tedu.csmall.product.pojo.vo.SpuDetailListItemVO">
+        <id column="id" property="id"/>
+        <result column="spu_id" property="spuId"/>
+        <result column="detail" property="detail"/>
+    </resultMap>
 </mapper>
