@@ -24,7 +24,7 @@ public class SkuController {
     }
     @ApiOperation("添加SKU")
     @ApiOperationSupport(order = 100)
-    @GetMapping("/add-New")
+    @PostMapping("/add-New")
     public String addNew(SkuAddNewDTO skuAddNewDTO){
         log.debug("开始处理SKU的请求,参数:{}",skuAddNewDTO);
         skuservice.addNew(skuAddNewDTO);
@@ -35,7 +35,7 @@ public class SkuController {
 
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "title",value = "SKU标题",required = true,dataType = "String")
-    @PostMapping("/{title:[a-z]+}/delete")
+    @GetMapping("/{title:[a-z]+}/delete")
     public String delete1(@PathVariable String title){
         String message = "尝试处理根据标题["+title+"]删除SKU";
         log.debug(message);

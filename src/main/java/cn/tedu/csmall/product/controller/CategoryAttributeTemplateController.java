@@ -25,7 +25,7 @@ public class CategoryAttributeTemplateController {
 
     @ApiOperation("添加分类与属性模板")
     @ApiOperationSupport(order = 100)
-    @GetMapping("/add-New")
+    @PostMapping("/add-New")
     public String addNew(CategoryAttributeTemplateAddNewDTO categoryAttributeTemplateAddNewDTO){
         log.debug("开始处理[添加分类与属性模板]的请求,参数{}",categoryAttributeTemplateAddNewDTO);
         categoryAttributeTemplateService.addNew(categoryAttributeTemplateAddNewDTO);
@@ -36,7 +36,7 @@ public class CategoryAttributeTemplateController {
     @ApiOperation("根据id删除分类与属性模板")
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id",value = "分类与属性模板的id",required = true,dataType = "long")
-    @PostMapping("/{id:[0-9]+}/delete")
+    @GetMapping("/{id:[0-9]+}/delete")
     public String delete1(@PathVariable Long id){
         String message = "尝试删除id为["+id+"]的分类与属性模板";
         log.debug(message);

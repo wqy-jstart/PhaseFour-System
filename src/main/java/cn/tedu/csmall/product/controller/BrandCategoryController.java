@@ -31,7 +31,7 @@ public class BrandCategoryController {
 
     @ApiOperation("添加品牌分类")
     @ApiOperationSupport(order = 100)
-    @GetMapping("/add-New")
+    @PostMapping("/add-New")
     public String addNew(BrandCategoryAddNewDTO brandCategoryAddNewDTO){
         log.debug("开始处理[品牌分类]的请求,参数{}",brandCategoryAddNewDTO);
         brandCategoryService.addNew(brandCategoryAddNewDTO);
@@ -42,7 +42,7 @@ public class BrandCategoryController {
     @ApiOperation("根据id删除品牌分类")
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id",value = "品牌分类id",required = true,dataType = "long")
-    @PostMapping("/{id:[0-9]+}/delete")
+    @GetMapping("/{id:[0-9]+}/delete")
     public String delete1(@PathVariable Long id){
         String message = "尝试根据id["+id+"]来删除品牌分类";
         log.debug(message);

@@ -25,7 +25,7 @@ public class SkuSpecificationController {
 
     @ApiOperation("添加SKU数据")
     @ApiOperationSupport(order = 100)
-    @GetMapping("/add-New")
+    @PostMapping("/add-New")
     public String addNew(SkuSpecificationAddNewDTO skuSpecificationAddNewDTO){
         log.debug("开始处理[Sku数据]的请求,参数,{}",skuSpecificationAddNewDTO);
         iSkuSpecificationService.addNew(skuSpecificationAddNewDTO);
@@ -37,7 +37,7 @@ public class SkuSpecificationController {
     @ApiOperation("根据skuId删除SKU数据")
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id",value = "SKU数据的Id",required = true,dataType = "long")
-    @PostMapping("/{id:[0-9]+}/delete")
+    @GetMapping("/{id:[0-9]+}/delete")
     public String delete1(@PathVariable Long id){
         String message = "开始根据SKU数据id["+id+"]进行删除数据";
         log.debug(message);

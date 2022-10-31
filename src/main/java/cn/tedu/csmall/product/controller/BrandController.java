@@ -33,7 +33,7 @@ public class BrandController {
     //http://localhost:8080/Brands/add-NewBrand?name="美的02"&pinyin="新-MeiDi"&logo="新-Mei"&description="新-该商品非常好!"
     @ApiOperation("添加品牌")
     @ApiOperationSupport(order = 100)
-    @GetMapping("/add-NewBrand")
+    @PostMapping("/add-NewBrand")
     public String addNew2(BrandAddNewDTO brandAddNewDTO) {
         log.debug("开始处理[添加品牌]的请求,参数{}", brandAddNewDTO);
         brandService.addNew(brandAddNewDTO);
@@ -44,7 +44,7 @@ public class BrandController {
     // http://localhost:8080/Brands/name/delete
     @ApiOperation("根据名称删除品牌")
     @ApiOperationSupport(order = 200)
-    @PostMapping("/{name:[a-z]+}/delete")
+    @GetMapping("/{name:[a-z]+}/delete")
     public String deleteBrand1(@PathVariable String name) {//接收的变量值要和路径占位符中的相同
         String message = "尝试删除名称为[" + name + "]的品牌";
         log.debug(message);

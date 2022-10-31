@@ -33,7 +33,7 @@ public class CategoryController {
     // http://localhost:8080/categorys/add-newCategory?name="品牌男装7"&parentId=1&depth=1&keywords="无"&sort=0&icon="无"
     @ApiOperation("添加分类")
     @ApiOperationSupport(order = 100)
-    @GetMapping("/add-newCategory")
+    @PostMapping("/add-newCategory")
     public String addNew(CategoryAddNewDTO categoryAddNewDTO) {
         log.debug("开始处理[添加分类]的请求,参数{}", categoryAddNewDTO);
         categoryService.addNew(categoryAddNewDTO);
@@ -44,7 +44,7 @@ public class CategoryController {
     // http://localhost:8080/categorys/name/delete
     @ApiOperation("根据名称删除分类")
     @ApiOperationSupport(order = 200)
-    @PostMapping("/{name:[a-z]+}/delete")
+    @GetMapping("/{name:[a-z]+}/delete")
     public String deleteCategory1(@PathVariable String name) {
         String message = "尝试删除名称为[" + name + "]的分类";
         log.debug(message);

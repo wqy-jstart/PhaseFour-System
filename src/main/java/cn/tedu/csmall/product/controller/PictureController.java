@@ -25,7 +25,7 @@ public class PictureController {
 
     @ApiOperation("添加图片")
     @ApiOperationSupport(order = 100)
-    @GetMapping("/add-New")
+    @PostMapping("/add-New")
     public String addNew(PictureAddNewDTO pictureAddNewDTO){
         log.debug("开始处理[添加图片]的请求,参数{}",pictureAddNewDTO);
         pictureService.addNew(pictureAddNewDTO);
@@ -36,7 +36,7 @@ public class PictureController {
     @ApiOperation("根据url删除图片")
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "url",value = "图片的Url",required = true,dataType = "string")
-    @PostMapping("/{url:[a-z0-9]+}/delete")
+    @GetMapping("/{url:[a-z0-9]+}/delete")
     public String delete1(@PathVariable String url){
         String message = "尝试删除url为["+url+"]的图片";
         log.debug(message);

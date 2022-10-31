@@ -25,7 +25,7 @@ public class SpuController {
 
     @ApiOperation("添加SPU")
     @ApiOperationSupport(order = 100)
-    @GetMapping("/add-New")
+    @PostMapping("/add-New")
     public String addNew(SpuAddNewDTO spuAddNewDTO){
         log.debug("开始处理[SPU]的请求,参数{}",spuAddNewDTO);
         iSpuService.addNew(spuAddNewDTO);
@@ -37,7 +37,7 @@ public class SpuController {
     @ApiOperation("根据名称删除SPU")
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "name",value = "SPU名称",required = true,dataType = "string")
-    @PostMapping("/{name:[a-z]+}/delete")
+    @GetMapping("/{name:[a-z]+}/delete")
     public String delete1(@PathVariable String name){
         String message = "尝试删除名称为["+name+"]的SPU";
         log.debug(message);

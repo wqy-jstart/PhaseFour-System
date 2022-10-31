@@ -33,7 +33,7 @@ public class AttributeTemplateController {
     // http://localhost:8080/AttributeTemplates/add-newAT?name=不知道8&pinyin=bzd&keywords=无&sort=1
     @ApiOperation("添加属性模板")
     @ApiOperationSupport(order = 100)
-    @GetMapping("/add-newAT")
+    @PostMapping("/add-new")
     public String addNew(AttributeTemplateNewDTO attributeTemplateNewDTO) {
         log.debug("开始处理【添加属性模板】的请求，参数：{}", attributeTemplateNewDTO);
         attributeTemplateService.addNew(attributeTemplateNewDTO);
@@ -44,7 +44,7 @@ public class AttributeTemplateController {
     // http://localhost:8080/AttributeTemplates/name/delete
     @ApiOperation("根据名称删除属性模板")
     @ApiOperationSupport(order = 200)
-    @PostMapping("/{name:[a-z]+}/delete")
+    @GetMapping("/{name:[a-z]+}/delete")
     public String deleteAT1(@PathVariable String name) {
         String message = "尝试删除名称为[" + name + "],的属性模板";
         log.debug(message);
