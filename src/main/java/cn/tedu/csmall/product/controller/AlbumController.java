@@ -8,7 +8,6 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spring.web.json.Json;
 //接收客户端的请求,并调用Service实现类中对应的方法来完成数据库对应的操作,并且捕获可能发生的异常!
 
 /**
@@ -40,10 +39,7 @@ public class AlbumController {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
         albumService.addNew(albumAddNewDTO);
         log.debug("添加数据成功!");
-        JsonResult jsonResult = new JsonResult();
-        jsonResult.setState(1);
-        jsonResult.setMessage("添加数据成功!");
-        return jsonResult;
+        return JsonResult.ok();//类名打点调用静态ok()方法
     }
 
     // http://localhost:8080/albums/233/delete

@@ -32,10 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler//此注解会使SpringMVC框架进行统一捕获相同类型的异常
     public JsonResult handlerServiceException(ServiceException e){
         log.debug("这是请求的方法抛出了ServiceException,将统一处理");
-        JsonResult jsonResult = new JsonResult();
-        jsonResult.setState(2);
-        jsonResult.setMessage(e.getMessage());
-        return jsonResult;
+        return JsonResult.fail(2,e.getMessage());
     }
 
     /**
