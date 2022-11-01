@@ -41,32 +41,12 @@ public class CategoryController {
         return "添加数据成功!";
     }
 
-    // http://localhost:8080/categorys/name/delete
-    @ApiOperation("根据名称删除分类")
-    @ApiOperationSupport(order = 200)
-    @GetMapping("/{name:[a-z]+}/delete")
-    public String deleteCategory1(@PathVariable String name) {
-        String message = "尝试删除名称为[" + name + "]的分类";
-        log.debug(message);
-        return message;
-    }
-
     // http://localhost:8080/categorys/id/delete
     @ApiOperation("根据id删除分类")
     @ApiOperationSupport(order = 901)
     @PostMapping("/{id:[0-9]+}/delete")
     public String deleteCategory2(@PathVariable Long id) {
         String message = "尝试删除id为[" + id + "]的分类";
-        log.debug(message);
-        return message;
-    }
-
-    // http://localhost:8080/categorys/test/delete
-    @ApiOperation("直接删除分类")
-    @ApiOperationSupport(order = 902)
-    @PostMapping("/test/delete")
-    public String deleteCategory3() {
-        String message = "尝试测试删除分类";
         log.debug(message);
         return message;
     }
