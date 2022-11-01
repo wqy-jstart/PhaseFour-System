@@ -28,6 +28,11 @@ public class JsonResult implements Serializable {
         return jsonResult;
     }
 
+    /**
+     * 重载下面的fail方法
+     * @param e 传入自定义异常
+     * @return 调用下面的重载方法,传入自定义异常的状态码和状态描述,并返回
+     */
     public static JsonResult fail(ServiceException e){
         return fail(e.getServiceCode(),e.getMessage());
     }

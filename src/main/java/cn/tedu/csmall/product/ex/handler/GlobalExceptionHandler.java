@@ -4,9 +4,14 @@ import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.web.JsonResult;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * 全局异常处理器
@@ -32,8 +37,21 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler//此注解会使SpringMVC框架进行统一捕获相同类型的异常
     public JsonResult handlerServiceException(ServiceException e){
-        log.debug("这是请求的方法抛出了ServiceException,将统一处理");
+        log.debug("开始统一处理ServiceException");
         return JsonResult.fail(e);
+    }
+
+    @ExceptionHandler
+    public JsonResult handlerBindException(BindException e){//因为该异常的信息不是我们自己定的,而状态信息是我们定的,故调用两参的fail()
+        log.debug("开始统一处理BindException");
+        StringJoiner stringJoiner = new StringJoiner(",","请求参数格式错误,","!!!");
+        List<FieldError> fieldErrors = e.getFieldErrors();
+        for (FieldError fieldError : fieldErrors){
+            String defaultMessage = fieldError.getDefaultMessage();
+            stringJoiner.add(defaultMessage);
+        }
+
+        return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST,stringJoiner.toString());
     }
 
     /**
@@ -41,9 +59,9 @@ public class GlobalExceptionHandler {
      * @param e 全局的异常类
      * @return 返回异常处理反馈的信息
      */
-    @ExceptionHandler
-    public String handlerServiceException(Throwable e){
-        log.debug("这是一个Throwable异常,将统一处理");
-        return e.getMessage();
-    }
+//    @ExceptionHandler
+//    public String handlerServiceException(Throwable e){
+//        log.debug("这是一个Throwable异常,将统一处理");
+//        return e.getMessage();
+//    }
 }

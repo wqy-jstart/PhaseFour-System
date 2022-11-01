@@ -13,10 +13,17 @@ public enum ServiceCode {
      * 成功
      */
     OK(20000),
+
+    /**
+     * 错误:检查参数产生的错误
+     */
+    ERR_BAD_REQUEST(40000),
+
     /**
      * 错误:数据不存在
      */
     ERROR_CONFLICT(40400),
+
     /**
      * 错误:数据冲突
      */

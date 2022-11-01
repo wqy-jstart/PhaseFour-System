@@ -8,6 +8,8 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 //接收客户端的请求,并调用Service实现类中对应的方法来完成数据库对应的操作,并且捕获可能发生的异常!
 
 /**
@@ -35,7 +37,9 @@ public class AlbumController {
     @ApiOperation("添加相册")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
-    public JsonResult addNew(AlbumAddNewDTO albumAddNewDTO) {
+    //                     检查传递的参数
+    //                       ↓↓↓↓↓↓
+    public JsonResult addNew(@Valid AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
         albumService.addNew(albumAddNewDTO);
         log.debug("添加数据成功!");
