@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.CategoryAttributeTemplateMapper;
 import cn.tedu.csmall.product.pojo.dto.CategoryAttributeTemplateAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.CategoryAttributeTemplate;
 import cn.tedu.csmall.product.sevice.ICategoryAttributeTemplateService;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class CategoryAttributeTemplateServiceImpl implements ICategoryAttributeT
         if (count>0){
             String message = "添加分类与属性模板信息失败,id已经被占用";
             log.debug(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
         log.debug("该分类与属性模板没有被占用,即将进行插入");
         CategoryAttributeTemplate categoryAttributeTemplate = new CategoryAttributeTemplate();

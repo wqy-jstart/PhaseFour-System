@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.SpuAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Spu;
 import cn.tedu.csmall.product.sevice.ISpuService;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class SpuServiceImpl implements ISpuService {
         if (count>0){
             String message = "添加SPU数据失败,该名称已经被占用!";
             log.debug(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
         log.debug("该名称没有被占用,即将进行添加操作");
         Spu spu = new Spu();

@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.AttributeTemplateMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
 import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
 import cn.tedu.csmall.product.sevice.IAttributeTemplateService;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         if (count>0){
            String message = "添加属性模板信息失败,名称已经被占用!";
            log.debug(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
         log.debug("该属性模板名称没有占用,即将向属性模板表中插入数据");
         AttributeTemplate attributeTemplate = new AttributeTemplate();

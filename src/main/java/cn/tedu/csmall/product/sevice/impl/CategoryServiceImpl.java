@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.CategoryMapper;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
 import cn.tedu.csmall.product.sevice.ICategoryService;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class CategoryServiceImpl implements ICategoryService {
         if (count>0){
             String message = "添加分类失败,分类名称已经被占用";
             log.debug(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
         log.debug("分类名称没有被占用,将向分类表中插入数据");
         Category category = new Category();

@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.ex.handler;
 
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.web.JsonResult;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,13 +33,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler//此注解会使SpringMVC框架进行统一捕获相同类型的异常
     public JsonResult handlerServiceException(ServiceException e){
         log.debug("这是请求的方法抛出了ServiceException,将统一处理");
-        return JsonResult.fail(2,e.getMessage());
+        return JsonResult.fail(e);
     }
 
     /**
      * 全局异常处理
      * @param e 全局的异常类
-     * @return
+     * @return 返回异常处理反馈的信息
      */
     @ExceptionHandler
     public String handlerServiceException(Throwable e){

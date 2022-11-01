@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.AttributeMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.sevice.IAttributeService;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class AttributeServiceImpl implements IAttributeService {
         if (count>0){
             String message = "添加属性失败,相册名称已经被占用";
             log.debug(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
 
         log.debug("相册名称没有被占用,即将向属性表中插入数据");

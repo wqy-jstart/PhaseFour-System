@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.SkuSpecificationMapper;
 import cn.tedu.csmall.product.pojo.dto.SkuSpecificationAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.SkuSpecification;
 import cn.tedu.csmall.product.sevice.ISkuSpecificationService;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class SkuSpecificationServiceImpl implements ISkuSpecificationService {
         if (count>0){
             String message = "添加SKU数据失败,该Id已经存在!";
             log.debug(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
         log.debug("开始处理SKU数据的添加!");
         SkuSpecification skuSpecification = new SkuSpecification();

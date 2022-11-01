@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.BrandCategoryMapper;
 import cn.tedu.csmall.product.pojo.dto.BrandCategoryAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.BrandCategory;
 import cn.tedu.csmall.product.sevice.IBrandCategoryService;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class BrandCategoryServiceImpl implements IBrandCategoryService {
         if (count>0){
             String message = "添加品牌分类失败,该Id已经被占用";
             log.debug(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
 
         log.debug("品牌分类没有被占用,将向表中插入数据");

@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.SkuMapper;
 import cn.tedu.csmall.product.pojo.dto.SkuAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Sku;
 import cn.tedu.csmall.product.sevice.ISkuService;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class SkuServiceImpl implements ISkuService {
         if (count>0){
             String message = "添加SKU失败,标题已经存在!";
             log.debug(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
 
         log.debug("标题没有被占用,即将进行添加操作!");
