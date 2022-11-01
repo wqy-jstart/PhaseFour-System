@@ -6,7 +6,9 @@ import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,11 +17,12 @@ import javax.validation.Valid;
 /**
  * 控制器对象,处理有关相册的请求
  *
- * @Author Wqy
+ * @Author java.@Wqy
  * @Version 0.0.1
  */
 @Api(tags = "01.相册管理模块")
 @Slf4j
+@Validated
 @RequestMapping("/albums")//该Controller类中所有@RequestMapping请求路径的父路径
 @RestController
 public class AlbumController {
@@ -33,7 +36,6 @@ public class AlbumController {
     }
 
     // http://localhost:8080/albums/add-new?name=相册001&description=相册001的简介&sort=199
-    //模拟用户访问该地址,并在抽象路径后传递有关相册的参数,传到该Controller中对应方法进行处理
     @ApiOperation("添加相册")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
@@ -51,10 +53,11 @@ public class AlbumController {
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
     @GetMapping("/{id:[0-9]+}/delete")//在请求路径中先用占位符进行占位,使用正则来限制输入的内容
-    public String deleteAlbum2(@PathVariable Long id) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
-        String message = "尝试删除id为[" + id + "]的相册";
-        log.debug(message);//输出日志
-        return message;//向客户端返回结果
+    public JsonResult delete(@Range(min = 1,message = "删除相册失败,尝试删除的相册的ID无效!")
+                                   @PathVariable Long id) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
+        log.debug("开始处理[根据id删除相册]的请求,参数:{}",id);
+        albumService.delete(id);
+        return JsonResult.ok();
     }
 
     // http://localhost:8080/albums/name/sort/delete

@@ -5,6 +5,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * 解决关于服务器端允许来自跨域的客户端发送请求,作出的相关配置
+ *
+ * @Author java.@Wqy
+ * @Version 0.0.1
+ */
 @Slf4j
 @Configuration//该注解用于配置类可在项目启动时对该类进行加载
 public class WebMvcConfiguration implements WebMvcConfigurer {

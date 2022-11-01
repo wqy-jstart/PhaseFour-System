@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * MyBatis配置类
  *
- * @Author Wqy
+ * @Author java.@Wqy
  * @Version 0.0.1
  */
 @Slf4j
