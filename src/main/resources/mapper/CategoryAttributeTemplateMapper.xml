@@ -45,9 +45,9 @@
         SELECT count(*) FROM pms_category_attribute_template
     </select>
 
-    <!--int countByName(Long categoryId);-->
-    <select id="countByCategoryId" resultType="int">
-        SELECT count(*) FROM pms_category_attribute_template WHERE category_id=#{categoryId}
+    <!--int countByAttributeTemplateId(Long categoryId);-->
+    <select id="countByAttributeTemplateId" resultType="int">
+        SELECT count(*) FROM pms_category_attribute_template WHERE attribute_template_id=#{attributeTemplateId}
     </select>
 
     <!--CategoryAttributeTemplateStandardVO getStandardById(Long id);-->

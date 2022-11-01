@@ -14,4 +14,10 @@ public interface IAttributeTemplateService {
      * 该方法用来执行添加属性模板的数据
      */
     void addNew(AttributeTemplateNewDTO attributeTemplateNewDTO);
+
+    /**
+     * 根据id来删除属性模板数据
+     * @param id id
+     */
+    void delete(Long id);
 }

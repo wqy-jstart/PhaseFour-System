@@ -32,9 +32,9 @@ public class CategoryAttributeTemplateServiceImpl implements ICategoryAttributeT
     public void addNew(CategoryAttributeTemplateAddNewDTO categoryAttributeTemplateAddNewDTO) {
         log.debug("开始处理[类别与属性模板]的业务,参数:{}",categoryAttributeTemplateAddNewDTO);
 
-        Long categoryAttributeTemplateName = categoryAttributeTemplateAddNewDTO.getCategoryId();
+        Long attributeTemplateId = categoryAttributeTemplateAddNewDTO.getAttributeTemplateId();
         log.debug("检查类别与属性模板的类别Id是否被占用");
-        int count = categoryAttributeTemplateMapper.countByCategoryId(categoryAttributeTemplateName);
+        int count = categoryAttributeTemplateMapper.countByAttributeTemplateId(attributeTemplateId);
         if (count>0){
             String message = "添加分类与属性模板信息失败,id已经被占用";
             log.debug(message);

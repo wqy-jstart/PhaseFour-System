@@ -55,10 +55,10 @@
     </select>
 
     <!--int countByUrl(String url);-->
-    <select id="countByUrl" resultType="int">
+    <select id="countByAlbumId" resultType="int">
         SELECT count(*)
         FROM pms_picture
-        WHERE url = #{url}
+        WHERE album_id = #{albumId}
     </select>
 
     <!--PictureAddNewDTO getStandardById(Long id);-->

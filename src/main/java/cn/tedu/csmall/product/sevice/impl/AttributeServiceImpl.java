@@ -32,10 +32,10 @@ public class AttributeServiceImpl implements IAttributeService {
     public void addNew(AttributeAddNewDTO attributeAddNewDTO) {
         log.debug("开始处理[添加属性]的业务,参数{}",attributeAddNewDTO);
         // 从参数对象中获取属性名称
-        String attributeName = attributeAddNewDTO.getName();
+        Long templateId = attributeAddNewDTO.getTemplateId();
         // 检查属性名称是否已经被占用(属性表中是否已经存在该name)
         log.debug("检查属性名称是否已经被占用");
-        int count = attributeMapper.countByName(attributeName);
+        int count = attributeMapper.countByTemplateId(templateId);
         if (count>0){
             String message = "添加属性失败,相册名称已经被占用";
             log.debug(message);

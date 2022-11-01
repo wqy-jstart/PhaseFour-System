@@ -31,11 +31,11 @@ public class PictureServiceImpl implements IPictureService {
     @Override
     public void addNew(PictureAddNewDTO pictureAddNewDTO) {
         log.debug("开始处理添加[图片]的业务,参数,{}",pictureAddNewDTO);
-        String pictureUrl = pictureAddNewDTO.getUrl();
+        Long albumId = pictureAddNewDTO.getAlbumId();
         log.debug("检查图片名称是否已经被占用");
-        int count = pictureMapper.countByUrl(pictureUrl);
+        int count = pictureMapper.countByAlbumId(albumId);
         if (count>0){
-            String message = "添加图片失败,Url已经被占用";
+            String message = "添加图片失败,albumId已经被占用";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }

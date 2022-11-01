@@ -23,7 +23,26 @@ public interface SpuMapper {
 
     int count();
 
-    int countByName(String name);
+    /**
+     * 查询albumId下的所有SPU数据
+     * @param albumId albumId
+     * @return 返回数据的数量
+     */
+    int countByAlbumId(Long albumId);
+
+    /**
+     * 查询brandId下的所有SPU数据
+     * @param brandId brandId
+     * @return 返回数据的数量
+     */
+    int countByBrandId(Long brandId);
+
+    /**
+     * 查询attributeTemplateId下的所有SPU数据
+     * @param attributeTemplateId
+     * @return
+     */
+    int countByAttributeTemplateId(Long attributeTemplateId);
 
     SpuStandardVO getStandardById(Long id);
 

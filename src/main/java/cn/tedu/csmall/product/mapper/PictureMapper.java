@@ -21,7 +21,12 @@ public interface PictureMapper {
 
     int count();
 
-    int countByUrl(String url);
+    /**
+     * 根据相册统计图片数据的数量
+     * @param albumId 相册id
+     * @return 与此相册相关联的数据数量
+     */
+    int countByAlbumId(Long albumId);
 
     PictureAddNewDTO getStandardById(Long id);
 

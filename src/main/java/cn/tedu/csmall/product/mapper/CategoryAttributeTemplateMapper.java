@@ -30,7 +30,7 @@ public interface CategoryAttributeTemplateMapper {
 
     int count();
 
-    int countByCategoryId(Long categoryId);
+    int countByAttributeTemplateId(Long attributeTemplateId);
 
     CategoryAttributeTemplateStandardVO getStandardById(Long id);
 

@@ -15,4 +15,11 @@ public interface IBrandService {
      * @param brandAddNewDTO 要插入的品牌DTO对象
      */
     void addNew(BrandAddNewDTO brandAddNewDTO);
+
+    /**
+     * 根据id删除品牌
+     *
+     * @param id 需要删除的品牌id
+     */
+    void delete(Long id);
 }

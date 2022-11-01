@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 自定义异常处理----已经存在的异常
+     * 自定义异常处理----已存在的异常
      * @param e 自定义的异常类
      * @return 返回JSON对象,该对象封装了状态信息和状态描述
      */

@@ -95,8 +95,18 @@
     </select>
 
     <!--int countByName(String name);-->
-    <select id="countByName" resultType="int">
-        SELECT count(*) FROM pms_spu WHERE name=#{name}
+    <select id="countByAlbumId" resultType="int">
+        SELECT count(*) FROM pms_spu WHERE album_id=#{albumId}
+    </select>
+
+    <!--int countByBrandId(Long brandId);-->
+    <select id="countByBrandId" resultType="int">
+        SELECT count(*) FROM pms_spu WHERE brand_id=#{brandId}
+    </select>
+
+    <!--int countByAttributeTemplateId(Long attributeTemplateId);-->
+    <select id="countByAttributeTemplateId" resultType="int">
+        SELECT count(*) FROM pms_spu WHERE attribute_template_id=#{attributeTemplateId}
     </select>
 
     <!--SpuStandardVO getStandardById(Long id);-->

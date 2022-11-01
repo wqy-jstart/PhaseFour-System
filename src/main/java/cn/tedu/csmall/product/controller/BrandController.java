@@ -2,11 +2,14 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.sevice.IBrandService;
+import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 //接收客户端的请求,并调用Service实现类中对应的方法来完成数据库对应的操作,并且捕捉可能发生的异常
 
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "02.品牌管理模块")
 @Slf4j
+@Validated
 @RequestMapping("/Brands")
 @RestController
 public class BrandController {
@@ -41,33 +45,14 @@ public class BrandController {
         return "添加数据成功!";
     }
 
-    // http://localhost:8080/Brands/name/delete
-    @ApiOperation("根据名称删除品牌")
-    @ApiOperationSupport(order = 200)
-    @GetMapping("/{name:[a-z]+}/delete")
-    public String deleteBrand1(@PathVariable String name) {//接收的变量值要和路径占位符中的相同
-        String message = "尝试删除名称为[" + name + "]的品牌";
-        log.debug(message);
-        return message;//向客户端返回结果
-    }
-
     // http://localhost:8080/Brands/id/delete
     @ApiOperation("根据id删除品牌")
-    @ApiOperationSupport(order = 901)
+    @ApiOperationSupport(order = 200)
     @PostMapping("/{id:[0-9]+}/delete")
-    public String deleteBrand2(@PathVariable Long id) {//接收到的变量值要和路径占位符中的相同
-        String message = "尝试删除id为[" + id + "]的相册";
-        log.debug(message);
-        return message;//向客户端返回结果
-    }
-
-    // http://localhost:8080/Brands/test/delete
-    @ApiOperation("直接删除品牌")
-    @ApiOperationSupport(order = 902)
-    @PostMapping("/test/delete")
-    public String deleteBrand3() {
-        String message = "尝试测试删除相册";
-        log.debug(message);
-        return message;
+    public JsonResult delete(@Range(min = 1,message = "删除品牌失败,尝试删除的品牌的ID无效!")
+                             @PathVariable Long id) {//接收到的变量值要和路径占位符中的相同
+        log.debug("开始处理[根据id删除品牌]的请求,参数:{}",id);
+        brandService.delete(id);
+        return JsonResult.ok();
     }
 }

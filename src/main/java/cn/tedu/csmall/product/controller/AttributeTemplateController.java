@@ -2,11 +2,14 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
 import cn.tedu.csmall.product.sevice.IAttributeTemplateService;
+import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 //该Controller用来接收用户传递的属性模板DTO信息,并调用对应接口的实现类处理该请求业务,并且捕获可能产生的异常
 
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @Api(tags = "04.属性模板的管理模块")
+@Validated
 @RequestMapping("/AttributeTemplates")
 @RestController
 public class AttributeTemplateController {
@@ -41,33 +45,14 @@ public class AttributeTemplateController {
         return "添加数据成功!";
     }
 
-    // http://localhost:8080/AttributeTemplates/name/delete
-    @ApiOperation("根据名称删除属性模板")
-    @ApiOperationSupport(order = 200)
-    @GetMapping("/{name:[a-z]+}/delete")
-    public String deleteAT1(@PathVariable String name) {
-        String message = "尝试删除名称为[" + name + "],的属性模板";
-        log.debug(message);
-        return message;
-    }
-
     // http://localhost:8080/AttributeTemplates/id/delete
     @ApiOperation("根据id删除属性模板")
-    @ApiOperationSupport(order = 901)
+    @ApiOperationSupport(order = 200)
     @PostMapping("/{id:[0-9]+}/delete")
-    public String deleteAT2(@PathVariable Long id) {
-        String message = "尝试删除id为[" + id + "],的属性模板";
-        log.debug(message);
-        return message;
-    }
-
-    // http://localhost:8080/AttributeTemplates/test/delete
-    @ApiOperation("直接删除属性模板")
-    @ApiOperationSupport(order = 902)
-    @PostMapping("/test/delete")
-    public String deleteAT3() {
-        String message = "尝试直接删除属性模板";
-        log.debug(message);
-        return message;
+    public JsonResult deleteAT2(@Range(min = 1,message = "删除属性模板失败,尝试删除的属性模板的ID无效!")
+                                    @PathVariable Long id) {
+        log.debug("开始删除id为[" + id + "],的属性模板");
+        attributeTemplateService.delete(id);
+        return JsonResult.ok();
     }
 }

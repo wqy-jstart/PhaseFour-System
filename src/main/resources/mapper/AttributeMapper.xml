@@ -60,11 +60,11 @@
         FROM pms_attribute
     </select>
 
-    <!--int countByName(String name);-->
-    <select id="countByName" resultType="int">
+    <!--int countByTemplateId(String name);-->
+    <select id="countByTemplateId" resultType="int">
         SELECT count(*)
         FROM pms_attribute
-        WHERE name = #{name}
+        WHERE template_id = #{templateId}
     </select>
 
     <!--AttributeStandardVO getStandardById(Long id);-->

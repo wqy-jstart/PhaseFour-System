@@ -25,7 +25,7 @@ public interface AttributeMapper {
 
     int count();
 
-    int countByName(String name);
+    int countByTemplateId(Long templateId);
 
     AttributeStandardVO getStandardById(Long id);
 

@@ -31,8 +31,8 @@ public class SpuServiceImpl implements ISpuService {
     @Override
     public void addNew(SpuAddNewDTO spuAddNewDTO) {
         log.debug("开始处理[SPU]的业务,参数,{}",spuAddNewDTO);
-        String spuName = spuAddNewDTO.getName();
-        int count = spuMapper.countByName(spuName);
+        Long albumId = spuAddNewDTO.getAlbumId();
+        int count = spuMapper.countByAlbumId(albumId);
         if (count>0){
             String message = "添加SPU数据失败,该名称已经被占用!";
             log.debug(message);
