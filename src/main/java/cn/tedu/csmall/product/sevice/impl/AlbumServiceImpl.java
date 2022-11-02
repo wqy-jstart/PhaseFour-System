@@ -6,6 +6,7 @@ import cn.tedu.csmall.product.mapper.PictureMapper;
 import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Album;
+import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import cn.tedu.csmall.product.sevice.IAlbumService;
 import cn.tedu.csmall.product.web.ServiceCode;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 //实现相册Service层接口中的方法,在方法中处理相关的业务逻辑
 
@@ -76,14 +79,14 @@ public class AlbumServiceImpl implements IAlbumService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("开始处理[根据id删除相册]的业务,参数,{}",id);
+        log.debug("开始处理[根据id删除相册]的业务,参数,{}", id);
         // 调用Mapper对象的getStandardById()执行查询
         AlbumStandardVO queryResult = albumMapper.getStandardById(id);
         // 判断查询结果是否为Null
-        if (queryResult == null){
+        if (queryResult == null) {
             // 是: 无此id对应的数据，将不允许执行删除操作，则抛出异常
             String message = "删除相册失败，尝试访问的数据不存在！";
-            throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
 
         // 检查是否存在图片（picture）关联到此相册，如果存在，则不允许删除
@@ -99,15 +102,26 @@ public class AlbumServiceImpl implements IAlbumService {
         // 检查是否存在SPU关联到此相册,如果存在,则不允许删除
         {
             int count = spuMapper.countByAlbumId(id);
-            if (count > 0){
+            if (count > 0) {
                 String message = "删除相册失败,此相册存在关联的SPU数据";
                 log.debug(message);
-                throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
+                throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
             }
         }
 
         // 调用Mapper对象的deleteById()方法执行删除
-        log.debug("即将执行删除,参数:{}",id);
+        log.debug("即将执行删除,参数:{}", id);
         albumMapper.deleteById(id);
+    }
+
+    /**
+     * 处理查询相册列表的功能
+     *
+     * @return 返回List集合
+     */
+    @Override
+    public List<AlbumListItemVO> list() {
+        log.debug("开始处理[查询相册列表]的功能");
+        return albumMapper.list();
     }
 }

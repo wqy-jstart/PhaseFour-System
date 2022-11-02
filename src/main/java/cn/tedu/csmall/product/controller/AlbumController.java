@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.sevice.IAlbumService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -12,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 //接收客户端的请求,并调用Service实现类中对应的方法来完成数据库对应的操作,并且捕获可能发生的异常!
 
 /**
@@ -35,7 +37,7 @@ public class AlbumController {
         log.debug("创建控制器对象:AlbumController");
     }
 
-    // http://localhost:8080/albums/add-new?name=相册001&description=相册001的简介&sort=199
+    // http://localhost:9080/albums/add-new?name=相册001&description=相册001的简介&sort=199
     @ApiOperation("添加相册")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
@@ -48,7 +50,7 @@ public class AlbumController {
         return JsonResult.ok();//类名打点调用静态ok()方法
     }
 
-    // http://localhost:8080/albums/233/delete
+    // http://localhost:9080/albums/id/delete
     @ApiOperation("根据id删除相册")
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
@@ -60,27 +62,13 @@ public class AlbumController {
         return JsonResult.ok();
     }
 
-    // http://localhost:8080/albums/name/sort/delete
-    @ApiOperation("【已过期】根据名称删除相册")
-    @ApiOperationSupport(order = 901)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "name", value = "相册名称", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "sort", value = "相册排序", required = true, dataType = "long")
-    })
-    @PostMapping("/{name:[a-z]+}/{sort:[0-9]+}/delete")//在请求路径中先用占位符进行占位
-    public String deleteAlbum1(@PathVariable String name,@PathVariable Long sort) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
-        String message = "尝试删除名称为[" + name + "],排序为[" + sort + "]的相册";
-        log.debug(message);//输出日志
-        return message;//向客户端返回结果
-    }
-
-    // http://localhost:8080/albums/test/delete
-    @ApiOperation("【已过期】直接发出删除请求")
-    @ApiOperationSupport(order = 902)
-    @PostMapping("/test/delete")
-    public String deleteAlbum3() {
-        String message = "尝试测试删除相册";
-        log.debug(message);
-        return message;
+    // http://localhost:9080/albums
+    @ApiOperation("查询相册列表")
+    @ApiOperationSupport(order = 410)
+    @GetMapping("")
+    public JsonResult<List<AlbumListItemVO>> list(){
+        log.debug("开始处理[查询相册列表]的请求,无参");
+        List<AlbumListItemVO> list = albumService.list();
+        return JsonResult.ok(list);//该方法指定了泛型<T>,故要在方法上指定该方法需要返回的泛型
     }
 }

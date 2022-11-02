@@ -1,6 +1,9 @@
 package cn.tedu.csmall.product.sevice;
 
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
+
+import java.util.List;
 
 /**
  * 处理相册数据的业务接口
@@ -22,4 +25,11 @@ public interface IAlbumService {
      * @param id 需要删除的相册id
      */
     void delete(Long id);
+
+    /**
+     * 查询所有相册的列表
+     *
+     * @return
+     */
+    List<AlbumListItemVO> list();
 }
