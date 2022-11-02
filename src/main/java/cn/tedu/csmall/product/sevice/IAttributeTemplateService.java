@@ -1,6 +1,9 @@
 package cn.tedu.csmall.product.sevice;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
+
+import java.util.List;
 
 /**
  * 创建属性模板的接口
@@ -20,4 +23,10 @@ public interface IAttributeTemplateService {
      * @param id id
      */
     void delete(Long id);
+
+    /**
+     * 查询属性模板的列表数据
+     * @return
+     */
+    List<AttributeTemplateListItemVO> list();
 }

@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
 import cn.tedu.csmall.product.sevice.IAttributeTemplateService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -11,6 +12,8 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 //该Controller用来接收用户传递的属性模板DTO信息,并调用对应接口的实现类处理该请求业务,并且捕获可能产生的异常
 
 /**
@@ -49,10 +52,20 @@ public class AttributeTemplateController {
     @ApiOperation("根据id删除属性模板")
     @ApiOperationSupport(order = 200)
     @PostMapping("/{id:[0-9]+}/delete")
-    public JsonResult deleteAT2(@Range(min = 1,message = "删除属性模板失败,尝试删除的属性模板的ID无效!")
+    public JsonResult<Void> deleteAT2(@Range(min = 1,message = "删除属性模板失败,尝试删除的属性模板的ID无效!")
                                     @PathVariable Long id) {
         log.debug("开始删除id为[" + id + "],的属性模板");
         attributeTemplateService.delete(id);
         return JsonResult.ok();
+    }
+
+    // http://localhost:9080/AttributeTemplates
+    @ApiOperation("属性模板列表")
+    @ApiOperationSupport(order = 410)
+    @GetMapping("")
+    public JsonResult<List<AttributeTemplateListItemVO>> list(){
+        log.debug("开始处理[属性模板列表]的请求");
+        List<AttributeTemplateListItemVO> list = attributeTemplateService.list();
+        return JsonResult.ok(list);
     }
 }
