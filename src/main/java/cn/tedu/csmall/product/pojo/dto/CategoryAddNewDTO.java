@@ -1,5 +1,6 @@
 package cn.tedu.csmall.product.pojo.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,13 +13,18 @@ import java.io.Serializable;
  */
 @Data
 public class CategoryAddNewDTO implements Serializable {
+    @ApiModelProperty("类别名称")
     private String name;
+    @ApiModelProperty("父级类别")
     private Long parentId;
-    private Integer depth;
+    @ApiModelProperty("关键字")
     private String keywords;
+    @ApiModelProperty("排序")
     private Integer sort;
+    @ApiModelProperty("图标")
     private String icon;
+    @ApiModelProperty("是否启用")
     private Integer enable;
-    private Integer isParent;
+    @ApiModelProperty("是否显示")
     private Integer isDisplay;
 }

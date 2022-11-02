@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
      * @return 返回JSON对象,该对象封装了状态信息和状态描述
      */
     @ExceptionHandler// 此注解会使SpringMVC框架进行统一捕获相同类型的异常
-    public JsonResult handlerServiceException(ServiceException e){
+    public JsonResult<Void> handlerServiceException(ServiceException e){
         log.debug("开始统一处理ServiceException----已经存在的异常");
         return JsonResult.fail(e);
     }
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
      * @return  返回JSON对象,该对象封装了状态信息和状态描述
      */
     @ExceptionHandler
-    public JsonResult handlerBindException(BindException e){// 因为该异常的信息不是我们自己定的,而状态信息是我们定的,故调用两参的fail()
+    public JsonResult<Void> handlerBindException(BindException e){// 因为该异常的信息不是我们自己定的,而状态信息是我们定的,故调用两参的fail()
         log.debug("开始处理BindException----检查不通过的异常");
         // 第一种方式(将所有异常一同获取并遍历)
         // 需要拼接输出结果时使用(delimiter分隔符 prefix前缀 suffix后缀)
@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
      * @return  返回JSON对象,该对象封装了状态信息和状态描述
      */
     @ExceptionHandler
-    public JsonResult handleConstViolationException(ConstraintViolationException e){
+    public JsonResult<Void> handleConstViolationException(ConstraintViolationException e){
         log.debug("开始处理ConstraintViolationException----未封装的请求参数异常");
         StringJoiner stringJoiner = new StringJoiner(". ");
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();//该异常返回的信息为Set集合

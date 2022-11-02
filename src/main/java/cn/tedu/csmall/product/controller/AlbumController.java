@@ -43,7 +43,7 @@ public class AlbumController {
     @PostMapping("/add-new")
     //                     检查传递的参数
     //                       ↓↓↓↓↓↓
-    public JsonResult addNew(@Valid AlbumAddNewDTO albumAddNewDTO) {
+    public JsonResult<Void> addNew(@Valid AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
         albumService.addNew(albumAddNewDTO);
         log.debug("添加数据成功!");
@@ -54,8 +54,8 @@ public class AlbumController {
     @ApiOperation("根据id删除相册")
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
-    @GetMapping("/{id:[0-9]+}/delete")//在请求路径中先用占位符进行占位,使用正则来限制输入的内容
-    public JsonResult delete(@Range(min = 1,message = "删除相册失败,尝试删除的相册的ID无效!")
+    @PostMapping("/{id:[0-9]+}/delete")//在请求路径中先用占位符进行占位,使用正则来限制输入的内容
+    public JsonResult<Void> delete(@Range(min = 1,message = "删除相册失败,尝试删除的相册的ID无效!")
                                    @PathVariable Long id) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
         log.debug("开始处理[根据id删除相册]的请求,参数:{}",id);
         albumService.delete(id);
