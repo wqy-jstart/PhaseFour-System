@@ -54,7 +54,7 @@ public class CategoryServiceImpl implements ICategoryService {
         }
         log.debug("当前尝试添加的类型的depth值为:{}",depth);
 
-        // 调用Mapper对象的【根据名称统计数量】方法进行统计
+        // 调用Mapper对象的【根据名称统计数量】方法进行统计,添加前判断该名称是否存在
         String name = categoryAddNewDTO.getName();
         log.debug("检查分类名称是否已经被占用");
         int count = categoryMapper.countByName(name);
@@ -65,22 +65,23 @@ public class CategoryServiceImpl implements ICategoryService {
             throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
         }
         log.debug("分类名称没有被占用,将向分类表中插入数据");
+        // ★补全Category对象的值
         Category category = new Category();
         BeanUtils.copyProperties(categoryAddNewDTO, category);
-        // 补全Category对象的值：depth >>> 使用以上的depth变量
+        // 补全Category对象的值：depth >>> 使用最终的depth变量
         category.setDepth(depth);
         // 补全Category对象的值: isParent >>> 0，新增的类别的isParent固定为0
         category.setIsParent(0);//固定先为0
         log.debug("即将插入分类数据:{}", category);
         categoryMapper.insert(category);
 
-        category.getGmtCreate().toString();
+//        category.getGmtCreate().toString();
 
         // 检查当前新增类型的父级类别，如果父类别的isParent为0，则将父级类别的isParent更新为1
         if (parentId !=0){ // 如果当前的父级id不为0,说明存在父类
             if (parentCategory.getIsParent() == 0){ // 如果父级的isParent为0(暂时没有子级的情况)
-                // 修改父级的isParent(需设置id过滤条件)
-                Category updateParentCategory = new Category();//创建一个分类对象,
+                // 创建一个分类对象,用来修改父级的isParent(需设置id过滤条件)
+                Category updateParentCategory = new Category();
                 updateParentCategory.setId(parentId);// ★设置id为子级的ParentId,用来作为过滤条件修改父级的IsParent
                 updateParentCategory.setIsParent(1);// 修改父级的IsParent为1
                 log.debug("将父级类别的isParent更新为1,更新的参数对象:{}",updateParentCategory);
