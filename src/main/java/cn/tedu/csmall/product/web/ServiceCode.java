@@ -33,26 +33,29 @@ public enum ServiceCode {
      * 插入数据异常
      */
     ERR_INSERT(50000),
+
     /**
      * 删除数据异常
      */
     ERR_DELETE(50100),
+
     /**
      * 修改数据异常
      */
     ERR_UPDATE(50200),
+
     /**
      * 查询数据异常
      */
     ERR_SELECT(50300);
 
-    private Integer value;
+    private Integer value;// 声明一个变量,代表每个枚举对应的状态码
 
-    private ServiceCode(Integer value){//构造方法传入value赋值给变量this.value
+    private ServiceCode(Integer value){// 添加构造方法,给枚举设置Integer类型的状态码
         this.value = value;
     }
 
-    public Integer getValue(){//提供get方法调用时获取对应枚举的value并返回
+    public Integer getValue(){// 提供get方法使得外部获取某个枚举对应的状态码
         return value;
     }
 }

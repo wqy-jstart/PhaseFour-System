@@ -3,7 +3,7 @@ spring:
   profiles:
     active: dev
 
-# Mybatis相关配置
+# Mybatis相关配置(指定xml文件的位置,关联SQL)
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 

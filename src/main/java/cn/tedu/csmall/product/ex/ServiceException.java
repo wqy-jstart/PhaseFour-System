@@ -19,15 +19,15 @@ public class ServiceException extends RuntimeException {
      */
     public ServiceException(ServiceCode serviceCode,String message) {
         super(message);//Throwable类中的构造方法
-        this.serviceCode = serviceCode;//将传入的局部变量赋值给成员变量
+        this.serviceCode = serviceCode;//将传入的枚举属性赋值给成员变量
     }
 
     /**
-     * 获取业务状态码的方法
+     * 向外界公开获取该异常的枚举属性
      *
      * @return 返回成员变量业务状态码的实例
      */
     public ServiceCode getServiceCode(){
-        return serviceCode;//为JsonResult返回包含状态码的成员变量实例
+        return serviceCode;//为JsonResult返回ServiceCode(不包含状态码)
     }
 }

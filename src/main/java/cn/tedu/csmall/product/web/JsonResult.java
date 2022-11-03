@@ -41,8 +41,8 @@ public class JsonResult<T> implements Serializable {
      */
     public static <T> JsonResult<T> ok(T data){// 静态方法,参数列表添加泛型后要在方法上说明并进行泛型占位
         JsonResult<T> jsonResult = new JsonResult<>();
-        jsonResult.state = ServiceCode.OK.getValue();//直接调用枚举类中OK的状态码value
-        jsonResult.data = data;
+        jsonResult.state = ServiceCode.OK.getValue();// 固定设置20000的成功状态码
+        jsonResult.data = data;// 接收传入的数据List集合
         return jsonResult;
     }
 
@@ -51,8 +51,8 @@ public class JsonResult<T> implements Serializable {
      * @param e 传入自定义异常
      * @return 调用下面的重载方法,传入自定义异常的状态码和状态描述,并返回
      */
-    public static JsonResult<Void> fail(ServiceException e){
-        return fail(e.getServiceCode(),e.getMessage());
+    public static JsonResult<Void> fail(ServiceException e){ //传入对应的异常类
+        return fail(e.getServiceCode(),e.getMessage());//调用fail()传入异常要设置的枚举属性和异常的反馈信息
     }
 
     /**
@@ -61,10 +61,10 @@ public class JsonResult<T> implements Serializable {
      * @param message 错误信息(原因)
      * @return 返回JsonResult对象(封装了状态码和错误信息)
      */
-    public static JsonResult<Void> fail(ServiceCode serviceCode,String message){//业务状态码在参数列表中已经被定义
+    public static JsonResult<Void> fail(ServiceCode serviceCode,String message){// 获取传入的枚举属性和反馈信息
         JsonResult<Void> jsonResult = new JsonResult<>();
-        jsonResult.state = serviceCode.getValue();//调用时仅传入枚举属性即可get到value
-        jsonResult.message = message;
-        return jsonResult;
+        jsonResult.state = serviceCode.getValue();// 调用时仅传入枚举属性即可get到对应的value并设置
+        jsonResult.message = message;// 接收获取的异常反馈信息
+        return jsonResult;// 最后返回包含状态码和异常反馈信息的指定对象
     }
 }
