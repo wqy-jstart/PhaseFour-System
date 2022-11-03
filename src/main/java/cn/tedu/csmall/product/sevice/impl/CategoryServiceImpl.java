@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 处理分类接口的接口实现类
@@ -33,12 +32,11 @@ public class CategoryServiceImpl implements ICategoryService {
      * @param categoryAddNewDTO 封装了用户添加的DTO类
      */
     @Override
-    @Transactional//添加该事务注解可在报错的情况下,IDEA仅会在内存中执行操作,但不会向数据库中插入内容(保存到硬盘中),保证安全性
     public void addNew(CategoryAddNewDTO categoryAddNewDTO) {
         log.debug("开始处理[添加分类]的业务,参数{}", categoryAddNewDTO);
 
         // 查询父级类别
-        Integer depth = 1;
+        Integer depth = 1;// 默认深度为1
         Long parentId = categoryAddNewDTO.getParentId();//获取客户端传入的父级id
         CategoryStandardVO parentCategory = null;
         if (parentId != 0) { // 如果父级id不为0,说明归属于某个父级
@@ -73,7 +71,12 @@ public class CategoryServiceImpl implements ICategoryService {
         // 补全Category对象的值: isParent >>> 0，新增的类别的isParent固定为0
         category.setIsParent(0);//固定先为0
         log.debug("即将插入分类数据:{}", category);
-        categoryMapper.insert(category);
+        int rows = categoryMapper.insert(category);
+        if (rows != 1){// 如果插入所影响的行数不为1
+            String message = "添加类别失败,服务器忙,请稍后再尝试!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
 
 //        category.getGmtCreate().toString();
 

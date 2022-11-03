@@ -64,7 +64,12 @@ public class BrandServiceImpl implements IBrandService {
         Brand brand = new Brand();
         BeanUtils.copyProperties(brandAddNewDTO,brand);
         log.debug("即将插入相册数据:{}",brand);
-        brandMapper.insert(brand);
+        int rows = brandMapper.insert(brand);
+        if (rows != 1){// 如果插入所影响的行数不为1
+            String message = "插入品牌失败,服务器忙,请稍后再尝试!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
         log.debug("插入品牌数据完成!");
     }
 
@@ -104,7 +109,12 @@ public class BrandServiceImpl implements IBrandService {
         }
 
         log.debug("开始执行删除品牌功能");
-        brandMapper.deleteById(id);
+        int rows = brandMapper.deleteById(id);
+        if (rows != 1){// 如果插入所影响的行数不为1
+            String message = "删除品牌失败,服务器忙,请稍后再尝试!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
         log.debug("删除品牌数据完成!");
     }
 

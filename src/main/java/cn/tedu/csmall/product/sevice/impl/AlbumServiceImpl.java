@@ -68,7 +68,12 @@ public class AlbumServiceImpl implements IAlbumService {
 //        album.getName().toLowerCase();测试空指针->运行时异常,因为刚New的对象,Name为Null
         BeanUtils.copyProperties(albumAddNewDTO, album);//将前者实体类中的信息复制到后者实体类中
         log.debug("即将插入相册数据:{}", album);
-        albumMapper.insert(album);
+        int rows = albumMapper.insert(album);
+        if (rows != 1){// 如果插入所影响的行数不为1
+            String message = "添加相册失败,服务器忙,请稍后再尝试!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
         log.debug("插入相册数据完成!");
     }
 
@@ -111,7 +116,12 @@ public class AlbumServiceImpl implements IAlbumService {
 
         // 调用Mapper对象的deleteById()方法执行删除
         log.debug("即将执行删除,参数:{}", id);
-        albumMapper.deleteById(id);
+        int rows = albumMapper.deleteById(id);
+        if (rows != 1){// 如果插入所影响的行数不为1
+            String message = "删除相册失败,服务器忙,请稍后再尝试!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
     }
 
     /**

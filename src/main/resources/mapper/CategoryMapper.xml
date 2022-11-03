@@ -68,7 +68,7 @@
     <!--CategoryStandardVO getStandardById(Long id);-->
     <select id="getStandardById" resultMap="StandardResultMapper">
         SELECT 
-        <include refid="StandardQueryFields"></include>
+        <include refid="StandardQueryFields"/>
         FROM pms_category
         WHERE id = #{id}
     </select>
@@ -88,7 +88,7 @@
     <!--List<CategoryListItemVO> list();-->
     <select id="list" resultMap="ListResultMapper">
         SELECT
-        <include refid="StandardQueryFields"></include>
+        <include refid="StandardQueryFields"/>
         FROM pms_category
         ORDER BY sort DESC, id DESC
     </select>
@@ -105,6 +105,7 @@
         <result column="is_display" property="isDisplay"/>
     </resultMap>
 
+    <!--自定义sql语句,用来复用-->
     <sql id="StandardQueryFields">
         <if test="true">
             id,

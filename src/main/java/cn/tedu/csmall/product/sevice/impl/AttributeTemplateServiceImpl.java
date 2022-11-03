@@ -60,7 +60,12 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         AttributeTemplate attributeTemplate = new AttributeTemplate();
         BeanUtils.copyProperties(attributeTemplateNewDTO, attributeTemplate);//将前者传入的信息复制到后者属性模板实体类信息中
         log.debug("开始执行插入数据!");
-        attributeTemplateMapper.insert(attributeTemplate);
+        int rows = attributeTemplateMapper.insert(attributeTemplate);
+        if (rows != 1){// 如果插入所影响的行数不为1
+            String message = "添加属性模板失败,服务器忙,请稍后再尝试!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
         log.debug("添加数据成功!");
     }
 
@@ -111,7 +116,12 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         }
 
         log.debug("开始执行删除属性模板数据");
-        attributeTemplateMapper.deleteById(id);
+        int rows = attributeTemplateMapper.deleteById(id);
+        if (rows != 1){// 如果插入所影响的行数不为1
+            String message = "删除属性模板失败,服务器忙,请稍后再尝试!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
         log.debug("删除属性模板数据完成!");
     }
 

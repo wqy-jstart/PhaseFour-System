@@ -27,7 +27,24 @@ public enum ServiceCode {
     /**
      * 错误:数据冲突
      */
-    ERR_NOT_FOUND(40900);
+    ERR_NOT_FOUND(40900),
+
+    /**
+     * 插入数据异常
+     */
+    ERR_INSERT(50000),
+    /**
+     * 删除数据异常
+     */
+    ERR_DELETE(50100),
+    /**
+     * 修改数据异常
+     */
+    ERR_UPDATE(50200),
+    /**
+     * 查询数据异常
+     */
+    ERR_SELECT(50300);
 
     private Integer value;
 

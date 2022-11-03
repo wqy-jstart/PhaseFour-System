@@ -28,6 +28,6 @@ public class ServiceException extends RuntimeException {
      * @return 返回成员变量业务状态码的实例
      */
     public ServiceCode getServiceCode(){
-        return serviceCode;//返回包含状态码的成员变量实例
+        return serviceCode;//为JsonResult返回包含状态码的成员变量实例
     }
 }
