@@ -14,7 +14,7 @@ public class ServiceException extends RuntimeException {
 
     /**
      * 以便抛出异常时传入状态码和状态描述
-     * @param serviceCode 传入ServiceCode枚举类中的状态码赋值给成员变量
+     * @param serviceCode 传入ServiceCode枚举类中的属性赋值给成员变量
      * @param message 抛出异常时反馈的信息
      */
     public ServiceException(ServiceCode serviceCode,String message) {

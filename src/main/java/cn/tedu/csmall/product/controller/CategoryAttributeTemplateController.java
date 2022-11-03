@@ -1,7 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAttributeTemplateAddNewDTO;
-import cn.tedu.csmall.product.sevice.ICategoryAttributeTemplateService;
+import cn.tedu.csmall.product.service.ICategoryAttributeTemplateService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

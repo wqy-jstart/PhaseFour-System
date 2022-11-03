@@ -1,7 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.PictureAddNewDTO;
-import cn.tedu.csmall.product.sevice.IPictureService;
+import cn.tedu.csmall.product.service.IPictureService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
