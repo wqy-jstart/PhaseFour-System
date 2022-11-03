@@ -67,6 +67,11 @@
         WHERE template_id = #{templateId}
     </select>
 
+    <!--int countByNameAndTemplateId(@Param("name") String name,@Param("templateId") Long templateId);-->
+    <select id="countByNameAndTemplateId" resultType="int">
+        SELECT count(*) FROM pms_attribute WHERE name=#{name} AND template_id=#{templateId}
+    </select>
+
     <!--AttributeStandardVO getStandardById(Long id);-->
     <select id="getStandardById" resultMap="StandardByIdRM">
         SELECT id,

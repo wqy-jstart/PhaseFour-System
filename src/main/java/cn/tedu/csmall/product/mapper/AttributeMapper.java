@@ -3,6 +3,7 @@ package cn.tedu.csmall.product.mapper;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public interface AttributeMapper {
     int count();
 
     int countByTemplateId(Long templateId);
+
+    int countByNameAndTemplateId(@Param("name") String name,@Param("templateId") Long templateId);
 
     AttributeStandardVO getStandardById(Long id);
 
