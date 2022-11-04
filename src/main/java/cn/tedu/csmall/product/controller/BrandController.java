@@ -6,6 +6,7 @@ import cn.tedu.csmall.product.service.IBrandService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
@@ -37,6 +38,11 @@ public class BrandController {
         log.debug("创建控制器对象:BrandController");
     }
 
+    /**
+     * 处理添加品牌的请求
+     * @param brandAddNewDTO 客户端传递的品牌信息
+     * @return JsonResult
+     */
     //http://localhost:8080/brands/add-NewBrand?name="美的02"&pinyin="新-MeiDi"&logo="新-Mei"&description="新-该商品非常好!"
     @ApiOperation("添加品牌")
     @ApiOperationSupport(order = 100)
@@ -48,6 +54,11 @@ public class BrandController {
         return JsonResult.ok();
     }
 
+    /**
+     * 处理根据id删除品牌的请求
+     * @param id 要删除的品牌id
+     * @return JsonResult
+     */
     // http://localhost:8080/brands/id/delete
     @ApiOperation("根据id删除品牌")
     @ApiOperationSupport(order = 200)
@@ -59,6 +70,10 @@ public class BrandController {
         return JsonResult.ok();
     }
 
+    /**
+     * 处理查询品牌列表的请求
+     * @return JsonResult
+     */
     // http://localhost:9080/brands
     @ApiOperation("查询品牌列表")
     @ApiOperationSupport(order = 410)
@@ -67,5 +82,36 @@ public class BrandController {
         log.debug("开始处理[查询品牌列表]的请求,无参");
         List<BrandListItemVO> list = brandService.list();
         return JsonResult.ok(list);
+    }
+
+    /**
+     * 处理启用品牌的请求
+     * @param id 要启用的品牌id
+     * @return JsonResult
+     */
+    @ApiOperation("启用品牌")
+    @ApiOperationSupport(order = 500)
+    @ApiImplicitParam(name = "id",value = "启用的品牌id",required = true,dataType = "long")
+    @PostMapping("/{id:[0-9]+}/enable")
+    public JsonResult<Void> enable(@Range(min = 1,message = "启用品牌失败,尝试启用的id无效!")
+                                 @PathVariable Long id){
+        log.debug("开始将id为{}的管理员设置为启用状态",id);
+        brandService.setEnable(id);
+        return JsonResult.ok();
+    }
+
+    /**
+     * 处理禁用品牌的请求
+     * @param id 要禁用的品牌id
+     * @return JsonResult
+     */
+    @ApiOperation("禁用品牌")
+    @ApiOperationSupport(order = 501)
+    @ApiImplicitParam(name = "id",value = "禁用的品牌id",required = true,dataType = "long")
+    @PostMapping("/{id:[0-9]+}/disable")
+    public JsonResult<Void> disable(@PathVariable Long id){
+        log.debug("开始将id为{}的品牌设置为禁用状态",id);
+        brandService.setDisable(id);
+        return JsonResult.ok();
     }
 }

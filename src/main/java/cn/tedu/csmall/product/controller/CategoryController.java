@@ -1,13 +1,17 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.service.ICategoryService;
+import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 //该类用来接收客户端传递关于分类的请求,并调用Service实现类中对应的方法来完成数据库对应的操作,并且捕捉可能发生的异常
 
 /**
@@ -18,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @Api(tags = "03.分类管理模块")
-@RequestMapping("/Categorys")
+@RequestMapping("/categorys")
 @RestController
 public class CategoryController {
 
@@ -34,11 +38,20 @@ public class CategoryController {
     @ApiOperation("添加分类")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-newCategory")
-    public String addNew(CategoryAddNewDTO categoryAddNewDTO) {
+    public JsonResult<Void> addNew(CategoryAddNewDTO categoryAddNewDTO) {
         log.debug("开始处理[添加分类]的请求,参数{}", categoryAddNewDTO);
         categoryService.addNew(categoryAddNewDTO);
         log.debug("添加数据成功!");
-        return "添加数据成功!";
+        return JsonResult.ok();
+    }
+
+    @ApiOperation("查询分类列表")
+    @ApiOperationSupport(order = 200)
+    @GetMapping("")
+    public JsonResult<List<CategoryListItemVO>> list(){
+        log.debug("开始处理查询分类列表的请求");
+        List<CategoryListItemVO> list = categoryService.list();
+        return JsonResult.ok(list);
     }
 
     // http://localhost:8080/categorys/id/delete

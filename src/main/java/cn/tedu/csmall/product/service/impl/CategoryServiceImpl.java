@@ -4,6 +4,7 @@ import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.CategoryMapper;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
+import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import cn.tedu.csmall.product.service.ICategoryService;
 import cn.tedu.csmall.product.web.ServiceCode;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 处理分类接口的接口实现类
@@ -50,7 +53,7 @@ public class CategoryServiceImpl implements ICategoryService {
             }
             depth = parentCategory.getDepth() + 1;// 否则有这个父级,将自己的depth深度调整为(父级深度+1)
         }
-        log.debug("当前尝试添加的类型的depth值为:{}",depth);
+        log.debug("当前尝试添加的类型的depth值为:{}", depth);
 
         // 调用Mapper对象的【根据名称统计数量】方法进行统计,添加前判断该名称是否存在
         String name = categoryAddNewDTO.getName();
@@ -72,25 +75,147 @@ public class CategoryServiceImpl implements ICategoryService {
         category.setIsParent(0);//固定先为0
         log.debug("即将插入分类数据:{}", category);
         int rows = categoryMapper.insert(category);
-        if (rows != 1){// 如果插入所影响的行数不为1
+        if (rows != 1) {// 如果插入所影响的行数不为1
             String message = "添加类别失败,服务器忙,请稍后再尝试!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+            throw new ServiceException(ServiceCode.ERR_INSERT, message);
         }
 
 //        category.getGmtCreate().toString();
 
         // 检查当前新增类型的父级类别，如果父类别的isParent为0，则将父级类别的isParent更新为1
-        if (parentId !=0){ // 如果当前的父级id不为0,说明存在父类
-            if (parentCategory.getIsParent() == 0){ // 如果父级的isParent为0(暂时没有子级的情况)
+        if (parentId != 0) { // 如果当前的父级id不为0,说明存在父类
+            if (parentCategory.getIsParent() == 0) { // 如果父级的isParent为0(暂时没有子级的情况)
                 // 创建一个分类对象,用来修改父级的isParent(需设置id过滤条件)
                 Category updateParentCategory = new Category();
                 updateParentCategory.setId(parentId);// ★设置id为子级的ParentId,用来作为过滤条件修改父级的IsParent
                 updateParentCategory.setIsParent(1);// 修改父级的IsParent为1
-                log.debug("将父级类别的isParent更新为1,更新的参数对象:{}",updateParentCategory);
+                log.debug("将父级类别的isParent更新为1,更新的参数对象:{}", updateParentCategory);
                 categoryMapper.update(updateParentCategory);
             }
         }
     }
     // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
+
+    /**
+     * 处理查询类别列表的业务
+     *
+     * @return List
+     */
+    @Override
+    public List<CategoryListItemVO> list() {
+        log.debug("开始处理查询类别列表的业务!");
+        return categoryMapper.list();
+    }
+
+    /**
+     * 处理启用分类
+     * @param id 要启用的分类id
+     */
+    @Override
+    public void setEnable(Long id) {
+        updateEnableById(id, 1);
+    }
+
+    /**
+     * 处理禁用分类
+     * @param id 要禁用的分类id
+     */
+    @Override
+    public void setDisable(Long id) {
+        updateEnableById(id, 0);
+    }
+
+    /**
+     * 处理显示分类
+     * @param id 显示分类的id
+     */
+    @Override
+    public void setDisplay(Long id) {
+        updateDisplayById(id,1);
+    }
+
+    /**
+     * 处理隐藏分类
+     * @param id 隐藏的分类id
+     */
+    @Override
+    public void setHidden(Long id) {
+        updateDisplayById(id,0);
+    }
+
+    /**
+     * 处理启用与禁用的逻辑
+     *
+     */
+    private void updateEnableById(Long id, Integer enable) {
+        String[] tips = {"禁用", "启用"};
+        log.debug("开始处理[{}分类]的业务,id参数为{}", tips[enable], id);
+        // 判断id是否为1(系统管理员)
+        if (id == 1) {
+            String message = tips[enable] + "分类失败,尝试访问的数据不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+        // 根据id查询分类详情
+        CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
+        if (categoryStandardVO == null) {
+            String message = tips[enable] + "分类失败,尝试访问的数据不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+        // 判断查询结果中的enable与方法参数enable是否相同
+        if (enable.equals(categoryStandardVO.getEnable())) {
+            String message = tips[enable] + "分类失败，管理员账号已经处于" + tips[enable] + "状态！";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
+        }
+        // 创建category对象,并封装id和enable这2个属性的值,并进行修改
+        Category category = new Category();
+        category.setId(id);
+        category.setEnable(enable);
+        int rows = categoryMapper.update(category);
+        if (rows != 1) {
+            String message = tips[enable] + "分类失败，服务器忙，请稍后再次尝试！";
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
+        log.debug("修改成功!");
+    }
+
+    /**
+     * 处理显示和隐藏的逻辑
+     */
+    private void updateDisplayById(Long id , Integer display){
+        String[] tips = {"隐藏","显示"};
+        log.debug("开始处理[{}分类]的业务,id参数为{}", tips[display], id);
+        // 判断id是否为1(系统管理员)
+        if (id==1){
+            String message = tips[display] + "分类失败,尝试访问的数据不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+        // 查询分类详情
+        CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
+        if (categoryStandardVO==null){
+            String message = tips[display] + "分类失败,尝试访问的数据不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+        // 判断查询结果中的display与方法参数display是否相同
+        if (display.equals(categoryStandardVO.getIsDisplay())){
+            String message = tips[display] + "分类失败，管理员账号已经处于" + tips[display] + "状态！";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
+        }
+        // 创建category对象,并封装id和display这2个属性的值,并进行修改
+        Category category = new Category();
+        category.setId(id);
+        category.setIsDisplay(display);
+        int rows = categoryMapper.update(category);
+        if (rows != 1) {
+            String message = tips[display] + "分类失败，服务器忙，请稍后再次尝试！";
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
+        log.debug("修改成功!");
+    }
 }

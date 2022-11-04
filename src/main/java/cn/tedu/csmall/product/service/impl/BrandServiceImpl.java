@@ -6,6 +6,7 @@ import cn.tedu.csmall.product.mapper.BrandMapper;
 import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Brand;
+import cn.tedu.csmall.product.pojo.vo.BrandCategoryStandardVO;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import cn.tedu.csmall.product.service.IBrandService;
@@ -120,11 +121,68 @@ public class BrandServiceImpl implements IBrandService {
 
     /**
      * 执行查询所有品牌列表的业务
-     * @return
+     * @return List
      */
     @Override
     public List<BrandListItemVO> list() {
         log.debug("开始执行[查询品牌列表]的功能");
         return brandMapper.list();
+    }
+
+    /**
+     * 处理启用品牌的业务
+     * @param id 启用的品牌id
+     */
+    @Override
+    public void setEnable(Long id) {
+        updateEnableById(id,1);
+    }
+
+    /**
+     * 处理禁用品牌的业务
+     * @param id 禁用的品牌id
+     */
+    @Override
+    public void setDisable(Long id) {
+        updateEnableById(id,0);
+    }
+
+    /**
+     * 该方法用来处理启用与禁用功能的逻辑
+     * @param id 需要操作的品牌id
+     * @param enable 是否启用或禁用
+     */
+    private void updateEnableById(Long id,Integer enable){
+        String[] tips = {"禁用","启用"};
+        log.debug("开始处理[{}品牌]的业务,id参数为{}",tips[enable],id);
+        // 判断id是否为1(系统管理员)
+        if (id ==1){
+            String message = tips[enable] + "品牌失败,尝试访问的数据不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
+        }
+        // 根据id查询管理员详情
+        BrandStandardVO brandStandardVO = brandMapper.getStandardById(id);
+        if (brandStandardVO==null){
+            String message = tips[enable] + "品牌失败,尝试访问的数据不存在！";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+        // 判断查询结果中的enable与方法参数enable是否相同
+        if (enable.equals(brandStandardVO.getEnable())){
+            String message = tips[enable] + "品牌失败，管理员账号已经处于" + tips[enable] + "状态！";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
+        }
+        // 创建admin对象,并封装id和enable这2个属性的值,并进行修改
+        Brand brand = new Brand();
+        brand.setId(id);
+        brand.setEnable(enable);
+        int rows = brandMapper.update(brand);
+        if (rows!=1){
+            String message = tips[enable] + "管理员失败，服务器忙，请稍后再次尝试！";
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
+        log.debug("修改成功!");
     }
 }

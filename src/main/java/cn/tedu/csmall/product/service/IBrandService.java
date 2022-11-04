@@ -31,4 +31,16 @@ public interface IBrandService {
      * @return
      */
     List<BrandListItemVO> list();
+
+    /**
+     * 启用品牌
+     * @param id 启用的品牌id
+     */
+    void setEnable(Long id);
+
+    /**
+     * 禁用品牌
+     * @param id 禁用的品牌id
+     */
+    void setDisable(Long id);
 }

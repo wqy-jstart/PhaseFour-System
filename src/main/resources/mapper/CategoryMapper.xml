@@ -90,7 +90,7 @@
         SELECT
         <include refid="StandardQueryFields"/>
         FROM pms_category
-        ORDER BY sort DESC, id DESC
+        ORDER BY id DESC
     </select>
     <resultMap id="ListResultMapper" type="cn.tedu.csmall.product.pojo.vo.CategoryListItemVO">
         <id column="id" property="id"/>
