@@ -155,12 +155,6 @@ public class BrandServiceImpl implements IBrandService {
     private void updateEnableById(Long id,Integer enable){
         String[] tips = {"禁用","启用"};
         log.debug("开始处理[{}品牌]的业务,id参数为{}",tips[enable],id);
-        // 判断id是否为1(系统管理员)
-        if (id ==1){
-            String message = tips[enable] + "品牌失败,尝试访问的数据不存在!";
-            log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
-        }
         // 根据id查询管理员详情
         BrandStandardVO brandStandardVO = brandMapper.getStandardById(id);
         if (brandStandardVO==null){

@@ -31,4 +31,13 @@ public class CategoryServiceTests {
             log.debug(e.getMessage());//捕获异常时输出
         }
     }
+
+    @Test
+    void enable(){
+        Long id = 2L;
+//        categoryService.setEnable(id);
+//        categoryService.setDisable(id);
+        categoryService.setDisplay(id);
+//        categoryService.setHidden(id);
+    }
 }

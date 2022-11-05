@@ -117,7 +117,7 @@
                positive_comment_count,
                enable
         FROM pms_brand
-        ORDER BY sort DESC, id DESC
+        ORDER BY id
     </select>
     <resultMap id="listItemRM" type="cn.tedu.csmall.product.pojo.vo.BrandListItemVO">
         <id column="id" property="id"/>

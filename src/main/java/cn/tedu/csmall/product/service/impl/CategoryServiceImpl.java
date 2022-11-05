@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -151,12 +152,6 @@ public class CategoryServiceImpl implements ICategoryService {
     private void updateEnableById(Long id, Integer enable) {
         String[] tips = {"禁用", "启用"};
         log.debug("开始处理[{}分类]的业务,id参数为{}", tips[enable], id);
-        // 判断id是否为1(系统管理员)
-        if (id == 1) {
-            String message = tips[enable] + "分类失败,尝试访问的数据不存在!";
-            log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
-        }
         // 根据id查询分类详情
         CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
         if (categoryStandardVO == null) {
@@ -188,12 +183,6 @@ public class CategoryServiceImpl implements ICategoryService {
     private void updateDisplayById(Long id , Integer display){
         String[] tips = {"隐藏","显示"};
         log.debug("开始处理[{}分类]的业务,id参数为{}", tips[display], id);
-        // 判断id是否为1(系统管理员)
-        if (id==1){
-            String message = tips[display] + "分类失败,尝试访问的数据不存在!";
-            log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
-        }
         // 查询分类详情
         CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
         if (categoryStandardVO==null){
