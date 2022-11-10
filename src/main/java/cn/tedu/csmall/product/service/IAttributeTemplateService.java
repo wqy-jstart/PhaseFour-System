@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
 
 import java.util.List;
 
@@ -29,4 +30,11 @@ public interface IAttributeTemplateService {
      * @return
      */
     List<AttributeTemplateListItemVO> list();
+
+    /**
+     * 根据id查询属性模板详情
+     * @param id 属性模板的id
+     * @return 返回属性模板的详情VO类
+     */
+    AttributeTemplateStandardVO selectById(Long id);
 }

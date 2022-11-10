@@ -1,7 +1,9 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.entity.Category;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
+import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import cn.tedu.csmall.product.service.ICategoryService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -36,7 +38,7 @@ public class CategoryController {
         log.debug("创建控制器对象:CategoryController");
     }
 
-    // http://localhost:8080/categorys/add-newCategory?name="品牌男装7"&parentId=1&depth=1&keywords="无"&sort=0&icon="无"
+    // http://localhost:9080/categorys/add-newCategory?name="品牌男装7"&parentId=1&depth=1&keywords="无"&sort=0&icon="无"
     @ApiOperation("添加分类")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-newCategory")
@@ -56,7 +58,7 @@ public class CategoryController {
         return JsonResult.ok(list);
     }
 
-    // http://localhost:8080/categorys/id/delete
+    // http://localhost:9080/categorys/id/delete
     @ApiOperation("根据id删除分类")
     @ApiOperationSupport(order = 301)
     @PostMapping("/{id:[0-9]+}/delete")
@@ -64,6 +66,27 @@ public class CategoryController {
         String message = "尝试删除id为[" + id + "]的分类";
         log.debug(message);
         return message;
+    }
+
+    // http://localhost:9080/categorys/update
+    @ApiOperation("根据id修改分类数据")
+    @ApiOperationSupport(order = 300)
+    @PostMapping("/update")
+    public JsonResult<Void> update(Category category){
+        log.debug("根据分类id{}修改分类信息",category.getId());
+        categoryService.updateById(category);
+        return JsonResult.ok();
+    }
+
+    // http://localhost:9080/categorys/id/select
+    @ApiOperation("根据id查询类别详情")
+    @ApiOperationSupport(order = 302)
+    @ApiImplicitParam(name = "id",value = "类别id",required = true,dataType = "long")
+    @GetMapping("/{id:[0-9]+}/select")
+    public JsonResult<CategoryStandardVO> selectById(@Range(min = 1,message = "查询失败,该id无效!")@PathVariable Long id){
+        log.debug("开始处理根据id:{}查询类别的请求",id);
+        CategoryStandardVO categoryStandardVO = categoryService.selectById(id);
+        return JsonResult.ok(categoryStandardVO);
     }
 
     /**

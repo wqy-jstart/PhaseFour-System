@@ -127,6 +127,34 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     /**
+     * 根据id修改相册数据
+     * @param album album
+     */
+    @Override
+    public void updateById(Album album) {
+        log.debug("开始执行根据id修改相册详情的业务");
+        AlbumStandardVO albumStandardVO = albumMapper.getStandardById(album.getId());
+        if (albumStandardVO==null){
+            String message = "修改失败,该相册id不存在";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+        int count = albumMapper.countByName(album.getName());
+        if (count!=0){
+            String message ="修改失败,该相册名称已经存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+        int rows = albumMapper.update(album);
+        if (rows!=1){
+            String message = "修改失败,服务器忙,请稍后再试...";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+    }
+
+
+    /**
      * 处理查询相册列表的功能
      *
      * @return 返回List集合
@@ -135,5 +163,22 @@ public class AlbumServiceImpl implements IAlbumService {
     public List<AlbumListItemVO> list() {
         log.debug("开始处理[查询相册列表]的功能");
         return albumMapper.list();
+    }
+
+    /**
+     * 根据id查询相册详情的业务
+     * @param id 相册id
+     * @return 返回相册详情VO类
+     */
+    @Override
+    public AlbumStandardVO selectById(Long id) {
+        log.debug("开始处理根据id:{}查询相册详情的业务",id);
+        AlbumStandardVO albumStandardVO =  albumMapper.getStandardById(id);
+        if (albumStandardVO==null){
+            String message = "查询失败,该id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_SELECT,message);
+        }
+        return albumStandardVO;
     }
 }

@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,11 @@ public class AttributeTemplateServiceTests {
         }catch (ServiceException e){
             log.debug(e.getMessage());
         }
+    }
+    @Test
+    void selectById(){
+        Long id = 1L;
+        AttributeTemplateStandardVO attributeTemplateStandardVO = attributeTemplateService.selectById(id);
+        log.debug("查询id为{}的属性模板详情,参数为:{}",id,attributeTemplateStandardVO);
     }
 }

@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import cn.tedu.csmall.product.service.IBrandService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -9,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -76,12 +78,22 @@ public class BrandController {
      */
     // http://localhost:9080/brands
     @ApiOperation("查询品牌列表")
-    @ApiOperationSupport(order = 410)
+    @ApiOperationSupport(order = 301)
     @GetMapping("")
     public JsonResult<List<BrandListItemVO>> list(){
         log.debug("开始处理[查询品牌列表]的请求,无参");
         List<BrandListItemVO> list = brandService.list();
         return JsonResult.ok(list);
+    }
+
+    @ApiOperation("根据id查询品牌数据")
+    @ApiOperationSupport(order = 302)
+    @ApiImplicitParam(name = "id",value = "品牌id",required = true,dataType = "long")
+    @GetMapping("/{id:[0-9]+}/select")
+    public JsonResult<BrandStandardVO> selectById(@Range(min = 1,message = "查询失败,该id无效!")@PathVariable Long id){
+        log.debug("开始处理[根据id{}查询品牌详情]的请求",id);
+        BrandStandardVO brandStandardVO = brandService.selectById(id);
+        return JsonResult.ok(brandStandardVO);
     }
 
     /**

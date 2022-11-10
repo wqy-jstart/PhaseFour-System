@@ -9,6 +9,7 @@ import cn.tedu.csmall.product.pojo.entity.Brand;
 import cn.tedu.csmall.product.pojo.vo.BrandCategoryStandardVO;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
+import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import cn.tedu.csmall.product.service.IBrandService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -127,6 +128,23 @@ public class BrandServiceImpl implements IBrandService {
     public List<BrandListItemVO> list() {
         log.debug("开始执行[查询品牌列表]的功能");
         return brandMapper.list();
+    }
+
+    /**
+     * 执行根据id查询品牌的业务
+     * @param id 品牌id
+     * @return 返回品牌业务的Vo类
+     */
+    @Override
+    public BrandStandardVO selectById(Long id) {
+        log.debug("开始根据品牌id:{}来查询品牌详情的业务",id);
+        BrandStandardVO brandStandardVO =  brandMapper.getStandardById(id);
+        if (brandStandardVO==null){
+            String message = "查询失败,该id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_SELECT,message);
+        }
+        return brandStandardVO;
     }
 
     /**

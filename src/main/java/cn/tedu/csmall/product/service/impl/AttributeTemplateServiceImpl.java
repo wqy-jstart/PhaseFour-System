@@ -9,6 +9,7 @@ import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
 import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import cn.tedu.csmall.product.service.IAttributeTemplateService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -134,5 +135,22 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
     public List<AttributeTemplateListItemVO> list() {
         log.debug("开始处理[属性模板列表]的功能");
         return attributeTemplateMapper.list();
+    }
+
+    /**
+     * 根据id查询属性模板的详情
+     * @param id 属性模板的id
+     * @return 返回属性模板详情VO类
+     */
+    @Override
+    public AttributeTemplateStandardVO selectById(Long id) {
+        log.debug("开始处理根据id{},查询属性模板详情的业务",id);
+        AttributeTemplateStandardVO attributeTemplateStandardVO =  attributeTemplateMapper.getStandardById(id);
+        if (attributeTemplateStandardVO==null){
+            String message = "查询失败,该id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_SELECT,message);
+        }
+        return attributeTemplateStandardVO;
     }
 }

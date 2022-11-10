@@ -64,7 +64,7 @@ public interface BrandMapper {
 
     /**
      * 查询一条品牌数据
-     * @param id
+     * @param id 品牌id
      * @return
      */
     BrandStandardVO getStandardById(Long id);

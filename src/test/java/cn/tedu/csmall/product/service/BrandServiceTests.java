@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,12 @@ public class BrandServiceTests {
         }catch (RuntimeException e){
             log.debug(e.getMessage());//捕获异常时输出
         }
+    }
+
+    @Test
+    void selectById(){
+        Long id = 1L;
+        BrandStandardVO brandStandardVO = service.selectById(id);
+        log.debug("查询id为{}的品牌详情,参数:{}",id,brandStandardVO);
     }
 }

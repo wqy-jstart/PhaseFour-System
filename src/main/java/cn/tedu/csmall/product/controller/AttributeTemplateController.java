@@ -2,10 +2,12 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
 import cn.tedu.csmall.product.service.IAttributeTemplateService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
@@ -61,11 +63,21 @@ public class AttributeTemplateController {
 
     // http://localhost:9080/AttributeTemplates
     @ApiOperation("属性模板列表")
-    @ApiOperationSupport(order = 410)
+    @ApiOperationSupport(order = 301)
     @GetMapping("")
     public JsonResult<List<AttributeTemplateListItemVO>> list(){
         log.debug("开始处理[属性模板列表]的请求");
         List<AttributeTemplateListItemVO> list = attributeTemplateService.list();
         return JsonResult.ok(list);
+    }
+    // http://localhost:9080/AttributeTemplates/id/select
+    @ApiOperation("根据id查询属性模板的详情")
+    @ApiOperationSupport(order = 302)
+    @ApiImplicitParam(name = "id",value = "属性模板id",required = true,dataType = "long")
+    @GetMapping("/{id:[0-9]+}/select")
+    public JsonResult<AttributeTemplateStandardVO> selectById(@Range(min = 1,message = "查询失败,该属性模板id无效!")@PathVariable Long id){
+        log.debug("开始处理[根据id查询属性模板]的请求");
+        AttributeTemplateStandardVO attributeTemplateStandardVO = attributeTemplateService.selectById(id);
+        return JsonResult.ok(attributeTemplateStandardVO);
     }
 }

@@ -1,7 +1,9 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import cn.tedu.csmall.product.pojo.entity.Album;
 import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
+import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import cn.tedu.csmall.product.service.IAlbumService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -25,7 +27,7 @@ import java.util.List;
 @Api(tags = "01.相册管理模块")
 @Slf4j// 日志
 @Validated// 检查
-@RestController// 组件
+@RestController// 控制器组件
 @RequestMapping("/albums")//该Controller类中所有@RequestMapping请求路径的父路径
 public class AlbumController {
 
@@ -55,20 +57,40 @@ public class AlbumController {
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
     @PostMapping("/{id:[0-9]+}/delete")//在请求路径中先用占位符进行占位,使用正则来限制输入的内容
-    public JsonResult<Void> delete(@Range(min = 1,message = "删除相册失败,尝试删除的相册的ID无效!")
+    public JsonResult<Void> delete(@Range(min = 1, message = "删除相册失败,尝试删除的相册的ID无效!")
                                    @PathVariable Long id) {//接收路径中通过占位符传入的信息(类型要匹配否则报400)
-        log.debug("开始处理[根据id删除相册]的请求,参数:{}",id);
+        log.debug("开始处理[根据id删除相册]的请求,参数:{}", id);
         albumService.delete(id);
+        return JsonResult.ok();
+    }
+
+    @ApiOperation("根据id修改相册数据")
+    @ApiOperationSupport(order = 300)
+    @PostMapping("/update")
+    public JsonResult<Void> update(Album album){
+        log.debug("开始处理[根据id修改相册]的请求!");
+        albumService.updateById(album);
         return JsonResult.ok();
     }
 
     // http://localhost:9080/albums
     @ApiOperation("查询相册列表")
-    @ApiOperationSupport(order = 410)
+    @ApiOperationSupport(order = 301)
     @GetMapping("")
-    public JsonResult<List<AlbumListItemVO>> list(){
+    public JsonResult<List<AlbumListItemVO>> list() {
         log.debug("开始处理[查询相册列表]的请求,无参");
         List<AlbumListItemVO> list = albumService.list();
         return JsonResult.ok(list);//该方法指定了泛型<T>,故要在方法上指定该方法需要返回的泛型
+    }
+
+    // http://localhost:9080/adbums/id/select
+    @ApiOperation("根据id查询相册详情")
+    @ApiOperationSupport(order = 302)
+    @ApiImplicitParam(name = "id",value = "相册id",required = true,dataType = "long")
+    @GetMapping("/{id:[0-9]+}/select")
+    public JsonResult<AlbumStandardVO> selectById(@Range(min = 1, message = "查询失败,该id无效!") @PathVariable Long id) {
+        log.debug("开始处理[根据id查询相册详情],的业务,参数:{}", id);
+        AlbumStandardVO albumStandardVO = albumService.selectById(id);
+        return JsonResult.ok(albumStandardVO);
     }
 }

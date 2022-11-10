@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 
 import java.util.List;
 
@@ -31,6 +32,13 @@ public interface IBrandService {
      * @return
      */
     List<BrandListItemVO> list();
+
+    /**
+     * 根据品牌id查询品牌详情
+     * @Param id 品牌id
+     * @return
+     */
+    BrandStandardVO selectById(Long id);
 
     /**
      * 启用品牌

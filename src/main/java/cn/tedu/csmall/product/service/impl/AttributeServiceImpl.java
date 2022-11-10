@@ -5,6 +5,8 @@ import cn.tedu.csmall.product.mapper.AttributeMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
+import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
 import cn.tedu.csmall.product.service.IAttributeService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -75,5 +77,22 @@ public class AttributeServiceImpl implements IAttributeService {
     public List<AttributeListItemVO> list() {
         log.debug("开始处理查询[属性列表的业务]");
         return attributeMapper.list();
+    }
+
+    /**
+     * 根据id查询属性详情
+     * @param id 属性id
+     * @return 返回属性详情的VO类
+     */
+    @Override
+    public AttributeStandardVO selectById(Long id) {
+        log.debug("开始处理[根据id查询属性详情]的业务");
+        AttributeStandardVO attributeStandardVO =  attributeMapper.getStandardById(id);
+        if (attributeStandardVO==null){
+            String message = "查询失败,该id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_SELECT,message);
+        }
+        return attributeStandardVO;
     }
 }

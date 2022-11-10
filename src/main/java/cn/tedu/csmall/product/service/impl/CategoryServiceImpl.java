@@ -95,6 +95,33 @@ public class CategoryServiceImpl implements ICategoryService {
             }
         }
     }
+
+    /**
+     * 根据id修改类别数据
+     * @param category 类别实体类
+     */
+    @Override
+    public void updateById(Category category) {
+        log.debug("开始处理[根据id修改类别信息]的业务");
+        CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(category.getId());
+        if (categoryStandardVO==null){
+            String message = "修改失败,该类别id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+        int count = categoryMapper.countByName(category.getName());
+        if (count!=0){
+            String message = "修改失败,修改的类别名称已存在";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+        int rows = categoryMapper.update(category);
+        if (rows != 1){
+            String message = "服务器忙,请稍后再试...";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+    }
     // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
 
     /**
@@ -106,6 +133,23 @@ public class CategoryServiceImpl implements ICategoryService {
     public List<CategoryListItemVO> list() {
         log.debug("开始处理查询类别列表的业务!");
         return categoryMapper.list();
+    }
+
+    /**
+     * 根据类别id查询类别详情
+     * @param id 菜单id
+     * @return 返回类别详情的Vo类
+     */
+    @Override
+    public CategoryStandardVO selectById(Long id) {
+        log.debug("开始根据id:{}来查询菜单详情",id);
+        CategoryStandardVO categoryStandardVO =  categoryMapper.getStandardById(id);
+        if (categoryStandardVO==null){
+            String message = "查询失败,该id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_SELECT,message);
+        }
+        return categoryStandardVO;
     }
 
     /**

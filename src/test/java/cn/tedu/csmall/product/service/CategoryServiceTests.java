@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,12 @@ public class CategoryServiceTests {
 //        categoryService.setDisable(id);
         categoryService.setDisplay(id);
 //        categoryService.setHidden(id);
+    }
+
+    @Test
+    void selectById(){
+        Long id = 1L;
+        CategoryStandardVO categoryStandardVO = categoryService.selectById(id);
+        log.debug("id为{}的类别详情为:{}",id,categoryStandardVO);
     }
 }

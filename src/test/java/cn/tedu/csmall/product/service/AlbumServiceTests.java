@@ -2,6 +2,8 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +49,12 @@ public class AlbumServiceTests {
         for (Object item : list) {
             log.debug("{}",item);
         }
+    }
+
+    @Test
+    void selectById(){
+        Long id = 1L;
+        AlbumStandardVO albumStandardVO = service.selectById(id);
+        log.debug("查询id为{}的相册详情为:{}",id,albumStandardVO);
     }
 }
