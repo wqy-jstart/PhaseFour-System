@@ -4,6 +4,7 @@ import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.web.JsonResult;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -79,6 +80,19 @@ public class GlobalExceptionHandler {
             stringJoiner.add(constraintViolation.getMessage());// 将获取的信息拿到并添加到StringJoiner
         }
         return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST,stringJoiner.toString());
+    }
+
+    /**
+     * Spring Security框架----没有权限访问----通过认证,但没权限,故由全局异常来处理
+     *
+     * @param e AccessDeniedException
+     * @return 返回因权限受限而无法访问的异常
+     */
+    @ExceptionHandler
+    public JsonResult<Void> handleAccessDeniedException(AccessDeniedException e) {
+        log.debug("捕获到:AccessDeniedException");
+        String message = "访问失败，当前登录的用户不具有此操作权限！";
+        return JsonResult.fail(ServiceCode.ERR_FORBIDDEN, message);
     }
 
     /**
