@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 //实现相册Service层接口中的方法,在方法中处理相关的业务逻辑
@@ -27,9 +28,10 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@Resource
 public class AlbumServiceImpl implements IAlbumService {
 
-    @Autowired//将相册的Mapper接口注入进来
+    @Autowired// 将相册的Mapper接口注入进来
     private AlbumMapper albumMapper;
 
     @Autowired

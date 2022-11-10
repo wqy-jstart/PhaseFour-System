@@ -23,10 +23,10 @@ import java.util.List;
  * @Version 0.0.1
  */
 @Api(tags = "01.相册管理模块")
-@Slf4j
-@Validated
+@Slf4j// 日志
+@Validated// 检查
+@RestController// 组件
 @RequestMapping("/albums")//该Controller类中所有@RequestMapping请求路径的父路径
-@RestController
 public class AlbumController {
 
     @Autowired//将Service接口注入进来
