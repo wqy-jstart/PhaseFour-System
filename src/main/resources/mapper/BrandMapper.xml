@@ -54,7 +54,6 @@
             <if test="productCount!=null">product_count=#{productCount},</if>
             <if test="commentCount!=null">comment_count=#{commentCount},</if>
             <if test="positiveCommentCount!=null">positive_comment_count=#{positiveCommentCount},</if>
-            <if test="enable!=null">enable=#{enable}</if>
         </set>
         WHERE id=#{id}
     </update>

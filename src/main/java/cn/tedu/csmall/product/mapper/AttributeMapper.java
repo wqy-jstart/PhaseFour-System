@@ -28,6 +28,12 @@ public interface AttributeMapper {
 
     int countByTemplateId(Long templateId);
 
+    /**
+     * 根据名称和TemplateId来查询数据的条数
+     * @param name 属性名称
+     * @param templateId 模板id
+     * @return 返回查询的数量
+     */
     int countByNameAndTemplateId(@Param("name") String name,@Param("templateId") Long templateId);
 
     AttributeStandardVO getStandardById(Long id);

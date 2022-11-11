@@ -42,7 +42,6 @@
     <update id="update">
         UPDATE pms_attribute
         <set>
-            <if test="templateId!=null">templateId=#{templateId},</if>
             <if test="name!=null">name=#{name},</if>
             <if test="description!=null">description=#{description},</if>
             <if test="type!=null">type=#{type},</if>

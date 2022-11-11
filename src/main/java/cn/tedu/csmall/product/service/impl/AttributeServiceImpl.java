@@ -69,6 +69,17 @@ public class AttributeServiceImpl implements IAttributeService {
         // TODO 删除模板的业务
     }
 
+    @Override
+    public void update(Attribute attribute) {
+        log.debug("开始处理[根据id修改属性数据]的业务,参数{}",attribute.getId());
+        AttributeStandardVO attributeStandardVO = attributeMapper.getStandardById(attribute.getId());
+        if (attributeStandardVO==null){
+            String message = "修改失败,该属性id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+    }
+
     /**
      * 处理属性列表数据的业务
      * @return 返回List

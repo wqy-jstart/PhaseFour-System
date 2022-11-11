@@ -121,6 +121,35 @@ public class BrandServiceImpl implements IBrandService {
     }
 
     /**
+     * 根据id修改品牌数据
+     * @param brand
+     */
+    @Override
+    public void update(Brand brand) {
+        log.debug("开始处理根据id修改品牌的业务,参数:{}",brand);
+        BrandStandardVO brandStandardVO = brandMapper.getStandardById(brand.getId());
+        if (brandStandardVO==null){
+            String message = "修改失败,该id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+
+        int count = brandMapper.countByName(brand.getName());
+        if (count!=0){
+            String message = "修改失败,该品牌名称已存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+
+        int rows = brandMapper.update(brand);
+        if (rows>1){
+            String message = "修改失败,服务器忙,请稍后再试...";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+    }
+
+    /**
      * 执行查询所有品牌列表的业务
      * @return List
      */

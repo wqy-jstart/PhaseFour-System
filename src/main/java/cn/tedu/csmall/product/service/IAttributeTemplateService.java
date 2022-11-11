@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
+import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
 
@@ -24,6 +25,12 @@ public interface IAttributeTemplateService {
      * @param id id
      */
     void delete(Long id);
+
+    /**
+     * 根据id修改属性模板信息
+     * @param attributeTemplate attributeTemplate
+     */
+    void update(AttributeTemplate attributeTemplate);
 
     /**
      * 查询属性模板的列表数据

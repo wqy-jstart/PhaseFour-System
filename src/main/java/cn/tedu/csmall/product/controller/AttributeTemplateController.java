@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
+import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
 import cn.tedu.csmall.product.service.IAttributeTemplateService;
@@ -58,6 +59,16 @@ public class AttributeTemplateController {
                                     @PathVariable Long id) {
         log.debug("开始删除id为[" + id + "],的属性模板");
         attributeTemplateService.delete(id);
+        return JsonResult.ok();
+    }
+
+    // http://localhost:9080/AttributeTemplates/update
+    @ApiOperation("根据id修改属性模板")
+    @ApiOperationSupport(order = 300)
+    @PostMapping("/update")
+    public JsonResult<Void> update(AttributeTemplate attributeTemplate){
+        log.debug("开始处理[根据id修改属性模板]的请求,参数:{}",attributeTemplate.getId());
+        attributeTemplateService.update(attributeTemplate);
         return JsonResult.ok();
     }
 

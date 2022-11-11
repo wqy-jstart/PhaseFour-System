@@ -127,6 +127,35 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
     }
 
     /**
+     * 根据属性模板id修改属性模板的业务
+     * @param attributeTemplate attributeTemplate
+     */
+    @Override
+    public void update(AttributeTemplate attributeTemplate) {
+        log.debug("开始处理[根据id修改属性模板]的业务,参数{}",attributeTemplate.getId());
+        AttributeTemplateStandardVO attributeTemplateStandardVO = attributeTemplateMapper.getStandardById(attributeTemplate.getId());
+        if (attributeTemplateStandardVO==null){
+            String message = "修改失败,该属性模板id不存在";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+
+        int count = attributeTemplateMapper.countByName(attributeTemplate.getName());
+        if (count!=0){
+            String message = "修改失败,该属性模板名称已经存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+
+        int rows = attributeTemplateMapper.update(attributeTemplate);
+        if (rows>1){
+            String message = "修改失败,服务器忙,请稍后再试...";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+    }
+
+    /**
      * 处理属性模板的列表业务
      *
      * @return List

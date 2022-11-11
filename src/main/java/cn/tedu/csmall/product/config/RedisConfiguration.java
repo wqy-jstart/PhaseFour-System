@@ -1,0 +1,37 @@
+package cn.tedu.csmall.product.config;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+
+import java.io.Serializable;
+
+/**
+ * Redis的配置类
+ *
+ * @Author java@.Wqy
+ * @Version 0.0.1
+ */
+@Slf4j
+@Configuration
+public class RedisConfiguration {
+
+    public RedisConfiguration(){
+        log.debug("创建配置类对象:RedisConfiguration");
+    }
+
+    @Bean// ★添加@Bean注解,向Spring容器中创建该对象,交由Spring管理,使用时可以自动装配
+    public RedisTemplate<String, Serializable> redisTemplate(
+            RedisConnectionFactory redisConnectionFactory
+    ) {
+        RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+
+        redisTemplate.setKeySerializer(RedisSerializer.string());// 创建序列化器,序列化key
+        redisTemplate.setValueSerializer(RedisSerializer.json());// 创建序列化器,序列化value值部分
+        return redisTemplate;
+    }
+}

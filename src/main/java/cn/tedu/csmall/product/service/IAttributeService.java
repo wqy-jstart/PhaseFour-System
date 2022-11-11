@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
+import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
 
@@ -25,6 +26,12 @@ public interface IAttributeService {
      * @param id 要删除的模板id
      */
     void delete(Long id);
+
+    /**
+     * 根据id修改属性模板
+     * @param attribute attribute
+     */
+    void update(Attribute attribute);
 
     /**
      * 查询所有属性列表的数据

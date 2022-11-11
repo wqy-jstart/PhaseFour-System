@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
+import cn.tedu.csmall.product.pojo.entity.Brand;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 
@@ -26,6 +27,12 @@ public interface IBrandService {
      * @param id 需要删除的品牌id
      */
     void delete(Long id);
+
+    /**
+     * 根据id修改品牌
+     * @param brand
+     */
+    void update(Brand brand);
 
     /**
      * 查询所有的品牌列表
