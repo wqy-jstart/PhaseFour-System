@@ -43,8 +43,8 @@ public class AlbumController {
     @ApiOperation("添加相册")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
-    //                     检查传递的参数
-    //                       ↓↓↓↓↓↓
+    //                          检查传递的参数
+    //                             ↓↓↓↓↓↓
     public JsonResult<Void> addNew(@Valid AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
         albumService.addNew(albumAddNewDTO);
