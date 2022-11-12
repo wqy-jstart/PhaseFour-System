@@ -23,15 +23,15 @@ public class RedisConfiguration {
         log.debug("创建配置类对象:RedisConfiguration");
     }
 
-    @Bean// ★添加@Bean注解,向Spring容器中创建该对象,交由Spring管理,使用时可以自动装配
+    // ★添加@Bean注解,向Spring容器中创建该对象,交由Spring管理,使用时可以进行自动装配
+    @Bean
     public RedisTemplate<String, Serializable> redisTemplate(
-            RedisConnectionFactory redisConnectionFactory
-    ) {
-        RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
+            RedisConnectionFactory redisConnectionFactory) {// 配置Redis连接工厂
+        RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();// 1.创建一个Redis模板
+        redisTemplate.setConnectionFactory(redisConnectionFactory);// 2.设置Redis连接工厂
 
-        redisTemplate.setKeySerializer(RedisSerializer.string());// 创建序列化器,序列化key
-        redisTemplate.setValueSerializer(RedisSerializer.json());// 创建序列化器,序列化value值部分
-        return redisTemplate;
+        redisTemplate.setKeySerializer(RedisSerializer.string());// 3.创建String序列化器,序列化key
+        redisTemplate.setValueSerializer(RedisSerializer.json());// 4.创建JSON序列化器,序列化value值部分
+        return redisTemplate;// 5.返回配置后的Redis模板
     }
 }

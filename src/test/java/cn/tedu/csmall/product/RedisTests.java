@@ -69,6 +69,7 @@ public class RedisTests {
         log.debug("从Redis中取出Key值为[{}]的数据,结果:{}",key,value);
     }
 
+    // 向Redis中取出对象
     @Test
     void valueGetObject(){
         String key = "album2022";
