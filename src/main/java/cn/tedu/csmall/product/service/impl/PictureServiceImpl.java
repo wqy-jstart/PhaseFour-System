@@ -1,9 +1,11 @@
 package cn.tedu.csmall.product.service.impl;
 
 import cn.tedu.csmall.product.ex.ServiceException;
+import cn.tedu.csmall.product.mapper.AlbumMapper;
 import cn.tedu.csmall.product.mapper.PictureMapper;
 import cn.tedu.csmall.product.pojo.dto.PictureAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Picture;
+import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import cn.tedu.csmall.product.service.IPictureService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,9 @@ public class PictureServiceImpl implements IPictureService {
     @Autowired
     PictureMapper pictureMapper;
 
+    @Autowired
+    AlbumMapper albumMapper;
+
     public PictureServiceImpl(){
         log.debug("创建业务对象:PictureServiceImpl");
     }
@@ -31,20 +36,20 @@ public class PictureServiceImpl implements IPictureService {
     @Override
     public void addNew(PictureAddNewDTO pictureAddNewDTO) {
         log.debug("开始处理添加[图片]的业务,参数,{}",pictureAddNewDTO);
-        Long albumId = pictureAddNewDTO.getAlbumId();
-        log.debug("检查图片名称是否已经被占用");
-        int count = pictureMapper.countByAlbumId(albumId);
-        if (count>0){
-            String message = "添加图片失败,albumId已经被占用";
+        AlbumStandardVO albumStandardVO = albumMapper.getStandardById(pictureAddNewDTO.getAlbumId());
+        if (albumStandardVO==null){
+            String message = "添加失败,该图片对应的相册不存在!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
         }
-
-        log.debug("图片名称没有被占用,将向相册表中插入数据");
         Picture picture = new Picture();
         BeanUtils.copyProperties(pictureAddNewDTO,picture);
-        log.debug("即将插入图片数据:{}", picture);
-        pictureMapper.insert(picture);
-        log.debug("插入图片数据完成!");
+        log.debug("即将向图片表中添加数据,参数:{}",picture);
+        int rows = pictureMapper.insert(picture);
+        if (rows>1){
+            String message = "添加失败,服务器忙,请稍后再试...";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+        }
     }
 }

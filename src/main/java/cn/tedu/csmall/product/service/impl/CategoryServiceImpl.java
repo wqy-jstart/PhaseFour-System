@@ -1,7 +1,7 @@
 package cn.tedu.csmall.product.service.impl;
 
 import cn.tedu.csmall.product.ex.ServiceException;
-import cn.tedu.csmall.product.mapper.CategoryMapper;
+import cn.tedu.csmall.product.mapper.*;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
@@ -22,8 +22,18 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements ICategoryService {
 
+    // 自动装配组件中的Bean对象
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private BrandCategoryMapper brandCategoryMapper;
+
+    @Autowired
+    private CategoryAttributeTemplateMapper categoryAttributeTemplateMapper;
+
+    @Autowired
+    private SpuMapper spuMapper;
 
     public CategoryServiceImpl() {
         log.debug("创建业务对象:BrandServiceImpl");
@@ -97,6 +107,70 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     /**
+     * 根据id删除分类数据
+     * @param id 类别id
+     */
+    @Override
+    public void deleteById(Long id) {
+        log.debug("开始处理[根据id删除类别]的业务,参数,{}",id);
+        CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
+
+        if (categoryStandardVO==null){
+            String message = "删除失败,该id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
+
+        {
+            int count = brandCategoryMapper.countByCategoryId(id);
+            if (count>0){
+                String message = "删除类别失败,该类别包含关联品牌的数据!";
+                log.debug(message);
+                throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
+            }
+        }
+
+        {
+            int count = categoryAttributeTemplateMapper.countByCategoryId(id);
+            if (count>0){
+                String message = "删除类别失败,该类别包含关联属性模板的数据!";
+                log.debug(message);
+                throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
+            }
+        }
+
+        {
+            int count = spuMapper.countByCategoryId(id);
+            if (count>0){
+                String message = "删除类别失败,该类别包含关联SPU的数据!";
+                log.debug(message);
+                throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
+            }
+        }
+
+        // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
+        Long parentId = categoryStandardVO.getParentId();// 获取该id下的类别父级id
+        if (parentId!=0){ // 说明该类别归属于某个父级
+            int count = categoryMapper.countByParentId(parentId);
+            if (count==1){
+                Category category = new Category();
+                category.setId(parentId);
+                category.setIsParent(0);
+                log.debug("将id为{}类别的isParent改为0",parentId);
+                categoryMapper.update(category);
+            }
+        }
+
+        log.debug("即将执行删除id为{}的类别数据",id);
+        int rows = categoryMapper.deleteById(id);
+        if (rows>1){
+            String message = "删除失败,服务器忙,请稍后再试...";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
+    }
+
+    /**
      * 根据id修改类别数据
      * @param category 类别实体类
      */
@@ -122,7 +196,6 @@ public class CategoryServiceImpl implements ICategoryService {
             throw new ServiceException(ServiceCode.ERR_UPDATE,message);
         }
     }
-    // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
 
     /**
      * 处理查询类别列表的业务

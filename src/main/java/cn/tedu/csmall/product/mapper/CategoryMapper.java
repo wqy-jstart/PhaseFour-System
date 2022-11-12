@@ -65,6 +65,13 @@ public interface CategoryMapper {
     int countByName(String name);
 
     /**
+     * 根据父级id查询类别数量
+     * @param parentId
+     * @return
+     */
+    int countByParentId(Long parentId);
+
+    /**
      * 查询一条类别数据
      * @param id
      * @return

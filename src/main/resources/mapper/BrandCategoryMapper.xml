@@ -8,39 +8,10 @@
         VALUES (#{brandId}, #{categoryId})
     </insert>
 
-    <!--int insertBatch(List<BrandCategory> brandCategories);-->
-    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO pms_brand_category(brand_id, category_id)
-        VALUES
-        <foreach collection="list" item="brandCategory" separator=",">
-            (#{brandCategory.brandId},#{brandCategory.categoryId})
-        </foreach>
-    </insert>
-
-    <!--int deleteById(Long id);-->
-    <delete id="deleteById">
-        DELETE
-        FROM pms_brand_category
-        WHERE id = #{id}
+    <!--int delete(@Param("brandId") Long brandId,@Param("categoryId") Long categoryId);-->
+    <delete id="delete">
+        DELETE FROM pms_brand_category WHERE brand_id=#{brandId} AND category_id=#{categoryId}
     </delete>
-
-    <!--int deleteByIds(Long[] ids);-->
-    <delete id="deleteByIds">
-        DELETE FROM pms_brand_category id IN(
-        <foreach collection="array" item="id" separator=",">
-            #{id}
-        </foreach>
-        )
-    </delete>
-
-    <!--int update(BrandCategory brandCategory);-->
-    <update id="update">
-        UPDATE pms_brand_category
-        <set>
-            <if test="brandId!=null">brand_id=#{brandId}</if>
-            <if test="categoryId!=null">category_id=#{categoryId}</if>
-        </set>
-    </update>
 
     <!--int count();-->
     <select id="count" resultType="int">
@@ -53,6 +24,18 @@
         SELECT count(*)
         FROM pms_brand_category
         WHERE brand_id = #{brandId}
+    </select>
+    
+    <!--int countByCategoryId(Long categoryId);-->
+    <select id="countByCategoryId" resultType="int">
+        SELECT count(*)
+        FROM pms_brand_category
+        WHERE category_id=#{categoryId}
+    </select>
+
+    <!--int countByBrandAndCategoryId(Long brandId,Long categoryId);-->
+    <select id="countByBrandAndCategoryId" resultType="int">
+        SELECT count(*) FROM pms_brand_category WHERE brand_id=#{brandId} AND category_id=#{categoryId}
     </select>
 
     <!--BrandCategoryStandardVO getStandardById(Long id);-->

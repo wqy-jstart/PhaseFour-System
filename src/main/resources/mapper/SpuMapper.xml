@@ -104,6 +104,11 @@
         SELECT count(*) FROM pms_spu WHERE brand_id=#{brandId}
     </select>
 
+    <!--int countByCategoryId(Long categoryId);-->
+    <select id="countByCategoryId" resultType="int">
+        SELECT count(*) FROM pms_spu WHERE category_id=#{categoryId}
+    </select>
+
     <!--int countByAttributeTemplateId(Long attributeTemplateId);-->
     <select id="countByAttributeTemplateId" resultType="int">
         SELECT count(*) FROM pms_spu WHERE attribute_template_id=#{attributeTemplateId}

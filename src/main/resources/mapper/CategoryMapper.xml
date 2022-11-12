@@ -41,10 +41,13 @@
     <update id="update">
         UPDATE pms_category
         <set>
+            <if test="isParent!=null">is_parent=#{isParent},</if>
             <if test="name!=null">name=#{name},</if>
             <if test="keywords!=null">keywords=#{keywords},</if>
             <if test="sort!=null">sort=#{sort},</if>
-            <if test="icon!=null">icon=#{icon},</if>
+            <if test="icon!=null">icon=#{icon}</if>
+            <if test="enable!=null">enable=#{enable}</if>
+            <if test="isDisplay!=null">is_display=#{isDisplay}</if>
         </set>
         WHERE id=#{id}
     </update>
@@ -57,12 +60,21 @@
 
     <!--int countByName(String name);-->
     <select id="countByName" resultType="int">
-        SELECT count(*) FROM pms_category WHERE name=#{name}
+        SELECT count(*)
+        FROM pms_category
+        WHERE name = #{name}
+    </select>
+
+    <!--int countByParentId(Long parentId);-->
+    <select id="countByParentId" resultType="int">
+        SELECT count(*)
+        FROM pms_category
+        WHERE parent_id = #{parentId}
     </select>
 
     <!--CategoryStandardVO getStandardById(Long id);-->
     <select id="getStandardById" resultMap="StandardResultMapper">
-        SELECT 
+        SELECT
         <include refid="StandardQueryFields"/>
         FROM pms_category
         WHERE id = #{id}

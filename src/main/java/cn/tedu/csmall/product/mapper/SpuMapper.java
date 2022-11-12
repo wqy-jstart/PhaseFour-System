@@ -38,6 +38,13 @@ public interface SpuMapper {
     int countByBrandId(Long brandId);
 
     /**
+     * 根据分类id查询SPU数据
+     * @param categoryId
+     * @return
+     */
+    int countByCategoryId(Long categoryId);
+
+    /**
      * 查询attributeTemplateId下的所有SPU数据
      * @param attributeTemplateId
      * @return

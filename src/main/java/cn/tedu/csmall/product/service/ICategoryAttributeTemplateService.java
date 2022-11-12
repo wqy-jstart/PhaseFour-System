@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAttributeTemplateAddNewDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 创建类别与属性模板的Service接口
@@ -8,6 +9,7 @@ import cn.tedu.csmall.product.pojo.dto.CategoryAttributeTemplateAddNewDTO;
  * @Author java@.Wqy
  * @Version 0.0.1
  */
+@Transactional
 public interface ICategoryAttributeTemplateService {
 
     /**

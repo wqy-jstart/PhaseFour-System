@@ -24,6 +24,12 @@ public interface ICategoryService {
     void addNew(CategoryAddNewDTO categoryAddNewDTO);
 
     /**
+     * 根据id删除类别
+     * @param id 类别id
+     */
+    void deleteById(Long id);
+
+    /**
      * 根据id修改分类信息
      * @param category 分类实体类
      */

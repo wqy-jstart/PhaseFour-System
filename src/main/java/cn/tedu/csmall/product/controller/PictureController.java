@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.PictureAddNewDTO;
 import cn.tedu.csmall.product.service.IPictureService;
+import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -26,11 +27,10 @@ public class PictureController {
     @ApiOperation("添加图片")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-New")
-    public String addNew(PictureAddNewDTO pictureAddNewDTO){
+    public JsonResult<Void> addNew(PictureAddNewDTO pictureAddNewDTO){
         log.debug("开始处理[添加图片]的请求,参数{}",pictureAddNewDTO);
         pictureService.addNew(pictureAddNewDTO);
-        log.debug("添加数据成功!");
-        return "添加数据成功!";
+        return JsonResult.ok();
     }
 
     @ApiOperation("根据url删除图片")

@@ -49,28 +49,20 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
-    @ApiOperation("查询分类列表")
-    @ApiOperationSupport(order = 200)
-    @GetMapping("")
-    public JsonResult<List<CategoryListItemVO>> list(){
-        log.debug("开始处理查询分类列表的请求");
-        List<CategoryListItemVO> list = categoryService.list();
-        return JsonResult.ok(list);
-    }
-
     // http://localhost:9080/categorys/id/delete
     @ApiOperation("根据id删除分类")
-    @ApiOperationSupport(order = 301)
+    @ApiOperationSupport(order = 300)
+    @ApiImplicitParam(name = "id",value = "要删除的类别id",required = true,dataType = "long")
     @PostMapping("/{id:[0-9]+}/delete")
-    public String deleteCategory2(@PathVariable Long id) {
-        String message = "尝试删除id为[" + id + "]的分类";
-        log.debug(message);
-        return message;
+    public JsonResult<Void> deleteById(@Range(min = 1,message = "删除失败,该类别id无效!")@PathVariable Long id) {
+        log.debug("开始处理[根据id删除类别]的请求,参数为{}",id);
+        categoryService.deleteById(id);
+        return JsonResult.ok();
     }
 
     // http://localhost:9080/categorys/update
     @ApiOperation("根据id修改分类数据")
-    @ApiOperationSupport(order = 300)
+    @ApiOperationSupport(order = 301)
     @PostMapping("/update")
     public JsonResult<Void> update(Category category){
         log.debug("根据分类id{}修改分类信息",category.getId());
@@ -87,6 +79,15 @@ public class CategoryController {
         log.debug("开始处理根据id:{}查询类别的请求",id);
         CategoryStandardVO categoryStandardVO = categoryService.selectById(id);
         return JsonResult.ok(categoryStandardVO);
+    }
+
+    @ApiOperation("查询分类列表")
+    @ApiOperationSupport(order = 303)
+    @GetMapping("")
+    public JsonResult<List<CategoryListItemVO>> list(){
+        log.debug("开始处理查询分类列表的请求");
+        List<CategoryListItemVO> list = categoryService.list();
+        return JsonResult.ok(list);
     }
 
     /**

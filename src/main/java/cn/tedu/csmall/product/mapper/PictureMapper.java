@@ -9,17 +9,19 @@ import java.util.List;
 @Repository
 public interface PictureMapper {
 
+    /**
+     * 添加图片数据
+     * @param picture
+     * @return
+     */
     int insert(Picture picture);
 
-    int insertBatch(List<Picture> pictures);
-
-    int deleteById(Long id);
-
-    int deleteByIds(Long[] ids);
-
-    int update(Picture picture);
-
-    int count();
+    /**
+     * 根据id删除图片
+     * @param id
+     * @return
+     */
+    int delete(Long id);
 
     /**
      * 根据相册统计图片数据的数量
