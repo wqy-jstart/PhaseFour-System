@@ -3,6 +3,7 @@ package cn.tedu.csmall.product.mapper;
 import cn.tedu.csmall.product.pojo.dto.PictureAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Picture;
 import cn.tedu.csmall.product.pojo.vo.PictureListItemVO;
+import cn.tedu.csmall.product.pojo.vo.PictureStandardVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,15 +12,15 @@ public interface PictureMapper {
 
     /**
      * 添加图片数据
-     * @param picture
-     * @return
+     * @param picture 要添加的图片DTO类
+     * @return 返回影响的条数
      */
     int insert(Picture picture);
 
     /**
      * 根据id删除图片
-     * @param id
-     * @return
+     * @param id 要删除的图片id
+     * @return 返回影响的条数
      */
     int delete(Long id);
 
@@ -30,7 +31,17 @@ public interface PictureMapper {
      */
     int countByAlbumId(Long albumId);
 
-    PictureAddNewDTO getStandardById(Long id);
+    /**
+     * 根据id查询图片详情
+     * @param id 要查询的图片id
+     * @return 返回查询的图片详情
+     */
+    PictureStandardVO getStandardById(Long id);
 
+    /**
+     * 查询图片列表
+     * @return 返回图片列表List集合
+     */
     List<PictureListItemVO> list();
+
 }

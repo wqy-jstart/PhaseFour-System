@@ -69,6 +69,6 @@
     <select id="list" resultType="cn.tedu.csmall.product.pojo.vo.AlbumListItemVO">
         SELECT id, name, description, sort
         FROM pms_album
-        ORDER BY sort DESC, id DESC
+        ORDER BY id
     </select>
 </mapper>

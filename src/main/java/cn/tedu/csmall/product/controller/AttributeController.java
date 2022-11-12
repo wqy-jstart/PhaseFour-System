@@ -33,6 +33,7 @@ public class AttributeController {
         log.debug("创建控制器对象:AttributeController");
     }
 
+    // http://localhost:9080/attributes/add-New
     @ApiOperation("添加属性")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-New")
@@ -54,6 +55,7 @@ public class AttributeController {
         return JsonResult.ok();
     }
 
+    // http://localhost:9080/attributes/
     @ApiOperation("属性列表")
     @ApiOperationSupport(order = 301)
     @GetMapping("")
@@ -63,6 +65,7 @@ public class AttributeController {
         return JsonResult.ok(list);
     }
 
+    // http://localhost:9080/attributes/id/select
     @ApiOperation("根据id查询属性详情")
     @ApiOperationSupport(order = 302)
     @ApiImplicitParam(name = "id",value = "属性id",required = true,dataType = "long")
@@ -73,13 +76,16 @@ public class AttributeController {
         return JsonResult.ok(attributeStandardVO);
     }
 
-//    @ApiOperation("根据id删除属性")
-//    @ApiOperationSupport(order = 901)
-//    @ApiImplicitParam(name = "id",value = "属性id",required = true,dataType = "long")
-//    @GetMapping("/{id:[0-9]+}/delete")
-//    public JsonResult delete(@PathVariable Long id){
-//        String message = "尝试删除id值为["+id+"]的相册";
-//        log.debug(message);
-//        return JsonResult.ok();
-//    }
+    // http://localhost:9080/templates/id/list
+    @ApiOperation("根据模板id查询属性列表")
+    @ApiOperationSupport(order = 303)
+    @ApiImplicitParam(name = "templateId",value = "模板id",required = true,dataType = "long")
+    @GetMapping("/{templateId:[0-9]+}/list")
+    public JsonResult<List<AttributeListItemVO>> listByTemplateId(@Range(min = 1,message = "查询失败,该模板id无效!")@PathVariable Long templateId){
+        log.debug("开始处理[根据模板id查询属性列表]的请求,参数:{}",templateId);
+        List<AttributeListItemVO> listByTemplateId = attributeService.listByTemplate(templateId);
+        return JsonResult.ok(listByTemplateId);
+    }
+
+
 }

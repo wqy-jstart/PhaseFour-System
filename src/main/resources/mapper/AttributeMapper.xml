@@ -126,4 +126,33 @@
         <result column="sort" property="sort"/>
         <result column="is_allow_customize" property="isAllowCustomize"/>
     </resultMap>
+
+    <!--List<AttributeListItemVO> listByTemplateId(Long templateId);-->
+    <select id="listByTemplateId" resultMap="ListByTemplateIdRM">
+        SELECT id,
+               template_id,
+               name,
+               description,
+               type,
+               input_type,
+               value_list,
+               unit,
+               sort,
+               is_allow_customize
+        FROM pms_attribute
+        WHERE template_id=#{templateId}
+    </select>
+
+    <resultMap id="ListByTemplateIdRM" type="cn.tedu.csmall.product.pojo.vo.AttributeListItemVO">
+        <id column="id" property="id"/>
+        <result column="template_id" property="templateId"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="type" property="type"/>
+        <result column="input_type" property="inputType"/>
+        <result column="value_list" property="valueList"/>
+        <result column="unit" property="unit"/>
+        <result column="sort" property="sort"/>
+        <result column="is_allow_customize" property="isAllowCustomize"/>
+    </resultMap>
 </mapper>

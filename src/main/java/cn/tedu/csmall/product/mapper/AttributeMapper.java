@@ -14,6 +14,11 @@ import java.util.List;
 @Repository
 public interface AttributeMapper {
 
+    /**
+     * 添加属性的业务
+     * @param attribute 需要添加的属性DTO类
+     * @return 返回添加后影响数据库的条数
+     */
     int insert(Attribute attribute);
 
     int insertBatch(List<Attribute> attributes);
@@ -39,4 +44,11 @@ public interface AttributeMapper {
     AttributeStandardVO getStandardById(Long id);
 
     List<AttributeListItemVO> list();
+
+    /**
+     * 根据模板id查询属性列表
+     * @param templateId 模板id
+     * @return 返回属性列表的List集合
+     */
+    List<AttributeListItemVO> listByTemplateId(Long templateId);
 }

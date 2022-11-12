@@ -8,10 +8,12 @@
         VALUES (#{albumId}, #{url}, #{description}, #{width}, #{height}, #{isCover}, #{sort})
     </insert>
 
-    <delete id="delete" >
-
+    <!-- int delete(Long id);-->
+    <delete id="delete">
+        DELETE
+        FROM pms_picture
+        WHERE id = #{id}
     </delete>
-
 
 
     <!--int countByUrl(String url);-->
@@ -48,14 +50,14 @@
 
     <!--List<PictureListItemVO> list();-->
     <select id="list" resultMap="ListItemRM">
-        SELECT  id,
-                album_id,
-                url,
-                description,
-                width,
-                height,
-                is_cover,
-                sort
+        SELECT id,
+               album_id,
+               url,
+               description,
+               width,
+               height,
+               is_cover,
+               sort
         FROM pms_picture
     </select>
     <resultMap id="ListItemRM" type="cn.tedu.csmall.product.pojo.vo.PictureListItemVO">

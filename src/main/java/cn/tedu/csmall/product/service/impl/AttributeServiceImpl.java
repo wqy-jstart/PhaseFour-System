@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.service.impl;
 
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.AttributeMapper;
+import cn.tedu.csmall.product.mapper.AttributeTemplateMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
@@ -28,6 +29,9 @@ public class AttributeServiceImpl implements IAttributeService {
 
     @Autowired
     private AttributeMapper attributeMapper;
+
+    @Autowired
+    private AttributeTemplateMapper attributeTemplateMapper;
 
     public AttributeServiceImpl(){
         log.debug("创建业务对象:AttributeServiceImpl");
@@ -76,6 +80,7 @@ public class AttributeServiceImpl implements IAttributeService {
     @Override
     public void update(Attribute attribute) {
         log.debug("开始处理[根据id修改属性数据]的业务,参数{}",attribute.getId());
+        // 根据属性id查询是否含有该属性的信息
         AttributeStandardVO attributeStandardVO = attributeMapper.getStandardById(attribute.getId());
         if (attributeStandardVO==null){
             String message = "修改失败,该属性id不存在!";
@@ -83,6 +88,7 @@ public class AttributeServiceImpl implements IAttributeService {
             throw new ServiceException(ServiceCode.ERR_UPDATE,message);
         }
 
+        // 查询属性名称与该属性id对应的模板id是否存在
         int count = attributeMapper.countByNameAndTemplateId(attribute.getName(),attributeStandardVO.getTemplateId());
         if (count!=0){
             String message = "修改失败,该属性名称与模板id已经存在!";
@@ -96,16 +102,6 @@ public class AttributeServiceImpl implements IAttributeService {
             log.debug(message);
             throw new ServiceException(ServiceCode.ERR_UPDATE,message);
         }
-    }
-
-    /**
-     * 处理属性列表数据的业务
-     * @return 返回List
-     */
-    @Override
-    public List<AttributeListItemVO> list() {
-        log.debug("开始处理查询[属性列表的业务]");
-        return attributeMapper.list();
     }
 
     /**
@@ -123,5 +119,39 @@ public class AttributeServiceImpl implements IAttributeService {
             throw new ServiceException(ServiceCode.ERR_SELECT,message);
         }
         return attributeStandardVO;
+    }
+
+    /**
+     * 处理属性列表数据的业务
+     * @return 返回List
+     */
+    @Override
+    public List<AttributeListItemVO> list() {
+        log.debug("开始处理查询[属性列表的业务]");
+        return attributeMapper.list();
+    }
+
+    /**
+     * 根据模板id查询属性列表
+     * @param templateId 模板id
+     * @return 返回属性列表的List集合
+     */
+    @Override
+    public List<AttributeListItemVO> listByTemplate(Long templateId) {
+        log.debug("开始处理[根据模板id查询属性数据]的业务,参数:{}",templateId);
+        AttributeTemplateStandardVO attributeTemplateStandardVO = attributeTemplateMapper.getStandardById(templateId);
+        if (attributeTemplateStandardVO==null){
+            String message = "查询失败,该模板id不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_SELECT,message);
+        }
+
+        int count = attributeMapper.countByTemplateId(templateId);
+        if (count==0){
+            String message = "查询失败,该模板下的数据不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_SELECT,message);
+        }
+        return attributeMapper.listByTemplateId(templateId);
     }
 }

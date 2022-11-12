@@ -14,7 +14,13 @@ public interface IPictureService {
 
     /**
      * 添加图片信息
-     * @param pictureAddNewDTO
+     * @param pictureAddNewDTO 添加的图片信息DTO类
      */
     void addNew(PictureAddNewDTO pictureAddNewDTO);
+
+    /**
+     * 根据id删除图片
+     * @param id 要删除的图片id
+     */
+    void delete(Long id);
 }

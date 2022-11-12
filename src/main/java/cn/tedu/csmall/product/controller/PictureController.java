@@ -20,26 +20,36 @@ public class PictureController {
     @Autowired
     IPictureService pictureService;
 
-    public PictureController(){
+    public PictureController() {
         log.debug("创建控制器对象:PictureController");
     }
 
+    /**
+     * 添加图片数据
+     * @param pictureAddNewDTO 需要添加的图片数据DTO类
+     * @return JsonResult
+     */
     @ApiOperation("添加图片")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-New")
-    public JsonResult<Void> addNew(PictureAddNewDTO pictureAddNewDTO){
-        log.debug("开始处理[添加图片]的请求,参数{}",pictureAddNewDTO);
+    public JsonResult<Void> addNew(PictureAddNewDTO pictureAddNewDTO) {
+        log.debug("开始处理[添加图片]的请求,参数{}", pictureAddNewDTO);
         pictureService.addNew(pictureAddNewDTO);
         return JsonResult.ok();
     }
 
-    @ApiOperation("根据url删除图片")
+    /**
+     * 根据id删除图片
+     * @param id 要删除的图片id
+     * @return 返回JsonResult
+     */
+    @ApiOperation("根据id删除图片")
     @ApiOperationSupport(order = 200)
-    @ApiImplicitParam(name = "url",value = "图片的Url",required = true,dataType = "string")
-    @GetMapping("/{url:[a-z0-9]+}/delete")
-    public String delete1(@PathVariable String url){
-        String message = "尝试删除url为["+url+"]的图片";
-        log.debug(message);
-        return message;
+    @ApiImplicitParam(name = "id", value = "图片的id", required = true, dataType = "long")
+    @GetMapping("/{id:[0-9]+}/delete")
+    public JsonResult<Void> delete1(@PathVariable Long id) {
+        log.debug("开始删除id为:{}的图片", id);
+        pictureService.delete(id);
+        return JsonResult.ok();
     }
 }

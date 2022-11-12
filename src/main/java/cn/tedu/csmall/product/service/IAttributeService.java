@@ -19,7 +19,7 @@ public interface IAttributeService {
     /**
      * 添加属性
      *
-     * @param attributeAddNewDTO
+     * @param attributeAddNewDTO 需要添加的属性DTO类
      */
     void addNew(AttributeAddNewDTO attributeAddNewDTO);
 
@@ -36,15 +36,23 @@ public interface IAttributeService {
     void update(Attribute attribute);
 
     /**
+     * 根据id查询属性详情
+     * @param id 属性id
+     * @return 返回属性详情的VO类
+     */
+    AttributeStandardVO selectById(Long id);
+
+    /**
      * 查询所有属性列表的数据
      * @return List
      */
     List<AttributeListItemVO> list();
 
     /**
-     * 根据id查询属性详情
-     * @param id 属性id
-     * @return 返回属性详情的VO类
+     * 根据模板id查询属性数据
+     * @param templateId 模板id
+     * @return 返回查询的属性数据List集合
      */
-    AttributeStandardVO selectById(Long id);
+    List<AttributeListItemVO> listByTemplate(Long templateId);
+
 }
