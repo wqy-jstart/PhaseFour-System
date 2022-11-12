@@ -1,5 +1,6 @@
 package cn.tedu.csmall.product.pojo.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,6 +23,7 @@ public class Attribute implements Serializable {
     /**
      * 所属属性模板id
      */
+    @ApiModelProperty(hidden = true)
     private Long templateId;
 
     /**
@@ -67,11 +69,13 @@ public class Attribute implements Serializable {
     /**
      * 数据创建时间
      */
+    @ApiModelProperty(hidden = true)
     private LocalDateTime gmtCreate;
 
     /**
      * 数据最后修改时间
      */
+    @ApiModelProperty(hidden = true)
     private LocalDateTime gmtModified;
 
 }
