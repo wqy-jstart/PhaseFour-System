@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
@@ -30,10 +31,12 @@ public interface ICategoryService {
     void deleteById(Long id);
 
     /**
-     * 根据id修改分类信息
-     * @param category 分类实体类
+     * 根据类别id，修改类别详情
+     *
+     * @param id                类别id
+     * @param categoryUpdateDTO 新的类别数据
      */
-    void updateById(Category category);
+    void updateInfoById(Long id, CategoryUpdateDTO categoryUpdateDTO);
 
     /**
      * 处理查询类别列表的功能

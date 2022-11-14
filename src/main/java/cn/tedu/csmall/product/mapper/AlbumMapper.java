@@ -3,6 +3,7 @@ package cn.tedu.csmall.product.mapper;
 import cn.tedu.csmall.product.pojo.entity.Album;
 import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -51,6 +52,15 @@ public interface AlbumMapper {
      * @return 受影响的行数
      */
     int update(Album album);
+
+    /**
+     * 统计当前表中非此相册id的匹配名称的相册数据的数量
+     *
+     * @param id 当前相册id
+     * @param name 相册名称
+     * @return 当前表中非此相册id的匹配名称的相册数据的数量
+     */
+    int countByNameAndNotId(@Param("id") Long id, @Param("name") String name);
 
     /**
      * 查询相册数据数量

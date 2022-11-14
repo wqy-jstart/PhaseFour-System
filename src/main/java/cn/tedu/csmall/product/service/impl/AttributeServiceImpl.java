@@ -4,6 +4,7 @@ import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.AttributeMapper;
 import cn.tedu.csmall.product.mapper.AttributeTemplateMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
@@ -75,26 +76,31 @@ public class AttributeServiceImpl implements IAttributeService {
 
     /**
      * 根据id修改属性数据
-     * @param attribute attribute
+     * @param id                     属性id
+     * @param attributeUpdateInfoDTO 封装了新基本资料的对象
      */
     @Override
-    public void update(Attribute attribute) {
-        log.debug("开始处理[根据id修改属性数据]的业务,参数{}",attribute.getId());
+    public void updateInfoById(Long id , AttributeUpdateInfoDTO attributeUpdateInfoDTO) {
+        log.debug("开始处理[根据id修改属性数据]的业务,参数{}",id);
         // 根据属性id查询是否含有该属性的信息
-        AttributeStandardVO attributeStandardVO = attributeMapper.getStandardById(attribute.getId());
+        AttributeStandardVO attributeStandardVO = attributeMapper.getStandardById(id);
         if (attributeStandardVO==null){
             String message = "修改失败,该属性id不存在!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
         }
 
         // 查询属性名称与该属性id对应的模板id是否存在
-        int count = attributeMapper.countByNameAndTemplateId(attribute.getName(),attributeStandardVO.getTemplateId());
+        int count = attributeMapper.countByNameAndTemplateAndNotId(id,attributeUpdateInfoDTO.getName(), attributeStandardVO.getTemplateId());
         if (count!=0){
-            String message = "修改失败,该属性名称与模板id已经存在!";
+            String message = "修改属性详情失败，属性名称已经被占用！";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
+
+        Attribute attribute = new Attribute();
+        BeanUtils.copyProperties(attributeUpdateInfoDTO, attribute);
+        attribute.setId(id);
 
         int rows = attributeMapper.update(attribute);
         if (rows>1){

@@ -20,10 +20,7 @@ public class Brand implements Serializable {
     private Integer productCount;
     private Integer commentCount;
     private Integer positiveCommentCount;
-    @ApiModelProperty(hidden = true)
     private Integer enable;
-    @ApiModelProperty(hidden = true)
     private LocalDateTime gmtCreate;
-    @ApiModelProperty(hidden = true)
     private LocalDateTime gmtModified;
 }

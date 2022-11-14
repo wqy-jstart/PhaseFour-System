@@ -6,6 +6,8 @@ import cn.tedu.csmall.product.mapper.AttributeTemplateMapper;
 import cn.tedu.csmall.product.mapper.CategoryAttributeTemplateMapper;
 import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeTemplateUpdateInfoDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
@@ -62,10 +64,10 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         BeanUtils.copyProperties(attributeTemplateNewDTO, attributeTemplate);//将前者传入的信息复制到后者属性模板实体类信息中
         log.debug("开始执行插入数据!");
         int rows = attributeTemplateMapper.insert(attributeTemplate);
-        if (rows != 1){// 如果插入所影响的行数不为1
+        if (rows != 1) {// 如果插入所影响的行数不为1
             String message = "添加属性模板失败,服务器忙,请稍后再尝试!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+            throw new ServiceException(ServiceCode.ERR_INSERT, message);
         }
         log.debug("添加数据成功!");
     }
@@ -118,40 +120,48 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
 
         log.debug("开始执行删除属性模板数据");
         int rows = attributeTemplateMapper.deleteById(id);
-        if (rows != 1){// 如果插入所影响的行数不为1
+        if (rows != 1) {// 如果插入所影响的行数不为1
             String message = "删除属性模板失败,服务器忙,请稍后再尝试!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+            throw new ServiceException(ServiceCode.ERR_DELETE, message);
         }
         log.debug("删除属性模板数据完成!");
     }
 
     /**
      * 根据属性模板id修改属性模板的业务
-     * @param attributeTemplate attributeTemplate
+     *
+     * @param id                             属性模板id
+     * @param attributeTemplateUpdateInfoDTO 封装了新基本资料的对象
      */
     @Override
-    public void update(AttributeTemplate attributeTemplate) {
-        log.debug("开始处理[根据id修改属性模板]的业务,参数{}",attributeTemplate.getId());
-        AttributeTemplateStandardVO attributeTemplateStandardVO = attributeTemplateMapper.getStandardById(attributeTemplate.getId());
-        if (attributeTemplateStandardVO==null){
+    public void updateInfoById(Long id, AttributeTemplateUpdateInfoDTO attributeTemplateUpdateInfoDTO) {
+        log.debug("开始处理[根据id修改属性模板]的业务,参数{}", id);
+        AttributeTemplateStandardVO attributeTemplateStandardVO = attributeTemplateMapper.getStandardById(id);
+        if (attributeTemplateStandardVO == null) {
             String message = "修改失败,该属性模板id不存在";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
 
-        int count = attributeTemplateMapper.countByName(attributeTemplate.getName());
-        if (count!=0){
+        int count = attributeTemplateMapper.countByNameAndNotId(id, attributeTemplateUpdateInfoDTO.getName());
+        if (count > 0) {
             String message = "修改失败,该属性模板名称已经存在!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
         }
 
+        AttributeTemplate attributeTemplate = new AttributeTemplate();
+        BeanUtils.copyProperties(attributeTemplateUpdateInfoDTO, attributeTemplate);
+        attributeTemplate.setId(id);
+
+        // 调用Mapper对象的update()修改属性模板基本资料，并获取返回值
+        log.debug("即将修改属性模板详情：{}", attributeTemplate);
         int rows = attributeTemplateMapper.update(attributeTemplate);
-        if (rows>1){
+        if (rows > 1) {
             String message = "修改失败,服务器忙,请稍后再试...";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
         }
     }
 
@@ -168,17 +178,18 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
 
     /**
      * 根据id查询属性模板的详情
+     *
      * @param id 属性模板的id
      * @return 返回属性模板详情VO类
      */
     @Override
     public AttributeTemplateStandardVO selectById(Long id) {
-        log.debug("开始处理根据id{},查询属性模板详情的业务",id);
-        AttributeTemplateStandardVO attributeTemplateStandardVO =  attributeTemplateMapper.getStandardById(id);
-        if (attributeTemplateStandardVO==null){
+        log.debug("开始处理根据id{},查询属性模板详情的业务", id);
+        AttributeTemplateStandardVO attributeTemplateStandardVO = attributeTemplateMapper.getStandardById(id);
+        if (attributeTemplateStandardVO == null) {
             String message = "查询失败,该id不存在!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_SELECT,message);
+            throw new ServiceException(ServiceCode.ERR_SELECT, message);
         }
         return attributeTemplateStandardVO;
     }

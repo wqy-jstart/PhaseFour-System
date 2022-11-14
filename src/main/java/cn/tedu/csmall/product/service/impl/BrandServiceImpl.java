@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.BrandCategoryMapper;
 import cn.tedu.csmall.product.mapper.BrandMapper;
 import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.BrandUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Brand;
 import cn.tedu.csmall.product.pojo.vo.BrandCategoryStandardVO;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
@@ -122,25 +123,32 @@ public class BrandServiceImpl implements IBrandService {
 
     /**
      * 根据id修改品牌数据
-     * @param brand
+     * @param id             品牌id
+     * @param brandUpdateDTO 新的品牌数据
      */
     @Override
-    public void update(Brand brand) {
-        log.debug("开始处理根据id修改品牌的业务,参数:{}",brand);
-        BrandStandardVO brandStandardVO = brandMapper.getStandardById(brand.getId());
+    public void updateInfoById(Long id, BrandUpdateDTO brandUpdateDTO) {
+        log.debug("开始处理根据id修改品牌的业务,参数:{}",id);
+        BrandStandardVO brandStandardVO = brandMapper.getStandardById(id);
         if (brandStandardVO==null){
-            String message = "修改失败,该id不存在!";
+            String message = "修改品牌详情失败，尝试访问的数据不存在！";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
         }
 
-        int count = brandMapper.countByName(brand.getName());
-        if (count!=0){
-            String message = "修改失败,该品牌名称已存在!";
+        int count = brandMapper.countByNameAndNotId(id,brandUpdateDTO.getName());
+        if (count>0){
+            String message = "修改品牌详情失败，品牌名称已经被占用！";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
 
+        Brand brand = new Brand();
+        BeanUtils.copyProperties(brandUpdateDTO,brand);
+        brand.setId(id);
+
+        // 修改数据
+        log.debug("即将修改数据：{}", brand);
         int rows = brandMapper.update(brand);
         if (rows>1){
             String message = "修改失败,服务器忙,请稍后再试...";

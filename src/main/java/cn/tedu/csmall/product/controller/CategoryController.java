@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
@@ -60,13 +61,14 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/categorys/update
+    // http://localhost:9080/categorys/id/update
     @ApiOperation("根据id修改分类数据")
     @ApiOperationSupport(order = 301)
-    @PostMapping("/update")
-    public JsonResult<Void> update(Category category){
-        log.debug("根据分类id{}修改分类信息",category.getId());
-        categoryService.updateById(category);
+    @ApiImplicitParam(name = "id",value = "类别id",required = true,dataType = "long")
+    @PostMapping("/{id:[0-9]+}/update")
+    public JsonResult<Void> update(@PathVariable Long id, CategoryUpdateDTO categoryUpdateDTO){
+        log.debug("根据分类id{}修改分类信息",id);
+        categoryService.updateInfoById(id,categoryUpdateDTO);
         return JsonResult.ok();
     }
 

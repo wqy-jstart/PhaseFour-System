@@ -1,7 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateNewDTO;
-import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
+import cn.tedu.csmall.product.pojo.dto.AttributeTemplateUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,10 +29,12 @@ public interface IAttributeTemplateService {
     void delete(Long id);
 
     /**
-     * 根据id修改属性模板信息
-     * @param attributeTemplate attributeTemplate
+     * 修改属性模板基本资料
+     *
+     * @param id                             属性模板id
+     * @param attributeTemplateUpdateInfoDTO 封装了新基本资料的对象
      */
-    void update(AttributeTemplate attributeTemplate);
+    void updateInfoById(Long id, AttributeTemplateUpdateInfoDTO attributeTemplateUpdateInfoDTO);
 
     /**
      * 查询属性模板的列表数据

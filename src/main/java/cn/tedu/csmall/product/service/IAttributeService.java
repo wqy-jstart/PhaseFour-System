@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
@@ -30,10 +31,12 @@ public interface IAttributeService {
     void delete(Long id);
 
     /**
-     * 根据id修改属性模板
-     * @param attribute attribute
+     * 修改属性基本资料
+     *
+     * @param id                     属性id
+     * @param attributeUpdateInfoDTO 封装了新基本资料的对象
      */
-    void update(Attribute attribute);
+    void updateInfoById(Long id, AttributeUpdateInfoDTO attributeUpdateInfoDTO);
 
     /**
      * 根据id查询属性详情

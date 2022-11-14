@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
@@ -45,13 +46,14 @@ public class AttributeController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/attributes/update
+    // http://localhost:9080/attributes/id/update
     @ApiOperation("根据id修改属性")
     @ApiOperationSupport(order = 300)
-    @PostMapping("/update")
-    public JsonResult<Void> update(Attribute attribute){
-        log.debug("开始处理[根据id{}修改属性]的请求,参数为:{}",attribute.getId(),attribute);
-        attributeService.update(attribute);
+    @ApiImplicitParam(name = "id",value = "属性id",required = true,dataType = "long")
+    @PostMapping("/{id:[0-9]+}/update")
+    public JsonResult<Void> updateInfoById(@PathVariable Long id ,AttributeUpdateInfoDTO attributeUpdateInfoDTO){
+        log.debug("开始处理[根据id{}修改属性]的请求,参数为:{}",id,attributeUpdateInfoDTO);
+        attributeService.updateInfoById(id,attributeUpdateInfoDTO);
         return JsonResult.ok();
     }
 

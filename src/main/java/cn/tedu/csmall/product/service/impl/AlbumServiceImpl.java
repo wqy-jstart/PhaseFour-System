@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.AlbumMapper;
 import cn.tedu.csmall.product.mapper.PictureMapper;
 import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AlbumUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Album;
 import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
@@ -128,23 +129,31 @@ public class AlbumServiceImpl implements IAlbumService {
 
     /**
      * 根据id修改相册数据
-     * @param album album
+     * @param id             相册id
+     * @param albumUpdateDTO 新的相册数据
      */
     @Override
-    public void updateById(Album album) {
+    public void updateInfoById(Long id ,AlbumUpdateDTO albumUpdateDTO) {
         log.debug("开始执行根据id修改相册详情的业务");
-        AlbumStandardVO albumStandardVO = albumMapper.getStandardById(album.getId());
+        AlbumStandardVO albumStandardVO = albumMapper.getStandardById(id);
         if (albumStandardVO==null){
             String message = "修改失败,该相册id不存在";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERR_UPDATE,message);
         }
-        int count = albumMapper.countByName(album.getName());
-        if (count!=0){
+        // 检查名称是否被占用
+        int count = albumMapper.countByNameAndNotId(id, albumUpdateDTO.getName());
+        if (count>0){
             String message ="修改失败,该相册名称已经存在!";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERR_UPDATE,message);
         }
+
+        // 将修改的数据复制到Album实体类中
+        Album album = new Album();
+        BeanUtils.copyProperties(albumUpdateDTO,album);
+        album.setId(id);
+
         int rows = albumMapper.update(album);
         if (rows!=1){
             String message = "修改失败,服务器忙,请稍后再试...";

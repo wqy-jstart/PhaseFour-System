@@ -3,6 +3,7 @@ package cn.tedu.csmall.product.service.impl;
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.*;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
@@ -108,92 +109,120 @@ public class CategoryServiceImpl implements ICategoryService {
 
     /**
      * 根据id删除分类数据
+     *
      * @param id 类别id
      */
     @Override
     public void deleteById(Long id) {
-        log.debug("开始处理[根据id删除类别]的业务,参数,{}",id);
+        log.debug("开始处理[根据id删除类别]的业务,参数,{}", id);
         CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
 
-        if (categoryStandardVO==null){
+        if (categoryStandardVO == null) {
             String message = "删除失败,该id不存在!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+            throw new ServiceException(ServiceCode.ERR_DELETE, message);
         }
 
+        // 检查当前尝试删除的类别是否存在子级类别：判断以上查询结果的isParent是否为1
+        if (categoryStandardVO.getIsParent() == 1) {
+            // 是：当前尝试删除的类别“是父级类别”（包含子级），抛出异常（ERR_CONFLICT）
+            String message = "删除类别失败，尝试删除的类别仍包含子级类别！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
+        }
+
+        // 如果此类别关联了品牌，则不允许删除
         {
             int count = brandCategoryMapper.countByCategoryId(id);
-            if (count>0){
+            if (count > 0) {
                 String message = "删除类别失败,该类别包含关联品牌的数据!";
                 log.debug(message);
-                throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
+                throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
             }
         }
 
+        // 如果此类别关联了属性模板，则不允许删除
         {
             int count = categoryAttributeTemplateMapper.countByCategoryId(id);
-            if (count>0){
+            if (count > 0) {
                 String message = "删除类别失败,该类别包含关联属性模板的数据!";
                 log.debug(message);
-                throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
+                throw new ServiceException(ServiceCode.ERR_DELETE, message);
             }
         }
 
+        // 如果此类别关联了SPU，则不允许删除
         {
             int count = spuMapper.countByCategoryId(id);
-            if (count>0){
+            if (count > 0) {
                 String message = "删除类别失败,该类别包含关联SPU的数据!";
                 log.debug(message);
-                throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
+                throw new ServiceException(ServiceCode.ERR_DELETE, message);
             }
         }
 
         // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
         Long parentId = categoryStandardVO.getParentId();// 获取该id下的类别父级id
-        if (parentId!=0){ // 说明该类别归属于某个父级
+        if (parentId != 0) { // 说明该类别归属于某个父级
             int count = categoryMapper.countByParentId(parentId);
-            if (count==1){
+            // 判断统计结果是否为1,为1说明是最后一个子集
+            if (count == 1) {
+                // 创建新的Category对象，用于更新父级，此Category对象中需要封装：id（parentId），isParent（0）
                 Category category = new Category();
                 category.setId(parentId);
                 category.setIsParent(0);
-                log.debug("将id为{}类别的isParent改为0",parentId);
-                categoryMapper.update(category);
+                log.debug("将id为{}类别的isParent改为0", parentId);
+                int rows = categoryMapper.update(category);
+                // 判断返回值是否不为1
+                if (rows != 1) {
+                    // 是：抛出异常（ERR_UPDATE）
+                    String message = "删除类别失败，服务器忙，请稍后再尝试！";
+                    log.warn(message);
+                    throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+                }
             }
         }
 
-        log.debug("即将执行删除id为{}的类别数据",id);
+        log.debug("即将执行删除id为{}的类别数据", id);
         int rows = categoryMapper.deleteById(id);
-        if (rows>1){
+        if (rows > 1) {
             String message = "删除失败,服务器忙,请稍后再试...";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+            throw new ServiceException(ServiceCode.ERR_DELETE, message);
         }
     }
 
     /**
      * 根据id修改类别数据
-     * @param category 类别实体类
+     *
+     * @param id                类别id
+     * @param categoryUpdateDTO 新的类别数据
      */
     @Override
-    public void updateById(Category category) {
+    public void updateInfoById(Long id, CategoryUpdateDTO categoryUpdateDTO) {
         log.debug("开始处理[根据id修改类别信息]的业务");
-        CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(category.getId());
-        if (categoryStandardVO==null){
+        CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
+        if (categoryStandardVO == null) {
             String message = "修改失败,该类别id不存在!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
-        int count = categoryMapper.countByName(category.getName());
-        if (count!=0){
+        int count = categoryMapper.countByNameAndNotId(id, categoryUpdateDTO.getName());
+        if (count > 0) {
             String message = "修改失败,修改的类别名称已存在";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
         }
+
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryUpdateDTO, category);
+        category.setId(id);
+
         int rows = categoryMapper.update(category);
-        if (rows != 1){
+        if (rows != 1) {
             String message = "服务器忙,请稍后再试...";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
         }
     }
 
@@ -210,23 +239,25 @@ public class CategoryServiceImpl implements ICategoryService {
 
     /**
      * 根据类别id查询类别详情
+     *
      * @param id 菜单id
      * @return 返回类别详情的Vo类
      */
     @Override
     public CategoryStandardVO selectById(Long id) {
-        log.debug("开始根据id:{}来查询菜单详情",id);
-        CategoryStandardVO categoryStandardVO =  categoryMapper.getStandardById(id);
-        if (categoryStandardVO==null){
+        log.debug("开始根据id:{}来查询菜单详情", id);
+        CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
+        if (categoryStandardVO == null) {
             String message = "查询失败,该id不存在!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_SELECT,message);
+            throw new ServiceException(ServiceCode.ERR_SELECT, message);
         }
         return categoryStandardVO;
     }
 
     /**
      * 处理启用分类
+     *
      * @param id 要启用的分类id
      */
     @Override
@@ -236,6 +267,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     /**
      * 处理禁用分类
+     *
      * @param id 要禁用的分类id
      */
     @Override
@@ -245,25 +277,26 @@ public class CategoryServiceImpl implements ICategoryService {
 
     /**
      * 处理显示分类
+     *
      * @param id 显示分类的id
      */
     @Override
     public void setDisplay(Long id) {
-        updateDisplayById(id,1);
+        updateDisplayById(id, 1);
     }
 
     /**
      * 处理隐藏分类
+     *
      * @param id 隐藏的分类id
      */
     @Override
     public void setHidden(Long id) {
-        updateDisplayById(id,0);
+        updateDisplayById(id, 0);
     }
 
     /**
      * 处理启用与禁用的逻辑
-     *
      */
     private void updateEnableById(Long id, Integer enable) {
         String[] tips = {"禁用", "启用"};
@@ -296,18 +329,18 @@ public class CategoryServiceImpl implements ICategoryService {
     /**
      * 处理显示和隐藏的逻辑
      */
-    private void updateDisplayById(Long id , Integer display){
-        String[] tips = {"隐藏","显示"};
+    private void updateDisplayById(Long id, Integer display) {
+        String[] tips = {"隐藏", "显示"};
         log.debug("开始处理[{}分类]的业务,id参数为{}", tips[display], id);
         // 查询分类详情
         CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
-        if (categoryStandardVO==null){
+        if (categoryStandardVO == null) {
             String message = tips[display] + "分类失败,尝试访问的数据不存在!";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
         // 判断查询结果中的display与方法参数display是否相同
-        if (display.equals(categoryStandardVO.getIsDisplay())){
+        if (display.equals(categoryStandardVO.getIsDisplay())) {
             String message = tips[display] + "分类失败，管理员账号已经处于" + tips[display] + "状态！";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);

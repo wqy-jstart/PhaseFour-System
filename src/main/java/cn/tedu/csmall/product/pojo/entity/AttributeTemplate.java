@@ -13,8 +13,6 @@ public class AttributeTemplate implements Serializable {
     private String pinyin;
     private String keywords;
     private Integer sort;
-    @ApiModelProperty(hidden = true)
     private LocalDateTime gmtCreate;
-    @ApiModelProperty(hidden = true)
     private LocalDateTime gmtModified;
 }

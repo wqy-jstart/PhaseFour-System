@@ -111,7 +111,7 @@ public class RedisTests {
         log.debug("根据Key集合[{}]删除数据完成,成功删除的数据的数量:{}",keys,count);
     }
 
-    // 从右侧压栈
+    // 存放List集合,通常左侧压栈
     @Test
     public void rightPush(){
         String key = "stringList";
@@ -123,6 +123,32 @@ public class RedisTests {
         ListOperations<String,Serializable> ops = redisTemplate.opsForList();
         for (String s : stringList) {
             ops.rightPush(key,s);
+        }
+    }
+
+    // 查询Redis集合中的长度
+    @Test
+    public void selectList(){
+        String key = "stringList";
+        ListOperations<String, Serializable> ops = redisTemplate.opsForList();
+        Long size = ops.size(key);
+        log.debug("集合{}中的长度为:{}",key,size);
+    }
+
+    // 读取部分集合中的元素(不能倒着读)
+    // 0 ~~~ list.size()-1 正向下标
+    // -list.size() ~~~ -1 反向下标
+    @Test
+    public void range(){
+        String key = "stringList";
+        long start = 0;
+        long end = -1;
+
+        ListOperations<String, Serializable> ops = redisTemplate.opsForList();
+        List<Serializable> list = ops.range(key, start, end);
+        log.debug("根据Key[{}]从[{}]到[{}]读取列表,结果长度为:{}",key,start,end,list.size());
+        for (Serializable item : list) {
+            log.debug("列表项:{}",item);
         }
     }
 }

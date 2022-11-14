@@ -34,12 +34,10 @@ public class Album implements Serializable {
     /**
      * 数据创建时间
      */
-    @ApiModelProperty(hidden = true)
     private LocalDateTime gmtCreate;
 
     /**
      * 数据最后修改时间
      */
-    @ApiModelProperty(hidden = true)
     private LocalDateTime gmtModified;
 }

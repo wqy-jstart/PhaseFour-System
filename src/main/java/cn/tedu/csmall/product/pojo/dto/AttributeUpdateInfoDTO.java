@@ -1,29 +1,17 @@
-package cn.tedu.csmall.product.pojo.entity;
+package cn.tedu.csmall.product.pojo.dto;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
- * 属性
+ * 更新属性信息的DTO类
  *
  * @author java@tedu.cn
  * @version 0.0.1
  */
 @Data
-public class Attribute implements Serializable {
-
-    /**
-     * 记录id
-     */
-    private Long id;
-
-    /**
-     * 所属属性模板id
-     */
-    private Long templateId;
+public class AttributeUpdateInfoDTO implements Serializable {
 
     /**
      * 属性名称
@@ -64,15 +52,5 @@ public class Attribute implements Serializable {
      * 是否允许自定义，1=允许，0=禁止
      */
     private Integer isAllowCustomize;
-
-    /**
-     * 数据创建时间
-     */
-    private LocalDateTime gmtCreate;
-
-    /**
-     * 数据最后修改时间
-     */
-    private LocalDateTime gmtModified;
 
 }
