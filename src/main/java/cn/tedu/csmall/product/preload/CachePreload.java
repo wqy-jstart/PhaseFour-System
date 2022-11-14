@@ -18,9 +18,10 @@ import java.util.List;
  * @Version 0.0.1
  */
 @Slf4j
-@Component // 声明是一个组件类,在项目启动时被加载
+//@Component // 声明是一个组件类,在项目启动时被加载一次
 public class CachePreload implements ApplicationRunner {
 
+    // 注入品牌的Mapper层接口
     @Autowired
     private BrandMapper brandMapper;
 
@@ -30,16 +31,16 @@ public class CachePreload implements ApplicationRunner {
 
     // 构造方法,使得启动项目时自动加载该组件类
     public CachePreload(){
-        log.debug("创建开机自动执行的组件对象: CachePreload");
+        log.debug("创建开机自动执行的组件对象: CacheSchedule");
     }
 
     // ApplicationRunner中的run()方法会在项目启动成功之后自动执行
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        log.debug("CachePreload.run()");
+        log.debug("CacheSchedule.run()");
 
         log.debug("准备删除Redis缓存中的品牌数据...");
-        brandRedisRepository.deleteAll();
+        brandRedisRepository.deleteAll();// 清除缓存中的数据,防止缓存堆积过多,显示的列表数据冗余
         log.debug("删除Redis缓存中的品牌数据,完成!");
 
         log.debug("准备从数据库中读取品牌列表...");
