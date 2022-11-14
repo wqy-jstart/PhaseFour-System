@@ -1,12 +1,14 @@
 package cn.tedu.csmall.product;
 
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
+import cn.tedu.csmall.product.repo.IBrandRedisRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 
 import java.io.Serializable;
@@ -150,5 +152,28 @@ public class RedisTests {
         for (Serializable item : list) {
             log.debug("列表项:{}",item);
         }
+    }
+
+    // 向Redis中存储Set数据
+    @Test
+    void add(){
+        SetOperations<String, Serializable> ops = redisTemplate.opsForSet();
+        String key = "brandKeys";
+        String value = "brand:item1";
+//        for (int i = 1; i <= 5; i++) {
+//            String value = IBrandRedisRepository.BRAND_ITEM_KEY_PREFIX+i;
+//            ops.add(key,value);
+//        }
+        ops.add(key,value);
+        log.debug("添加完成!");
+    }
+
+    // 获取Redis中Set数据
+    @Test
+    void members(){
+        SetOperations<String, Serializable> ops = redisTemplate.opsForSet();
+        String key = "brandKeys";
+        Set<Serializable> members = ops.members(key);
+        log.debug("根据Key[{}]读取Set数据,结果:{}",key,members);
     }
 }

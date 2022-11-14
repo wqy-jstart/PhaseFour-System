@@ -25,9 +25,25 @@ public class BrandRedisRepositoryTests {
     void save(){
         BrandStandardVO brandStandardVO = new BrandStandardVO();
         brandStandardVO.setId(1L);
-        brandStandardVO.setName("缓存品牌001");
-
+        brandStandardVO.setName("缓存品牌1");
         repository.save(brandStandardVO);
+
+        brandStandardVO.setId(2L);
+        brandStandardVO.setName("缓存品牌2");
+        repository.save(brandStandardVO);
+
+        brandStandardVO.setId(3L);
+        brandStandardVO.setName("缓存品牌4");
+        repository.save(brandStandardVO);
+
+        brandStandardVO.setId(4L);
+        brandStandardVO.setName("缓存品牌4");
+        repository.save(brandStandardVO);
+
+        brandStandardVO.setId(5L);
+        brandStandardVO.setName("缓存品牌5");
+        repository.save(brandStandardVO);
+
         log.debug("向Redis缓存中写入数据，完成！");
     }
 
@@ -44,6 +60,13 @@ public class BrandRedisRepositoryTests {
 
         repository.save(brands);
         log.debug("向Redis缓存中写入列表数据，完成！");
+    }
+
+    // 测试删除Redis中所有数据
+    @Test
+    void deleteAll(){
+        Long count = repository.deleteAll();
+        log.debug("删除Redis缓存中所有品牌数据，删除的数据的数量：{}", count);
     }
 
     // 测试调用实现类取出品牌对象数据

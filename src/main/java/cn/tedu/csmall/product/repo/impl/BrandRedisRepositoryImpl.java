@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 处理Redis中品牌缓存的实现类
@@ -34,7 +36,8 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
     @Override
     public void save(BrandStandardVO brandStandardVO) {
         String key = BRAND_ITEM_KEY_PREFIX+brandStandardVO.getId();// 这样存储便于在Redis中归类呈现
-        redisTemplate.opsForValue().set(key,brandStandardVO);
+        redisTemplate.opsForSet().add(BRAND_ITEM_KEYS_KEY,key);
+        redisTemplate.opsForValue().set(key,brandStandardVO);// 将对应的品牌数据放到指定key中
     }
 
     // 向Redis中写入多条品牌数据
@@ -47,17 +50,32 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
         }
     }
 
+    // 删除Brand中所有数据(集合,item,member)
+    @Override
+    public Long deleteAll() {
+        // 获取到所有的item的key
+        Set<Serializable> members = redisTemplate.opsForSet().members(BRAND_ITEM_KEYS_KEY);
+        Set<String> keys = new HashSet<>();// 创建一个Set集合
+        for (Serializable member : members) {
+            keys.add((String) member);// 将获取的所有item的key放到Set集合中,例:brand:item1
+        }
+        // 将List和保存Key的Set的Key也添加到集合中
+        keys.add(BRAND_LIST_KEY);// brand:list
+        keys.add(BRAND_ITEM_KEYS_KEY);// brand:item-keys
+        return redisTemplate.delete(keys);
+    }
+
     // 根据key向Redis中获取一条品牌数据
     @Override
     public BrandStandardVO get(Long id) {
-        Serializable serializable = redisTemplate.opsForValue().get(BRAND_ITEM_KEY_PREFIX+id);
-        BrandStandardVO brandStandardVO = null;
-        if (serializable!=null){
-            if (serializable instanceof BrandStandardVO){
-                brandStandardVO = (BrandStandardVO) serializable;
+        Serializable serializable = redisTemplate.opsForValue().get(BRAND_ITEM_KEY_PREFIX+id);// 根据key获取一条品牌数据
+        BrandStandardVO brandStandardVO = null;// 声明一个品牌详情的引用
+        if (serializable!=null){ // 判断返回的品牌数据是否为null
+            if (serializable instanceof BrandStandardVO){ // 判断类型是否存在关系
+                brandStandardVO = (BrandStandardVO) serializable;// 将返回的Serializable强转为BrandStandardVO品牌详情
             }
         }
-        return brandStandardVO;
+        return brandStandardVO;// 最终作出返回
     }
 
     // 向Redis中查询所有品牌列表
