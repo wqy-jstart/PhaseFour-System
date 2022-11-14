@@ -18,7 +18,7 @@ import java.util.List;
  * @Version 0.0.1
  */
 @Slf4j
-//@Component // 声明是一个组件类,在项目启动时被加载一次
+@Component // 声明是一个组件类,在项目启动时被加载一次
 public class CachePreload implements ApplicationRunner {
 
     // 注入品牌的Mapper层接口
@@ -30,7 +30,7 @@ public class CachePreload implements ApplicationRunner {
     private IBrandRedisRepository brandRedisRepository;
 
     // 构造方法,使得启动项目时自动加载该组件类
-    public CachePreload(){
+    public CachePreload() {
         log.debug("创建开机自动执行的组件对象: CacheSchedule");
     }
 

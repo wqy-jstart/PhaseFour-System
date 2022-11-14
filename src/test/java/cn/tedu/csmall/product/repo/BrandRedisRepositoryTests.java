@@ -50,6 +50,7 @@ public class BrandRedisRepositoryTests {
     // 测试调用实现类存放品牌列表
     @Test
     void saveList(){
+        // 准备一个品牌列表
         List<BrandListItemVO> brands = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
             BrandListItemVO brand = new BrandListItemVO();

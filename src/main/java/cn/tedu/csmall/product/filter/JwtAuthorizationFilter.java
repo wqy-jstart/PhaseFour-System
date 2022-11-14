@@ -81,7 +81,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     .parseClaimsJws(jwt)
                     .getBody();
         } catch (SignatureException e) {
-            log.debug("解析JWT时出现SignatureException");// jwt不匹配!
+            log.debug("解析JWT时出现SignatureException");// 签名不匹配!
             String message = "非法访问！";
             JsonResult<Void> jsonResult = JsonResult.fail(ServiceCode.ERR_JWT_SIGNATURE, message);
             String jsonResultString = JSON.toJSONString(jsonResult);

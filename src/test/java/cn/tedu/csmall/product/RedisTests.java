@@ -113,7 +113,7 @@ public class RedisTests {
         log.debug("根据Key集合[{}]删除数据完成,成功删除的数据的数量:{}",keys,count);
     }
 
-    // 存放List集合,通常左侧压栈
+    // 存放一个Key为"stringList"的集合,通常左侧压栈
     @Test
     public void rightPush(){
         String key = "stringList";
@@ -128,7 +128,7 @@ public class RedisTests {
         }
     }
 
-    // 查询Redis集合中的长度
+    // 查询Redis中"stringList"的长度
     @Test
     public void selectList(){
         String key = "stringList";
@@ -137,7 +137,7 @@ public class RedisTests {
         log.debug("集合{}中的长度为:{}",key,size);
     }
 
-    // 读取部分集合中的元素(不能倒着读)
+    // 读取部分"stringList"中的元素(不能倒着读)
     // 0 ~~~ list.size()-1 正向下标
     // -list.size() ~~~ -1 反向下标
     @Test
@@ -154,7 +154,7 @@ public class RedisTests {
         }
     }
 
-    // 向Redis中存储Set数据
+    // 向Redis中用Set集合(不可重复)存储品牌的key值
     @Test
     void add(){
         SetOperations<String, Serializable> ops = redisTemplate.opsForSet();
@@ -168,7 +168,7 @@ public class RedisTests {
         log.debug("添加完成!");
     }
 
-    // 获取Redis中Set数据
+    // 获取Redis中保存在Set集合中的key值
     @Test
     void members(){
         SetOperations<String, Serializable> ops = redisTemplate.opsForSet();
