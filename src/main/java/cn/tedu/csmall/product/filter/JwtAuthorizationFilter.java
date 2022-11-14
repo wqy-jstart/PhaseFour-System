@@ -81,7 +81,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     .parseClaimsJws(jwt)
                     .getBody();
         } catch (SignatureException e) {
-            log.debug("解析JWT时出现SignatureException");
+            log.debug("解析JWT时出现SignatureException");// jwt不匹配!
             String message = "非法访问！";
             JsonResult<Void> jsonResult = JsonResult.fail(ServiceCode.ERR_JWT_SIGNATURE, message);
             String jsonResultString = JSON.toJSONString(jsonResult);
@@ -89,7 +89,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             writer.println(jsonResultString);
             return;
         } catch (MalformedJwtException e) {
-            log.debug("解析JWT时出现MalformedJwtException");
+            log.debug("解析JWT时出现MalformedJwtException");// jwt格式有误!
             String message = "非法访问！";
             JsonResult<Void> jsonResult = JsonResult.fail(ServiceCode.ERR_JWT_MALFORMED, message);
             String jsonResultString = JSON.toJSONString(jsonResult);
@@ -97,7 +97,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             writer.println(jsonResultString);
             return;
         } catch (ExpiredJwtException e) {
-            log.debug("解析JWT时出现ExpiredJwtException");
+            log.debug("解析JWT时出现ExpiredJwtException");// jwt已过期!
             String message = "登录信息已过期，请重新登录！";
             JsonResult<Void> jsonResult = JsonResult.fail(ServiceCode.ERR_JWT_EXPIRED, message);
             String jsonResultString = JSON.toJSONString(jsonResult);

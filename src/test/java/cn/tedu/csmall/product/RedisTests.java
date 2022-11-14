@@ -159,12 +159,12 @@ public class RedisTests {
     void add(){
         SetOperations<String, Serializable> ops = redisTemplate.opsForSet();
         String key = "brandKeys";
-        String value = "brand:item1";
-//        for (int i = 1; i <= 5; i++) {
-//            String value = IBrandRedisRepository.BRAND_ITEM_KEY_PREFIX+i;
-//            ops.add(key,value);
-//        }
-        ops.add(key,value);
+//        String value = "brand:item1";
+        for (int i = 1; i <= 5; i++) {
+            String value = IBrandRedisRepository.BRAND_ITEM_KEY_PREFIX+i;
+            ops.add(key,value);
+        }
+//        ops.add(key,value);
         log.debug("添加完成!");
     }
 

@@ -59,7 +59,7 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
         for (Serializable member : members) {
             keys.add((String) member);// 将获取的所有item的key放到Set集合中,例:brand:item1
         }
-        // 将List和保存Key的Set的Key也添加到集合中
+        // 将List集合和保存Key的Set的Key也添加到集合中
         keys.add(BRAND_LIST_KEY);// brand:list
         keys.add(BRAND_ITEM_KEYS_KEY);// brand:item-keys
         return redisTemplate.delete(keys);

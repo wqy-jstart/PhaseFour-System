@@ -17,7 +17,7 @@ public interface IBrandRedisRepository {
 
     String BRAND_LIST_KEY = "brand:list";// 该key值用来获取品牌列表
 
-    String BRAND_ITEM_KEYS_KEY = "brand:item-keys";
+    String BRAND_ITEM_KEYS_KEY = "brand:item-keys";// 用来标记品牌的中item中的key成员
 
     /**
      * 该方法用来存储一条品牌数据
@@ -34,7 +34,7 @@ public interface IBrandRedisRepository {
     void save(List<BrandListItemVO> brands);
 
     /**
-     * 删除Redis中的所有数据
+     * 删除Redis中的所有数据(item数据,list集合)
      * @return 返回删除的数量
      */
     Long deleteAll();

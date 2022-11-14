@@ -40,7 +40,7 @@ public class BrandServiceImpl implements IBrandService {
     @Autowired
     private SpuMapper spumapper;
 
-    // 注入Redis缓存接口
+    // 注入品牌的Redis缓存接口
     @Autowired
     private IBrandRedisRepository brandRedisRepository;
 
@@ -169,10 +169,7 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public List<BrandListItemVO> list() {
         log.debug("开始执行[查询品牌列表]的业务,无参数");
-//        List<BrandListItemVO> list = brandMapper.list();// 获取数据库中的品牌列表
-//        brandRedisRepository.save(list);// 存入到Redis中
-//        return brandMapper.list();// 返回列表
-        return brandRedisRepository.list();
+        return brandRedisRepository.list();// 从Redis中查询列表
     }
 
     /**
