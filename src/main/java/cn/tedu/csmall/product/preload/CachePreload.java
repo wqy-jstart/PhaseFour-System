@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 该组件类用于在项目启动之前从数据库将列表信息加载到Redis中,使得在查询列表时是从Redis中查询的
+ * 一.该组件类用于在项目启动之前从数据库将列表信息加载到Redis中
  *
  * @Author java.@Wqy
  * @Version 0.0.1
  */
 @Slf4j
-@Component // 声明是一个组件类,在项目启动时被加载一次
+//@Component // 声明是一个组件类,在项目启动时被加载一次
 public class CachePreload implements ApplicationRunner {
 
     // 注入品牌的Mapper层接口

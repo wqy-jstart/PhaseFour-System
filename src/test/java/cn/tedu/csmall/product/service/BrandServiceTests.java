@@ -42,4 +42,9 @@ public class BrandServiceTests {
         BrandStandardVO brandStandardVO = service.selectById(id);
         log.debug("查询id为{}的品牌详情,参数:{}",id,brandStandardVO);
     }
+
+    @Test
+    void rebuildCache(){
+        service.rebuildCache();
+    }
 }

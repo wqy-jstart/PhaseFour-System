@@ -2,7 +2,6 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.pojo.dto.BrandUpdateDTO;
-import cn.tedu.csmall.product.pojo.entity.Brand;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,16 +40,21 @@ public interface IBrandService {
 
     /**
      * 查询所有的品牌列表
-     * @return
+     * @return List
      */
     List<BrandListItemVO> list();
 
     /**
      * 根据品牌id查询品牌详情
      * @Param id 品牌id
-     * @return
+     * @return 品牌详情
      */
     BrandStandardVO selectById(Long id);
+
+    /**
+     * 该方法用于手动重建缓存
+     */
+    void rebuildCache();
 
     /**
      * 启用品牌

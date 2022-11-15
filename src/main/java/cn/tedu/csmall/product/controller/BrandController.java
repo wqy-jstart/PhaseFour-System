@@ -105,6 +105,7 @@ public class BrandController {
         return JsonResult.ok(list);
     }
 
+    // http://localhost:9080/brands/id/select
     @ApiOperation("根据id查询品牌数据")
     @ApiOperationSupport(order = 302)
     @ApiImplicitParam(name = "id",value = "品牌id",required = true,dataType = "long")
@@ -115,11 +116,22 @@ public class BrandController {
         return JsonResult.ok(brandStandardVO);
     }
 
+    // http://localhost:9080/brands/chche/rebuild
+    @ApiOperation("重建品牌缓存")
+    @ApiOperationSupport(order = 600)
+    @PostMapping("/cache/rebuild")
+    public JsonResult<Void> rebuildCache(){
+        log.debug("开始处理[重建缓存]的请求,无参数");
+        brandService.rebuildCache();
+        return JsonResult.ok();
+    }
+
     /**
      * 处理启用品牌的请求
      * @param id 要启用的品牌id
      * @return JsonResult
      */
+    // http://localhost:9080/brands/id/enable
     @ApiOperation("启用品牌")
     @ApiOperationSupport(order = 500)
     @ApiImplicitParam(name = "id",value = "启用的品牌id",required = true,dataType = "long")
@@ -136,6 +148,7 @@ public class BrandController {
      * @param id 要禁用的品牌id
      * @return JsonResult
      */
+    // http://localhost:9080/brands/id/disable
     @ApiOperation("禁用品牌")
     @ApiOperationSupport(order = 501)
     @ApiImplicitParam(name = "id",value = "禁用的品牌id",required = true,dataType = "long")

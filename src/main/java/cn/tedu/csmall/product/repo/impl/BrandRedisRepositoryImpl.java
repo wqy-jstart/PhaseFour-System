@@ -37,8 +37,10 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
     public void save(BrandStandardVO brandStandardVO) {
         String key = BRAND_ITEM_KEY_PREFIX+brandStandardVO.getId();// 这样存储便于在Redis中归类呈现
         // ★向Redis的品牌中的brand:item-keys里,添加该次添加的品牌key值,为了删除时直接遍历里面item的key值作删除
+        log.debug("向Set集合中存入此次查找的Key值");
         redisTemplate.opsForSet().add(BRAND_ITEM_KEYS_KEY,key);
         redisTemplate.opsForValue().set(key,brandStandardVO);// 将对应的品牌数据放到指定key中
+        log.debug("向缓存中存入品牌详情成功!");
     }
 
     // 实现向Redis中写入多条品牌数据的业务
