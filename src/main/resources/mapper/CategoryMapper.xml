@@ -133,4 +133,13 @@
         </if>
     </sql>
 
+    <!--List<CategoryListItemVO> listByParentId(Long parentId);-->
+    <select id="listByParentId" resultMap="ListResultMapper">
+        SELECT
+        <include refid="StandardQueryFields"/>
+        FROM pms_category
+        WHERE parent_id = #{parentId}
+        ORDER BY id
+    </select>
+
 </mapper>

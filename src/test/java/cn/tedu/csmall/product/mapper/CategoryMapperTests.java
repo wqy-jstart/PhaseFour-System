@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Category;
+import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,16 @@ public class CategoryMapperTests {
         List<?> list = mapper.list();
         log.debug("查询列表完成,列表中数据的数量:{}",list.size());
         for (Object item : list) {
+            log.debug("{}",item);
+        }
+    }
+
+    // 根据父级类别查询数据
+    @Test
+    void listByParentId(){
+        Long id = 1L;
+        List<CategoryListItemVO> list = mapper.listByParentId(id);
+        for (CategoryListItemVO item : list) {
             log.debug("{}",item);
         }
     }

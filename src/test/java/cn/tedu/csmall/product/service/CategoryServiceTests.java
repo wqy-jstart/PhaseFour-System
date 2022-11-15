@@ -2,11 +2,14 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -47,5 +50,14 @@ public class CategoryServiceTests {
         Long id = 1L;
         CategoryStandardVO categoryStandardVO = categoryService.selectById(id);
         log.debug("id为{}的类别详情为:{}",id,categoryStandardVO);
+    }
+
+    @Test
+    void selectByParentId(){
+        Long id = 1L;
+        List<CategoryListItemVO> list = categoryService.listByParentId(id);
+        for (CategoryListItemVO item : list) {
+            log.debug("{}",item);
+        }
     }
 }

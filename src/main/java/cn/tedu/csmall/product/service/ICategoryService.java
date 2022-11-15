@@ -52,6 +52,13 @@ public interface ICategoryService {
     CategoryStandardVO selectById(Long id);
 
     /**
+     * 根据父级类别查询其自己类别列表
+     * @param parentId 父级类别id
+     * @return 返回查询的子级列表
+     */
+    List<CategoryListItemVO> listByParentId(Long parentId);
+
+    /**
      * 处理启用分类的功能
      * @param id 要启用的分类id
      */

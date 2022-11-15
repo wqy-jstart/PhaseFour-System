@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Slf4j
 @Api(tags = "03.分类管理模块")
-@RequestMapping("/categorys")
+@RequestMapping("/categories")
 @RestController
 public class CategoryController {
 
@@ -39,7 +39,7 @@ public class CategoryController {
         log.debug("创建控制器对象:CategoryController");
     }
 
-    // http://localhost:9080/categorys/add-newCategory?name="品牌男装7"&parentId=1&depth=1&keywords="无"&sort=0&icon="无"
+    // http://localhost:9080/categories/add-newCategory?name="品牌男装7"&parentId=1&depth=1&keywords="无"&sort=0&icon="无"
     @ApiOperation("添加分类")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-newCategory")
@@ -50,7 +50,7 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/categorys/id/delete
+    // http://localhost:9080/categories/id/delete
     @ApiOperation("根据id删除分类")
     @ApiOperationSupport(order = 300)
     @ApiImplicitParam(name = "id",value = "要删除的类别id",required = true,dataType = "long")
@@ -61,7 +61,7 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/categorys/id/update
+    // http://localhost:9080/categories/id/update
     @ApiOperation("根据id修改分类数据")
     @ApiOperationSupport(order = 301)
     @ApiImplicitParam(name = "id",value = "类别id",required = true,dataType = "long")
@@ -72,7 +72,7 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/categorys/id/select
+    // http://localhost:9080/categories/id/select
     @ApiOperation("根据id查询类别详情")
     @ApiOperationSupport(order = 302)
     @ApiImplicitParam(name = "id",value = "类别id",required = true,dataType = "long")
@@ -83,6 +83,7 @@ public class CategoryController {
         return JsonResult.ok(categoryStandardVO);
     }
 
+    // http://localhost:9080/categories/
     @ApiOperation("查询分类列表")
     @ApiOperationSupport(order = 303)
     @GetMapping("")
@@ -92,10 +93,21 @@ public class CategoryController {
         return JsonResult.ok(list);
     }
 
+    // http://localhost:9080/categories/list-by-parent?id=?
+    @ApiOperation("根据父级类别查询子级类别")
+    @ApiOperationSupport(order = 415)
+    @GetMapping("/list-by-parent")
+    public JsonResult<List<CategoryListItemVO>> listByParentId(Long parentId){
+        log.debug("开始处理[根据父级类别查询自己类别]的请求!");
+        List<CategoryListItemVO> list = categoryService.listByParentId(parentId);
+        return JsonResult.ok(list);
+    }
+
+
     /**
      * 启用分类
-     * @param id
-     * @return
+     * @param id 需要启用的分类id
+     * @return JsonResult
      */
     @ApiOperation("启用分类")
     @ApiOperationSupport(order = 500)
@@ -110,8 +122,8 @@ public class CategoryController {
 
     /**
      * 禁用分类
-     * @param id
-     * @return
+     * @param id 需要禁用的类别id
+     * @return JsonResult
      */
     @ApiOperation("禁用分类")
     @ApiOperationSupport(order = 501)
@@ -126,8 +138,8 @@ public class CategoryController {
 
     /**
      * 显示分类
-     * @param id
-     * @return
+     * @param id 需要显示的分类id
+     * @return JsonResult
      */
     @ApiOperation("显示分类")
     @ApiOperationSupport(order = 502)
@@ -142,8 +154,8 @@ public class CategoryController {
 
     /**
      * 隐藏分类
-     * @param id
-     * @return
+     * @param id 需要隐藏的分类id
+     * @return JsonResult
      */
     @ApiOperation("隐藏分类")
     @ApiOperationSupport(order = 503)

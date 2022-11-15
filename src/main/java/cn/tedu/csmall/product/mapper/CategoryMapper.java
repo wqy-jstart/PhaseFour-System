@@ -94,4 +94,11 @@ public interface CategoryMapper {
      */
     List<CategoryListItemVO> list();
 
+    /**
+     * 根据父级类别查询其自己类别列表
+     * @param parentId 父级类别id
+     * @return 返回查询的子级列表
+     */
+    List<CategoryListItemVO> listByParentId(Long parentId);
+
 }

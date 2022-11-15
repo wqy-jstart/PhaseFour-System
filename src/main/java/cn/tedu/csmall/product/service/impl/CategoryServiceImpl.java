@@ -256,6 +256,17 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     /**
+     * 处理根据父级类别查询自己类别的业务
+     * @param parentId 父级类别id
+     * @return
+     */
+    @Override
+    public List<CategoryListItemVO> listByParentId(Long parentId) {
+        log.debug("开始处理[根据父级类别查询自己类别]的业务!");
+        return categoryMapper.listByParentId(parentId);
+    }
+
+    /**
      * 处理启用分类
      *
      * @param id 要启用的分类id
