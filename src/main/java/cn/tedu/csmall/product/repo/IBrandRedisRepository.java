@@ -35,6 +35,7 @@ public interface IBrandRedisRepository {
 
     /**
      * 删除Redis中的所有数据(item数据,list集合数据,brand:list,brand:item-keys)
+     *
      * @return 返回删除的数量
      */
     Long deleteAll();

@@ -15,7 +15,7 @@ public class BrandServiceTests {
     IBrandService service;
 
     @Test
-    void addNew(){
+    void addNew() {
         BrandAddNewDTO brandAddNewDTO = new BrandAddNewDTO();
         brandAddNewDTO.setName("美的01");
         brandAddNewDTO.setPinyin("新-MeiDi");//商品拼音
@@ -28,23 +28,23 @@ public class BrandServiceTests {
         brandAddNewDTO.setCommentCount(300);
         brandAddNewDTO.setPositiveCommentCount(200);
         brandAddNewDTO.setEnable(1);
-        try{
+        try {
             service.addNew(brandAddNewDTO);
             log.debug("测试添加数据成功!");
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             log.debug(e.getMessage());//捕获异常时输出
         }
     }
 
     @Test
-    void selectById(){
+    void selectById() {
         Long id = 1L;
         BrandStandardVO brandStandardVO = service.selectById(id);
-        log.debug("查询id为{}的品牌详情,参数:{}",id,brandStandardVO);
+        log.debug("查询id为{}的品牌详情,参数:{}", id, brandStandardVO);
     }
 
     @Test
-    void rebuildCache(){
+    void rebuildCache() {
         service.rebuildCache();
     }
 }

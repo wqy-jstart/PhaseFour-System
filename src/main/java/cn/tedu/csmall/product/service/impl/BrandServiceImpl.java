@@ -7,10 +7,8 @@ import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.pojo.dto.BrandUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Brand;
-import cn.tedu.csmall.product.pojo.vo.BrandCategoryStandardVO;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
-import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import cn.tedu.csmall.product.repo.IBrandRedisRepository;
 import cn.tedu.csmall.product.service.IBrandService;
 import cn.tedu.csmall.product.web.ServiceCode;
@@ -190,7 +188,7 @@ public class BrandServiceImpl implements IBrandService {
         // 判断获取到的结果是否不为null
         if (brand != null) {
             // 是:直接返回
-            log.debug("命中缓存,即将返回:{}",brand);
+            log.debug("命中缓存,即将返回:{}", brand);
             return brand;
         }
         // 无缓存数据,从数据库中查找数据
@@ -204,7 +202,7 @@ public class BrandServiceImpl implements IBrandService {
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
         // 将查询结果写入到缓存,并返回
-        log.debug("从数据库中查询到有效结果,将查询结果存入到Redis中:{}",brand);
+        log.debug("从数据库中查询到有效结果,将查询结果存入到Redis中:{}", brand);
         brandRedisRepository.save(brand);
         log.debug("开始返回结果!");
         return brand;

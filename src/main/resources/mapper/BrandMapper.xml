@@ -68,12 +68,17 @@
 
     <!--int countByName(String name);-->
     <select id="countByName" resultType="int">
-        SELECT count(*) FROM pms_brand WHERE name=#{name}
+        SELECT count(*)
+        FROM pms_brand
+        WHERE name = #{name}
     </select>
 
     <!-- int countByNameAndNotId(@Param("id") Long id, @Param("name") String name); -->
     <select id="countByNameAndNotId" resultType="int">
-        SELECT count(*) FROM pms_brand WHERE name=#{name} AND id!=#{id}
+        SELECT count(*)
+        FROM pms_brand
+        WHERE name = #{name}
+          AND id != #{id}
     </select>
 
     <!--BrandStandardVO getStandardById(Long id);-->
