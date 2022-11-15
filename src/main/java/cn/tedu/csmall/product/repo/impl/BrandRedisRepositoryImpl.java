@@ -29,7 +29,7 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
     private RedisTemplate<String, Serializable> redisTemplate;
 
     public BrandRedisRepositoryImpl(){
-        log.debug("创建处理缓存的数据访问对象:BrandRedisRepositoryImpl");
+        log.debug("创建处理缓存的数据访问实现类对象:BrandRedisRepositoryImpl");
     }
 
     // 实现向Redis中写入数据的业务

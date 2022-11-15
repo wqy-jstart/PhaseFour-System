@@ -22,14 +22,14 @@ public interface IBrandRedisRepository {
     /**
      * 该方法用来存储一条品牌数据,不做返回
      *
-     * @param brandStandardVO 需要存储的品牌详情VO类
+     * @param brandStandardVO 需要向Redis中存储的品牌详情VO类
      */
     void save(BrandStandardVO brandStandardVO);
 
     /**
      * 该方法用来存储多条品牌数据,空返回
      *
-     * @param brands 要存储的品牌List集合
+     * @param brands 要向Redis中存储的品牌List集合
      */
     void save(List<BrandListItemVO> brands);
 
@@ -43,7 +43,7 @@ public interface IBrandRedisRepository {
     /**
      * 向Redis中取出需要的item数据
      * 正常若向Redis中取数据需要对应的key值,
-     * 这里的key有前缀拼接,为了封装性,这里只让调用者传入id即可
+     * 这里的key有前缀拼接,为了保证封装性,这里只让调用者传入id即可
      *
      * @param id 品牌id
      * @return 返回品牌详情VO类

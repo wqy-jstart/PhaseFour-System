@@ -227,7 +227,7 @@ public class BrandServiceImpl implements IBrandService {
 
         log.debug("准备将各品牌详情写入Redis缓存...");
         for (BrandListItemVO brandListItemVO : list) {// 遍历拿到的品牌列表
-            Long id = brandListItemVO.getId();// 或许遍历的每个品牌列表的id
+            Long id = brandListItemVO.getId();// 获取遍历的每个品牌列表的id
             BrandStandardVO brandStandardVO = brandMapper.getStandardById(id);// 利用拿到的id来查询对应的品牌详情
             brandRedisRepository.save(brandStandardVO);// 将每一个品牌详情放到Redis缓存中
         }

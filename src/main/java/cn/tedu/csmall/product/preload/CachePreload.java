@@ -31,7 +31,7 @@ public class CachePreload implements ApplicationRunner {
 
     // 构造方法,使得启动项目时自动加载该组件类
     public CachePreload() {
-        log.debug("创建开机自动执行的组件对象: CacheSchedule");
+        log.debug("创建开机自动执行的组件对象: CachePreload");
     }
 
     // ApplicationRunner中的run()方法会在项目启动成功之后自动执行
