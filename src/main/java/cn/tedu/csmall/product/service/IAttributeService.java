@@ -25,7 +25,7 @@ public interface IAttributeService {
     void addNew(AttributeAddNewDTO attributeAddNewDTO);
 
     /**
-     * 根据id删除模板
+     * 根据id删除属性
      * @param id 要删除的模板id
      */
     void delete(Long id);

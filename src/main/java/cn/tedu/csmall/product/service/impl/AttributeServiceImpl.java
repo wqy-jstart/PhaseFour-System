@@ -71,7 +71,19 @@ public class AttributeServiceImpl implements IAttributeService {
      */
     @Override
     public void delete(Long id) {
-        // TODO 删除模板的业务
+        log.debug("开始处理[根据id删除属性]的业务!");
+        AttributeStandardVO attributeStandardVO = attributeMapper.getStandardById(id);
+        if (attributeStandardVO==null){
+            String message = "删除失败,尝试访问的数据不存在!";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
+        }
+        int rows = attributeMapper.deleteById(id);
+        if (rows>1){
+            String message = "删除失败,服务器忙,请稍后再试...";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE,message);
+        }
     }
 
     /**

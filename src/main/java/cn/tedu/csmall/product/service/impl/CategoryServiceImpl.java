@@ -248,9 +248,9 @@ public class CategoryServiceImpl implements ICategoryService {
         log.debug("开始根据id:{}来查询菜单详情", id);
         CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(id);
         if (categoryStandardVO == null) {
-            String message = "查询失败,该id不存在!";
+            String message = "查询失败,请求的数据不存在!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_SELECT, message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
         return categoryStandardVO;
     }

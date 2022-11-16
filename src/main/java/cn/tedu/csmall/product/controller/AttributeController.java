@@ -46,6 +46,21 @@ public class AttributeController {
         return JsonResult.ok();
     }
 
+    /**
+     * 根据id删除属性的业务
+     * @param id 属性id
+     * @return JsonResult
+     */
+    @ApiOperation("根据id删除属性")
+    @ApiOperationSupport(order = 200)
+    @ApiImplicitParam(name = "id",value = "属性id",required = true,dataType = "long")
+    @PostMapping("/{id:[0-9]+}/delete")
+    public JsonResult<Void> deleteById(@PathVariable Long id){
+        log.debug("开始处理[根据id删除属性]的请求!");
+        attributeService.delete(id);
+        return JsonResult.ok();
+    }
+
     // http://localhost:9080/attributes/id/update
     @ApiOperation("根据id修改属性")
     @ApiOperationSupport(order = 300)
@@ -88,6 +103,4 @@ public class AttributeController {
         List<AttributeListItemVO> listByTemplateId = attributeService.listByTemplate(templateId);
         return JsonResult.ok(listByTemplateId);
     }
-
-
 }
