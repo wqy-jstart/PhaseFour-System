@@ -139,14 +139,14 @@ public class AlbumServiceImpl implements IAlbumService {
         if (albumStandardVO==null){
             String message = "修改失败,该相册id不存在";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
         }
         // 检查名称是否被占用
         int count = albumMapper.countByNameAndNotId(id, albumUpdateDTO.getName());
         if (count>0){
-            String message ="修改失败,该相册名称已经存在!";
+            String message ="修改失败,该相册名称已经被占用!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
 
         // 将修改的数据复制到Album实体类中

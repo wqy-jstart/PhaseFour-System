@@ -37,12 +37,12 @@ public enum ServiceCode {
     /**
      * 错误: 数据不存在
      */
-    ERROR_CONFLICT(40400),
+    ERR_NOT_FOUND(40400),
 
     /**
      * 错误: 数据冲突
      */
-    ERR_NOT_FOUND(40900),
+    ERROR_CONFLICT(40900),
 
     /**
      * 错误: 插入数据异常
