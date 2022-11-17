@@ -31,7 +31,7 @@ public class AttributeTemplateServiceTests {
     }
     @Test
     void selectById(){
-        Long id = 1L;
+        Long id = 4L;
         AttributeTemplateStandardVO attributeTemplateStandardVO = attributeTemplateService.selectById(id);
         log.debug("查询id为{}的属性模板详情,参数为:{}",id,attributeTemplateStandardVO);
     }

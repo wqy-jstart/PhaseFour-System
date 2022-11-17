@@ -77,8 +77,6 @@ public class CategoryMapperTests {
         Category category = new Category();
         category.setId(74L);
         category.setName("品牌女装");
-        category.setParentId(1L);
-        category.setDepth(3);
         category.setKeywords("无");
         category.setSort(3);
         category.setIcon("无");

@@ -45,8 +45,8 @@
             <if test="name!=null">name=#{name},</if>
             <if test="keywords!=null">keywords=#{keywords},</if>
             <if test="sort!=null">sort=#{sort},</if>
-            <if test="icon!=null">icon=#{icon}</if>
-            <if test="enable!=null">enable=#{enable}</if>
+            <if test="icon!=null">icon=#{icon},</if>
+            <if test="enable!=null">enable=#{enable},</if>
             <if test="isDisplay!=null">is_display=#{isDisplay}</if>
         </set>
         WHERE id=#{id}

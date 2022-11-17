@@ -53,7 +53,7 @@ public class AlbumServiceTests {
 
     @Test
     void selectById(){
-        Long id = 1L;
+        Long id = 7L;
         AlbumStandardVO albumStandardVO = service.selectById(id);
         log.debug("查询id为{}的相册详情为:{}",id,albumStandardVO);
     }
