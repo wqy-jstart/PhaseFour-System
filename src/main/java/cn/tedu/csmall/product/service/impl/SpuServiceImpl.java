@@ -50,43 +50,49 @@ public class SpuServiceImpl implements ISpuService {
     public void addNew(SpuAddNewDTO spuAddNewDTO) {
         log.debug("开始处理[添加SPU]的业务,参数,{}",spuAddNewDTO);
         // 根据相册id查询相册详情,检查相册是否存在
+        log.debug("检查相册是否存在...");
         AlbumStandardVO albumStandardVO = albumMapper.getStandardById(spuAddNewDTO.getAlbumId());
         if (albumStandardVO==null){
-            String message = "添加失败,该相册id不存在!";
+            String message = "添加SPU失败,所选择的相册不存在!";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
         }
         // 根据品牌id查询品牌详情,检查品牌是否存在
+        log.debug("检查品牌是否存在...");
         BrandStandardVO brandStandardVO = brandMapper.getStandardById(spuAddNewDTO.getBrandId());
         if (brandStandardVO==null){
-            String message = "添加失败,该品牌id不存在!";
+            String message = "添加SPU失败,所选择的品牌不存在!";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
         }
         // 检查品牌是否已经被禁用
+        log.debug("检查品牌是否被禁用...");
         if(brandStandardVO.getEnable()==0){
-            String message = "添加失败,该品牌已经被禁用!";
+            String message = "添加SPU失败,所选择的品牌已经被禁用!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
         // 根据类别id查询类别详情,检查类别是否存在
+        log.debug("检查类别是否存在...");
         CategoryStandardVO categoryStandardVO = categoryMapper.getStandardById(spuAddNewDTO.getCategoryId());
         if (categoryStandardVO==null){
-            String message = "添加失败,类别不存在!";
+            String message = "添加SPU失败,所选择的类别不存在!";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND,message);
         }
         // 检查类别是否已经被禁用
+        log.debug("检查类别是否被禁用...");
         if (categoryStandardVO.getEnable()==0){
-            String message = "添加失败,该类别已经被禁用!";
+            String message = "添加SPU失败,所选择的类别已经被禁用!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
         // 检查类别是否没有子级
+        log.debug("检查类别是否没有子级...");
         if (categoryStandardVO.getIsParent()==1){
-            String message = "添加失败,该类别有子级!";
+            String message = "添加SPU失败,所选择的类别仍包含子级类别!";
             log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_INSERT,message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT,message);
         }
 
         // 创建Spu对象,并将参数对象的属性复制过来
@@ -110,6 +116,7 @@ public class SpuServiceImpl implements ISpuService {
         spu.setIsNewArrival(1);
         spu.setIsRecommend(1);
         // 插入Spu数据获取返回值结果并检查
+        log.debug("即将插入SPU数据...");
         int rows = spuMapper.insert(spu);
         if (rows>1){
             String message = "添加失败,服务器忙,请稍后再试...";
@@ -123,6 +130,7 @@ public class SpuServiceImpl implements ISpuService {
         // 补全SpuDetail对象的属性：detail >>> 来自参数对象
         spuDetail.setDetail(spuAddNewDTO.getDetail());
         // 插入SpuDetail数据，获取返回结果并检查
+        log.debug("即将插入SPU详情数据...");
         rows = spuDetailMapper.insert(spuDetail);
         if (rows>1){
             String message = "添加失败,服务器忙,请稍后再试...";
