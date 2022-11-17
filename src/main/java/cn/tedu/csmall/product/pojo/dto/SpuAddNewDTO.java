@@ -10,11 +10,6 @@ import java.time.LocalDateTime;
 public class SpuAddNewDTO implements Serializable {
 
     /**
-     * 记录id
-     */
-    private Long id;
-
-    /**
      * SPU名称
      */
     private String name;
@@ -60,19 +55,9 @@ public class SpuAddNewDTO implements Serializable {
     private Long brandId;
 
     /**
-     * 品牌名称（冗余）
-     */
-    private String brandName;
-
-    /**
      * 类别id
      */
     private Long categoryId;
-
-    /**
-     * 类别名称（冗余）
-     */
-    private String categoryName;
 
     /**
      * 属性模板id
@@ -80,6 +65,7 @@ public class SpuAddNewDTO implements Serializable {
     private Long attributeTemplateId;
 
     /**
+     *
      * 相册id
      */
     private Long albumId;
@@ -100,57 +86,13 @@ public class SpuAddNewDTO implements Serializable {
     private String tags;
 
     /**
-     * 销量（冗余）
-     */
-    private Integer sales;
-
-    /**
-     * 买家评论数量总和（冗余）
-     */
-    private Integer commentCount;
-
-    /**
-     * 买家好评数量总和（冗余）
-     */
-    private Integer positiveCommentCount;
-
-    /**
      * ⾃定义排序序号
      */
     private Integer sort;
 
     /**
-     * 是否标记为删除，1=已删除，0=未删除
+     * SPU详情，应该使用HTML富文本，通常内容是若干张图片
      */
-    private Integer isDeleted;
+    private String detail;
 
-    /**
-     * 是否上架（发布），1=已上架，0=未上架 （下架）
-     */
-    private Integer isPublished;
-
-    /**
-     * 是否新品，1=新品，0=非新品
-     */
-    private Integer isNewArrival;
-
-    /**
-     * 是否推荐，1=推荐，0=不推荐
-     */
-    private Integer isRecommend;
-
-    /**
-     * 是否已审核，1=已审核，0=未审核
-     */
-    private Integer isChecked;
-
-    /**
-     * 审核⼈（冗余）
-     */
-    private String checkUser;
-
-    /**
-     * 审核通过时间（冗余）
-     */
-    private LocalDateTime gmtCheck;
 }

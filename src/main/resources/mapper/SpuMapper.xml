@@ -4,16 +4,19 @@
 
     <!-- int insert(Spu spu);-->
     <!--如果插入操作时使用到了自增主键,则需要添加这两个属性,指明自增字段为id-->
-    <insert id="insert" useGeneratedKeys="true">
-        INSERT INTO pms_spu(id, name, type_number, title, description, list_price, stock, stock_threshold,
-                            unit, brand_id, brand_name, category_id, category_name, attribute_template_id,
-                            album_id, pictures, keywords, tags, sales,comment_count, positive_comment_count,
-                            sort, is_deleted, is_published, is_new_arrival, is_recommend, is_checked, check_user,
-                            gmt_check, gmt_create, gmt_modified)
-        VALUES (#{id}, #{name}, #{typeNumber},#{title},#{description},#{listPrice},#{stock},#{stockThreshold},
-                #{unit},#{brandId},#{brandName},#{categoryId},#{categoryName},#{attributeTemplateId},#{albumId},
-                #{pictures},#{keywords},#{tags},#{sales},#{commentCount},#{positiveCommentCount},#{sort},#{isDeleted},
-                #{isPublished},#{isNewArrival},#{isRecommend},#{isChecked},#{checkUser},#{gmtCheck},#{gmtCreate},#{gmtModified})
+    <insert id="insert">
+        INSERT INTO pms_spu(
+            id, name, type_number, title, description, list_price, stock, stock_threshold,
+            unit, brand_id, brand_name, category_id, category_name, attribute_template_id,
+            album_id, pictures, keywords, tags, sales,comment_count, positive_comment_count,
+            sort, is_deleted, is_published, is_new_arrival, is_recommend, is_checked, check_user,
+            gmt_check, gmt_create, gmt_modified
+        )VALUES (
+            #{id}, #{name}, #{typeNumber},#{title},#{description},#{listPrice},#{stock},#{stockThreshold},
+            #{unit},#{brandId},#{brandName},#{categoryId},#{categoryName},#{attributeTemplateId},#{albumId},
+            #{pictures},#{keywords},#{tags},#{sales},#{commentCount},#{positiveCommentCount},#{sort},#{isDeleted},
+            #{isPublished},#{isNewArrival},#{isRecommend},#{isChecked},#{checkUser},#{gmtCheck},#{gmtCreate},#{gmtModified}
+        )
     </insert>
 
     <!--int insertBatch(List<Spu> spus);-->
@@ -23,7 +26,7 @@
         album_id, pictures, keywords, tags, sales,comment_count, positive_comment_count,
         sort, is_deleted, is_published, is_new_arrival, is_recommend, is_checked, check_user,
         gmt_check, gmt_create, gmt_modified)
-        VALUES
+        VALUE
         <foreach collection="list" item="spu" separator=",">
             (#{spu.id}, #{spu.name}, #{spu.typeNumber},#{spu.title},#{spu.descrption},#{spu.listPrice},#{spu.stock},#{spu.stockThreshold},
             #{spu.unit},#{spu.brandId},#{spu.brandName},#{spu.categoryId},#{spu.categoryName},#{spu.attributeTemplateId},#{spu.albumId},

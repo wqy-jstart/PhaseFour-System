@@ -14,7 +14,7 @@ public interface ISpuService {
 
     /**
      * 添加SPU
-     * @param spuAddNewDTO
+     * @param spuAddNewDTO 接收传过来的DTO类
      */
     void addNew(SpuAddNewDTO spuAddNewDTO);
 }

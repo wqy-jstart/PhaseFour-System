@@ -4,7 +4,8 @@
 
     <!--int insert(SpuDetail spuDetail);-->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO pms_spu_detail(spu_id, detail) VALUES (#{spuId},#{detail})
+        INSERT INTO pms_spu_detail(spu_id, detail)
+        VALUES (#{spuId}, #{detail})
     </insert>
 
     <!-- int insertBatch(List<SpuDetail> spuDetails);-->
@@ -18,16 +19,18 @@
 
     <!--int deleteById(Long id);-->
     <delete id="deleteById">
-        DELETE FROM pms_spu_detail WHERE id=#{id}
+        DELETE
+        FROM pms_spu_detail
+        WHERE id = #{id}
     </delete>
 
     <!--int deleteByIds(Long[] ids);-->
     <delete id="deleteByIds">
         DELETE FROM pms_spu_detail WHERE id IN(
-            <foreach collection="array" item="id" separator=",">
-                #{id}
-            </foreach>
-            )
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
     </delete>
 
     <!--int update(SpuDetail spuDetail);-->
@@ -41,19 +44,22 @@
 
     <!--int count();-->
     <select id="count" resultType="int">
-        SELECT count(*) FROM pms_spu_detail
+        SELECT count(*)
+        FROM pms_spu_detail
     </select>
 
     <!--int countBySpuId(Long spuId);-->
     <select id="countBySpuId" resultType="int">
-        SELECT count(*) FROM pms_spu_detail WHERE spu_id=#{spuId}
+        SELECT count(*)
+        FROM pms_spu_detail
+        WHERE spu_id = #{spuId}
     </select>
 
     <!--SpuDetailStandardVO getStandardById(Long id);-->
     <select id="getStandardById" resultMap="StandardByIdRM">
-        SELECT id,spu_id, detail
+        SELECT id, spu_id, detail
         FROM pms_spu_detail
-        WHERE id=#{id}
+        WHERE id = #{id}
     </select>
     <resultMap id="StandardByIdRM" type="cn.tedu.csmall.product.pojo.vo.SpuDetailStandardVO">
         <id column="id" property="id"/>
@@ -63,7 +69,7 @@
 
     <!--List<SpuDetailListItemVO> list();-->
     <select id="list" resultMap="ListItemRM">
-        SELECT id,spu_id, detail
+        SELECT id, spu_id, detail
         FROM pms_spu_detail
     </select>
     <resultMap id="ListItemRM" type="cn.tedu.csmall.product.pojo.vo.SpuDetailListItemVO">
