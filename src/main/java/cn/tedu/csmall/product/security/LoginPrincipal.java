@@ -16,5 +16,4 @@ public class LoginPrincipal implements Serializable {
 
     private Long id;
     private String username;
-
 }
