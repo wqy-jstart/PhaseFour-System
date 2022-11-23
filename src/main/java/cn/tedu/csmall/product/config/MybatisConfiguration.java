@@ -34,7 +34,7 @@ public class MybatisConfiguration {
     public void addInterceptor(){
         log.debug("开始注册Mybatis拦截器");
         InsertUpdateTimeInterceptor interceptor = new InsertUpdateTimeInterceptor();// 创建插入修改时间的拦截器
-        for (SqlSessionFactory sqlSessionFactory : sqlSessionFactoryList) { // 遍历sqlsession工厂集合
+        for (SqlSessionFactory sqlSessionFactory : sqlSessionFactoryList) { // 遍历sqlSession工厂集合
             sqlSessionFactory.getConfiguration().addInterceptor(interceptor);// 将拦截器传入
         }
     }
