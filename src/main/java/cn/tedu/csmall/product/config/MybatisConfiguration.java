@@ -25,6 +25,7 @@ public class MybatisConfiguration {
         log.info("创建配置类对象:MybatisConfiguration");
     }
 
+    // 注入Apache的SqlSession工厂类
     @Autowired
     private List<SqlSessionFactory> sqlSessionFactoryList;
 
