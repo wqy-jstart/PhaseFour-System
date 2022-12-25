@@ -18,7 +18,7 @@ import java.util.List;
  * @Version 0.0.1
  */
 @Slf4j
-//@Component // 声明是一个组件类,在项目启动时被加载一次
+@Component // 声明是一个组件类,在项目启动时被加载一次
 public class CachePreload implements ApplicationRunner {
 
     // 注入品牌的Mapper层接口
