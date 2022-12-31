@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.csmall.product.mapper.TestToSQLMapper">
+
+    <!--int insert(List<TestToSQL> lists);-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO mall_pms.test_to_sql(name, age) VALUES
+        <foreach collection="list" item="test" separator=",">
+            (#{test.name},#{test.age})
+        </foreach>
+    </insert>
+
+    <!--List<TestToSQL> selectList();-->
+    <select id="selectList" resultMap="queryList">
+        SELECT id,name,age FROM mall_pms.test_to_sql;
+    </select>
+    <resultMap id="queryList" type="cn.tedu.csmall.product.pojo.entity.TestToSQL">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+    </resultMap>
+</mapper>
